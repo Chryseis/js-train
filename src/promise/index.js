@@ -1,18 +1,18 @@
 class MyPromise {
-  callbacks = []
   status = 'pending'
   result = undefined
 
   constructor(fn) {
+    let callbacks = []
     const resolve = resolveVal => {
       this.status = 'fulfilled'
       this.result = resolveVal
-      if (this.callbacks.length > 0) {
+      if (callbacks.length > 0) {
         if (this.status !== 'pending') {
-          const { resolveFn } = this.callbacks.splice(0, 1)[0]
+          const { resolveFn } = callbacks.splice(0, 1)[0]
           this.status = 'pending'
           resolveVal = resolveFn(resolveVal)
-          setTimeout(() => {
+          queueMicrotask(() => {
             this.status = 'fulfilled'
             this.result = resolveVal
             if (resolveVal instanceof MyPromise) {
@@ -39,12 +39,12 @@ class MyPromise {
     const reject = rejectVal => {
       this.status = 'rejected'
       this.result = rejectVal
-      if (this.callbacks.length > 0) {
+      if (callbacks.length > 0) {
         if (this.status !== 'pending') {
-          const { rejectFn } = this.callbacks.splice(0, 1)[0]
+          const { rejectFn } = callbacks.splice(0, 1)[0]
           this.status = 'pending'
           rejectVal = rejectFn(rejectVal)
-          setTimeout(() => {
+          queueMicrotask(() => {
             this.status = 'rejected'
             this.result = rejectVal
             if (rejectVal instanceof MyPromise) {
@@ -76,10 +76,10 @@ class MyPromise {
     })
 
     this.then = (resolveFn, rejectFn) => {
-      this.callbacks.push({ resolveFn, rejectFn })
+      callbacks.push({ resolveFn, rejectFn })
 
       if (this.status !== 'pending') {
-        setTimeout(() => {
+        queueMicrotask(() => {
           if (this.status === 'fulfilled') {
             resolve(this.result)
           } else {
