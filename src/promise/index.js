@@ -1,105 +1,100 @@
-const resolve = function (resolveVal) {
-  this.status = 'fulfilled'
-  this.result = resolveVal
-  if (this.resolveCallbacks.length > 0) {
-    if (this.status !== 'pending') {
-      const callback = this.resolveCallbacks.splice(0, 1)[0]
-      this.status = 'pending'
-      resolveVal = callback(resolveVal)
-      setTimeout(
-        function () {
-          this.status = 'fulfilled'
-          this.result = resolveVal
-          if (resolveVal instanceof MyPromise) {
-            if (resolveVal.status === 'fulfilled') {
-              resolveVal.then(
-                function (data) {
-                  resolve.call(this, data)
-                }.bind(this)
-              )
-            } else {
-              resolveVal.then(
-                data => {},
-                function (err) {
-                  reject.call(this, err)
-                }.bind(this)
-              )
-            }
-          } else {
-            resolve.call(this, resolveVal)
-          }
-        }.bind(this)
-      )
-    }
-  }
-}
-
-const reject = function (rejectVal) {
-  this.status = 'rejected'
-  this.result = rejectVal
-  if (this.rejectCallbacks.length > 0) {
-    if (this.status !== 'pending') {
-      const callback = this.rejectCallbacks.splice(0, 1)[0]
-      this.status = 'pending'
-      rejectVal = callback(rejectVal)
-      setTimeout(
-        function () {
-          this.status = 'rejected'
-          this.result = rejectVal
-          if (rejectVal instanceof MyPromise) {
-            if (rejectVal.status === 'rejected') {
-              rejectVal.then(
-                data => {},
-                function (err) {
-                  reject.call(this, err)
-                }.bind(this)
-              )
-            } else {
-              rejectVal.then(
-                function (data) {
-                  resolve.call(this, data)
-                }.bind(this),
-                err => {}
-              )
-            }
-          } else {
-            reject.call(this, rejectVal)
-          }
-        }.bind(this)
-      )
-    }
-  }
-}
-
 class MyPromise {
-  resolveCallbacks = []
-  rejectCallbacks = []
+  callbacks = []
   status = 'pending'
   result = undefined
 
   constructor(fn) {
-    queueMicrotask(() => {
-      fn(resolve.bind(this), reject.bind(this))
-    })
-  }
-
-  then(resolveFn, rejectFn) {
-    this.resolveCallbacks.push(resolveFn)
-    this.rejectCallbacks.push(rejectFn)
-
-    if (this.status !== 'pending') {
-      setTimeout(
-        function () {
-          if (this.rejectCallbacks.length > 0) {
-            reject.call(this, this.result)
-          } else {
-            resolve.call(this, this.result)
-          }
-        }.bind(this)
-      )
+    const resolve = resolveVal => {
+      this.status = 'fulfilled'
+      this.result = resolveVal
+      if (this.callbacks.length > 0) {
+        if (this.status !== 'pending') {
+          const { resolveFn } = this.callbacks.splice(0, 1)[0]
+          this.status = 'pending'
+          resolveVal = resolveFn(resolveVal)
+          setTimeout(() => {
+            this.status = 'fulfilled'
+            this.result = resolveVal
+            if (resolveVal instanceof MyPromise) {
+              if (resolveVal.status === 'fulfilled') {
+                resolveVal.then(function (data) {
+                  resolve(data)
+                })
+              } else {
+                resolveVal.then(
+                  data => {},
+                  err => {
+                    reject(err)
+                  }
+                )
+              }
+            } else {
+              resolve(resolveVal)
+            }
+          })
+        }
+      }
     }
 
-    return this
+    const reject = rejectVal => {
+      this.status = 'rejected'
+      this.result = rejectVal
+      if (this.callbacks.length > 0) {
+        if (this.status !== 'pending') {
+          const { rejectFn } = this.callbacks.splice(0, 1)[0]
+          this.status = 'pending'
+          rejectVal = rejectFn(rejectVal)
+          setTimeout(() => {
+            this.status = 'rejected'
+            this.result = rejectVal
+            if (rejectVal instanceof MyPromise) {
+              if (rejectVal.status === 'rejected') {
+                rejectVal.then(
+                  data => {},
+                  err => {
+                    reject(err)
+                  }
+                )
+              } else {
+                rejectVal.then(
+                  data => {
+                    resolve(data)
+                  },
+                  err => {}
+                )
+              }
+            } else {
+              reject(rejectVal)
+            }
+          })
+        }
+      }
+    }
+
+    queueMicrotask(() => {
+      fn(resolve, reject)
+    })
+
+    this.then = (resolveFn, rejectFn) => {
+      this.callbacks.push({ resolveFn, rejectFn })
+
+      if (this.status !== 'pending') {
+        setTimeout(() => {
+          if (this.status === 'fulfilled') {
+            resolve(this.result)
+          } else {
+            reject(this.result)
+          }
+        })
+      }
+
+      return this
+    }
+
+    this.catch = errFn => this.then(undefined, errFn)
+    this.finally = finallyFn => {
+      this.then(finallyFn, finallyFn)
+    }
   }
 }
 
@@ -117,13 +112,30 @@ MyPromise.reject = function (val) {
 
 new MyPromise((resolve, reject) => {
   resolve(1)
-}).then(
-  data => {
-    console.log(data, 'step 1')
-    return MyPromise.reject(2)
-  },
-  err => {
-    console.log(err, 'step 2')
-    return 2
-  }
-)
+})
+  .then(
+    data => {
+      console.log(data, 'resolve')
+      return new MyPromise((resolve, reject) => {
+        reject(2)
+      })
+    },
+    err => {
+      console.log(err, 'reject')
+      return 3
+    }
+  )
+  .then(
+    data => {
+      console.log(data, 'resolve')
+    },
+    err => {
+      console.log(err, 'reject')
+    }
+  )
+  .catch(() => {
+    console.log('err')
+  })
+  .finally(() => {
+    console.log('finally')
+  })
