@@ -92,6 +92,7 @@ class MyPromise {
     }
 
     this.catch = errFn => this.then(undefined, errFn)
+
     this.finally = finallyFn => {
       this.then(finallyFn, finallyFn)
     }
@@ -111,7 +112,9 @@ MyPromise.reject = function (val) {
 }
 
 new MyPromise((resolve, reject) => {
-  resolve(1)
+  setTimeout(() => {
+    resolve(1)
+  }, 500)
 })
   .then(
     data => {
