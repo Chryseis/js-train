@@ -71,9 +71,11 @@ class MyPromise {
       }
     }
 
-    queueMicrotask(() => {
+    try {
       fn(resolve, reject)
-    })
+    } catch (err) {
+      reject(err)
+    }
 
     this.then = (resolveFn, rejectFn) => {
       callbacks.push({ resolveFn, rejectFn })
