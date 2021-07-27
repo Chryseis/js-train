@@ -5,34 +5,38 @@ class MyPromise {
   constructor(fn) {
     let callbacks = []
     const resolve = resolveVal => {
-      this.status = 'fulfilled'
-      this.result = resolveVal
-      if (callbacks.length > 0) {
-        if (this.status !== 'pending') {
-          const { resolveFn } = callbacks.splice(0, 1)[0]
-          this.status = 'pending'
-          resolveVal = resolveFn(resolveVal)
-          queueMicrotask(() => {
-            this.status = 'fulfilled'
-            this.result = resolveVal
-            if (resolveVal instanceof MyPromise) {
-              if (resolveVal.status === 'fulfilled') {
-                resolveVal.then(function (data) {
-                  resolve(data)
-                })
+      try {
+        this.status = 'fulfilled'
+        this.result = resolveVal
+        if (callbacks.length > 0) {
+          if (this.status !== 'pending') {
+            const { resolveFn } = callbacks.splice(0, 1)[0]
+            this.status = 'pending'
+            resolveVal = resolveFn(resolveVal)
+            queueMicrotask(() => {
+              this.status = 'fulfilled'
+              this.result = resolveVal
+              if (resolveVal instanceof MyPromise) {
+                if (resolveVal.status === 'fulfilled') {
+                  resolveVal.then(function (data) {
+                    resolve(data)
+                  })
+                } else {
+                  resolveVal.then(
+                    data => {},
+                    err => {
+                      reject(err)
+                    }
+                  )
+                }
               } else {
-                resolveVal.then(
-                  data => {},
-                  err => {
-                    reject(err)
-                  }
-                )
+                resolve(resolveVal)
               }
-            } else {
-              resolve(resolveVal)
-            }
-          })
+            })
+          }
         }
+      } catch (err) {
+        reject(err)
       }
     }
 
@@ -144,3 +148,5 @@ new MyPromise((resolve, reject) => {
   .finally(() => {
     console.log('finally')
   })
+
+console.log(MyPromise.resolve(1))
