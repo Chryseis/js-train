@@ -13,7 +13,7 @@ const getCloneFlag = obj => {
   }
 }
 
-const deepClone = val => {
+const deepCloneByArray = val => {
   const visitedObjs = []
 
   const clone = val => {
@@ -40,7 +40,7 @@ const deepClone = val => {
   return clone(val)
 }
 
-const deepClone1 = val => {
+const deepCloneByMap = val => {
   const visitedObjs = new Map()
 
   const clone = val => {
@@ -56,7 +56,7 @@ const deepClone1 = val => {
         })
         return retVal
       } else {
-        return visitedObjs.val
+        return visitedObjs.get(val)
       }
     } else {
       return val
@@ -72,9 +72,9 @@ obj.b.f = obj.b.c
 obj.f = obj.b.e
 
 let start = +new Date()
-console.log(deepClone(obj))
-console.log(+new Date() - start)
+console.log(deepCloneByArray(obj))
+console.log(+new Date() - start, 'Array')
 
 let start1 = +new Date()
-console.log(deepClone1(obj))
-console.log(+new Date() - start1)
+console.log(deepCloneByMap(obj))
+console.log(+new Date() - start1, 'Map')
