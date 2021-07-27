@@ -3,9 +3,10 @@ const debounce = (fn, delay) => {
 
   return function () {
     if (timer) {
-      timer && clearTimeout(timer)
-      timer = setTimeout(function () {
-        fn.apply(this, arguments)
+      clearTimeout(timer)
+      timer = setTimeout(async function () {
+        await fn.apply(this, arguments)
+        timer = null
       }, delay)
     } else {
       fn.apply(this, arguments)
