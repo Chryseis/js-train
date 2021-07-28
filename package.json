@@ -11,6 +11,19 @@
   "devDependencies": {
     "ejs": "^3.1.6",
     "glob": "^7.1.7",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.1.1",
     "prettier": "^2.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "node genReadMe && lint-staged --allow-empty"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,css,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
