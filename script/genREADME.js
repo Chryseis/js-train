@@ -4,7 +4,7 @@ const glob = require('glob')
 const ejs = require('ejs')
 
 glob('src/**/*.{js,mjs,css}', (err, files) => {
-  const reg = /^src\/(.+)\/(.+).js$/
+  const reg = /^src\/(.+)\/(.+).(?:mjs|js)$/
   const filesData = files.map(file => {
     let [src, name, subName] = file.match(reg)
     const data = fs.readFileSync(path.resolve(src), 'utf8')
