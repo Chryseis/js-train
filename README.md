@@ -174,7 +174,7 @@ console.log(getMax1(arr2))
 
 ```
 
-## index.
+## event
 ```javascript
 class Event {
   events = {}
@@ -671,7 +671,7 @@ setInterval(() => {
 
 ```
 
-## index.
+## websocket
 ```javascript
 import Event from '../event/index.mjs'
 
