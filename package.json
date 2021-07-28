@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "genReadMe": "node script/genREADME.js"
+    "genReadMe": "node script/genREADME.js",
+    "prepare": "husky install"
   },
   "author": "allen",
   "license": "MIT",
