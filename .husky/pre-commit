@@ -1,4 +1,4 @@
 #!/bin/sh
-#npm run genReadMe
+npx genReadMe
 npx lint-staged --allow-empty
 
