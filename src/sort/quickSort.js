@@ -20,5 +20,5 @@ function quickSort(arr) {
   }
 }
 
-let arr = [2, 1, 3, 4, 5]
+let arr = [2, 1, 9, 10, 12, 11]
 console.log(quickSort(arr))

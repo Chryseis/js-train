@@ -4,15 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "genReadMe": "node script/genREADME.js"
   },
   "author": "allen",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
+    "ejs": "^3.1.6",
     "glob": "^7.1.7",
     "prettier": "^2.3.2"
-  },
-  "dependencies": {
-    "node": "^16.5.0"
   }
 }

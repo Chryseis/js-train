@@ -1,4 +1,7 @@
 # js-train
-<% filesData.forEach(function(data){
-  ## <%= data.title%>
-})%>
+<% filesData.forEach(function(file){ %>
+  ## <%= file.subName %>
+  ```javascript
+    <%= file.data %>
+  ```
+<% })%>
