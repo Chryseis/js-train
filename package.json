@@ -17,6 +17,9 @@
     "prettier": "^2.3.2"
   },
   "lint-staged": {
-    "src/**/*.js":["prettier --write","git add"]
+    "src/**/*.{js,mjs,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

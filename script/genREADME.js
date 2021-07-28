@@ -3,7 +3,7 @@ const fs = require('fs')
 const glob = require('glob')
 const ejs = require('ejs')
 
-glob('src/**/*.js', (err, files) => {
+glob('src/**/*.{js,mjs,css}', (err, files) => {
   const reg = /^src\/(.+)\/(.+).js$/
   const filesData = files.map(file => {
     let [src, name, subName] = file.match(reg)
