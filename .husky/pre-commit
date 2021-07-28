@@ -1,4 +1,4 @@
 #!/bin/sh
-lint-staged --allow-empty
+#lint-staged --allow-empty
 npm run genReadMe
 
