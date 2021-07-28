@@ -15,11 +15,6 @@
     "lint-staged": "^11.1.1",
     "prettier": "^2.3.2"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run genReadMe && lint-staged --allow-empty"
-    }
-  },
   "lint-staged": {
     "src/**/*.{js,css,json,md}": [
       "prettier --write",
