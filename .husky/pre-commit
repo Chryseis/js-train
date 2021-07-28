@@ -1,5 +1,3 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-# shellcheck disable=SC2006
-out=`npm run genReadMe`
 npx lint-staged --allow-empty

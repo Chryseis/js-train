@@ -250,7 +250,8 @@ event.once('touch', function () {
 })
 
 event.emit('click')
-event.off('click1', fn)
+
+event.off('click3', fn)
 event.emit('click')
 event.emit('touch')
 event.emit('touch')
