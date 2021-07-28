@@ -17,7 +17,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "node genReadMe && lint-staged --allow-empty"
+      "pre-commit": "npm run genReadMe && lint-staged --allow-empty"
     }
   },
   "lint-staged": {
