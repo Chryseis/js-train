@@ -16,12 +16,6 @@ glob('src/**/*.js', (err, files) => {
   })
 
   ejs.renderFile(path.resolve(__dirname, 'readme.ejs'), { filesData }, function (err, str) {
-    fs.writeFile(path.resolve('README.md'), `${str}`, err => {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log('readme 写入成功', str)
-      }
-    })
+    fs.writeFileSync(path.resolve('README.md'), `${str}`)
   })
 })
