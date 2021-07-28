@@ -1,4 +1,4 @@
 #!/bin/sh
-npx genReadMe
+. "$(dirname "$0")/_/husky.sh"
+npm run genReadMe
 npx lint-staged --allow-empty
-
