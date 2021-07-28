@@ -174,10 +174,10 @@ console.log(getMax1(arr2))
 
 ```
 
-## event
+## index.
 ```javascript
 class Event {
-  events
+  events = {}
   constructor(initEvents = {}) {
     this.events = initEvents
   }
@@ -251,10 +251,12 @@ event.once('touch', function () {
 
 event.emit('click')
 
-event.off('click1', fn)
+event.off('click', fn)
 event.emit('click')
 event.emit('touch')
 event.emit('touch')
+
+export default Event
 
 ```
 
@@ -669,8 +671,17 @@ setInterval(() => {
 
 ```
 
-## websocket
+## index.
 ```javascript
+import Event from '../event/index.mjs'
+
+class MessageChannel extends Event {
+  constructor() {
+    super()
+  }
+}
+
+new MessageChannel()
 
 ```
 
