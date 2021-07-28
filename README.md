@@ -167,7 +167,7 @@ function getMax1(arr) {
   return max
 }
 
-const arr1 = [2, 0, 0, 4, 5]
+const arr1 = [2, 0, 0, 4, 5, 9, 10]
 console.log(getMax(arr1))
 const arr2 = [2, 0, 0, 4, 5]
 console.log(getMax1(arr2))
