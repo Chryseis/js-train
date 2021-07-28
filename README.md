@@ -239,9 +239,7 @@ class Event {
 
 const event = new Event()
 
-const fn = () => {
-  console.log('I click')
-}
+const fn = () => {console.log('I click')}
 
 event.on('click', fn)
 
@@ -252,9 +250,6 @@ event.once('touch', function () {
 event.emit('click')
 event.off('click', fn)
 event.emit('click')
-
-
-
 event.emit('touch')
 event.emit('touch')
 
