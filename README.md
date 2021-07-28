@@ -2,7 +2,7 @@
 
 ## debounce
 ```javascript
-  const debounce = (fn, delay) => {
+const debounce = (fn, delay) => {
   let timer
 
   return function () {
@@ -22,7 +22,7 @@
 
 ## deepClone
 ```javascript
-  // 通过数组存储，查询访问对象
+// 通过数组存储，查询访问对象
 // 尾调用，提高递归效率
 const deepCloneByArray = val => {
   const visitedObjs = []
@@ -115,7 +115,7 @@ console.log(+new Date() - start2, 'WeakMap')
 
 ## getMax
 ```javascript
-  /**
+/**
  * 假设你是一个专业的劫匪，你计划去打劫一条街上的家舍，每家有一定数量的钱财，
  * 但相邻两家有一个彼此连接的安全系统，一旦相邻两家在同一晚被打劫，那么这个安全系统就会自动报警。
  *
@@ -176,17 +176,17 @@ console.log(getMax1(arr2))
 
 ## event
 ```javascript
-  
+
 ```
 
 ## inherit
 ```javascript
-  
+
 ```
 
 ## jsBridge
 ```javascript
-  ;(function () {
+;(function () {
   const callbacks = {}
 
   // 如果使用iframe传值
@@ -242,12 +242,12 @@ console.log(getMax1(arr2))
 
 ## new
 ```javascript
-  
+
 ```
 
 ## promise
 ```javascript
-  class MyPromise {
+class MyPromise {
   status = 'pending'
   result = undefined
 
@@ -404,7 +404,7 @@ console.log(MyPromise.resolve(1))
 
 ## promiseAll
 ```javascript
-  function promiseAll(arr) {
+function promiseAll(arr) {
   let retVal = []
   if (arr && !arr.length) {
     console.warn('参数有问题')
@@ -444,7 +444,7 @@ promiseAll([promise1(), promise2(), promise3(), promise4(), promise5()]).then(da
 
 ## promiseRace
 ```javascript
-  function promiseRace(arr) {
+function promiseRace(arr) {
   if (arr && !arr.length) {
     console.warn('参数有问题')
   } else {
@@ -490,12 +490,12 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 
 ## reduxMiddleware
 ```javascript
-  
+
 ```
 
 ## bubbleSort
 ```javascript
-  function bubbleSort(arr) {
+function bubbleSort(arr) {
   let count = arr.length - 1
   while (count > 0) {
     for (let i = 0; i < count; i++) {
@@ -532,7 +532,7 @@ console.log(arr)
 
 ## quickSort
 ```javascript
-  function quickSort(arr) {
+function quickSort(arr) {
   const count = arr.length
   const halfIdx = Math.floor(count / 2)
   let halfNo = arr[halfIdx]
@@ -561,7 +561,7 @@ console.log(quickSort(arr))
 
 ## throttle
 ```javascript
-  const throttle = (fn, delay) => {
+const throttle = (fn, delay) => {
   let startTime = +new Date()
   let first = true
 
@@ -592,6 +592,6 @@ setInterval(() => {
 
 ## websocket
 ```javascript
-  
+
 ```
 
