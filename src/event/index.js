@@ -71,9 +71,16 @@ event.once('touch', function () {
   console.log('I touch')
 })
 
-event.emit('click1')
+event.emit('click')
 event.off('click', fn)
 event.emit('click')
+
+
+
+
+
+
+
 
 event.emit('touch')
 event.emit('touch')
