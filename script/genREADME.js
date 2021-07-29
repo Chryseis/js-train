@@ -24,8 +24,6 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
     }
   }, {})
 
-  console.log(reduceFilesData, '123')
-
   ejs.renderFile(path.resolve(__dirname, 'readme.ejs'), { reduceFilesData }, function (err, str) {
     fs.writeFile(path.resolve('README.md'), `${str}`, function (err) {
       if (err) {
