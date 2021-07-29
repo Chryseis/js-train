@@ -1,59 +1,85 @@
 # js-train
 ## 目录
 
-+ [debounce](#debounce)
-  - [debounce](#debounce)
++ [DEBOUNCE](#debounce)
+    
+    - [debounce](#debounce)
+    
 
-+ [deepClone](#deepClone)
-  - [deepClone](#deepClone)
++ [DEEPCLONE](#deepClone)
+    
+    - [deepClone](#deepClone)
+    
 
-+ [dynamicPlanning](#dynamicPlanning)
-  - [getMax](#getMax)
++ [DYNAMICPLANNING](#dynamicPlanning)
+    
+    - [getMax](#getMax)
+    
 
-+ [event](#event)
-  - [event](#event)
++ [EVENT](#event)
+    
+    - [event](#event)
+    
 
-+ [format](#format)
-  - [number](#number)
++ [FORMAT](#format)
+    
+    - [number](#number)
+    
 
-+ [inherit](#inherit)
-  - [inherit](#inherit)
++ [INHERIT](#inherit)
+    
+    - [inherit](#inherit)
+    
 
-+ [jsBridge](#jsBridge)
-  - [jsBridge](#jsBridge)
++ [JSBRIDGE](#jsBridge)
+    
+    - [jsBridge](#jsBridge)
+    
 
-+ [new](#new)
-  - [new](#new)
++ [NEW](#new)
+    
+    - [new](#new)
+    
 
-+ [promise](#promise)
-  - [promise](#promise)
++ [PROMISE](#promise)
+    
+    - [promise](#promise)
+    
+    - [promiseAll](#promiseAll)
+    
+    - [promiseRace](#promiseRace)
+    
 
-+ [promise](#promise)
-  - [promiseAll](#promiseAll)
++ [REDUXMIDDLEWARE](#reduxMiddleware)
+    
+    - [reduxMiddleware](#reduxMiddleware)
+    
 
-+ [promise](#promise)
-  - [promiseRace](#promiseRace)
++ [SORT](#sort)
+    
+    - [bubbleSort](#bubbleSort)
+    
+    - [quickSort](#quickSort)
+    
 
-+ [reduxMiddleware](#reduxMiddleware)
-  - [reduxMiddleware](#reduxMiddleware)
++ [THROTTLE](#throttle)
+    
+    - [throttle](#throttle)
+    
 
-+ [sort](#sort)
-  - [bubbleSort](#bubbleSort)
++ [TREE](#tree)
+    
+    - [tree](#tree)
+    
 
-+ [sort](#sort)
-  - [quickSort](#quickSort)
-
-+ [throttle](#throttle)
-  - [throttle](#throttle)
-
-+ [tree](#tree)
-  - [tree](#tree)
-
-+ [websocket](#websocket)
-  - [websocket](#websocket)
++ [WEBSOCKET](#websocket)
+    
+    - [websocket](#websocket)
+    
 
 
 ## debounce
+
 ### debounce
 ```javascript
 const debounce = (fn, delay) => {
@@ -74,7 +100,9 @@ const debounce = (fn, delay) => {
 
 ```
 
+
 ## deepClone
+
 ### deepClone
 ```javascript
 // 通过数组存储，查询访问对象
@@ -168,7 +196,9 @@ console.log(+new Date() - start2, 'WeakMap')
 
 ```
 
+
 ## dynamicPlanning
+
 ### getMax
 ```javascript
 /**
@@ -230,7 +260,9 @@ console.log(getMax1(arr2))
 
 ```
 
+
 ## event
+
 ### event
 ```javascript
 class Event {
@@ -317,7 +349,9 @@ export default Event
 
 ```
 
+
 ## format
+
 ### number
 ```javascript
 //千分位格式化
@@ -329,13 +363,17 @@ console.log(roundByFour(1000.12345678, 4))
 
 ```
 
+
 ## inherit
+
 ### inherit
 ```javascript
 
 ```
 
+
 ## jsBridge
+
 ### jsBridge
 ```javascript
 ;(function () {
@@ -392,13 +430,17 @@ console.log(roundByFour(1000.12345678, 4))
 
 ```
 
+
 ## new
+
 ### new
 ```javascript
 
 ```
 
+
 ## promise
+
 ### promise
 ```javascript
 class MyPromise {
@@ -556,7 +598,6 @@ console.log(MyPromise.resolve(1))
 
 ```
 
-## promise
 ### promiseAll
 ```javascript
 function promiseAll(arr) {
@@ -597,7 +638,6 @@ promiseAll([promise1(), promise2(), promise3(), promise4(), promise5()]).then(da
 
 ```
 
-## promise
 ### promiseRace
 ```javascript
 function promiseRace(arr) {
@@ -644,13 +684,17 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 
 ```
 
+
 ## reduxMiddleware
+
 ### reduxMiddleware
 ```javascript
 
 ```
 
+
 ## sort
+
 ### bubbleSort
 ```javascript
 function bubbleSort(arr) {
@@ -688,7 +732,6 @@ console.log(arr)
 
 ```
 
-## sort
 ### quickSort
 ```javascript
 function quickSort(arr) {
@@ -718,7 +761,9 @@ console.log(quickSort(arr))
 
 ```
 
+
 ## throttle
+
 ### throttle
 ```javascript
 const throttle = (fn, delay) => {
@@ -750,7 +795,9 @@ setInterval(() => {
 
 ```
 
+
 ## tree
+
 ### tree
 ```javascript
 /**
@@ -831,7 +878,9 @@ console.log(JSON.stringify(genTree(list, 0)))
 
 ```
 
+
 ## websocket
+
 ### websocket
 ```javascript
 import Event from '../event/index.mjs'
@@ -850,4 +899,5 @@ class MessageChannel extends Event {
 new MessageChannel()
 
 ```
+
 

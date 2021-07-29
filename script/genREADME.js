@@ -16,7 +16,17 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
     }
   })
 
-  ejs.renderFile(path.resolve(__dirname, 'readme.ejs'), { filesData }, function (err, str) {
+  const reduceFilesData = filesData.reduce((data, item) => {
+    if (data[item.name]) {
+      return { ...data, [item.name]: data[item.name].concat(item) }
+    } else {
+      return { ...data, [item.name]: [item] }
+    }
+  }, {})
+
+  console.log(reduceFilesData, '123')
+
+  ejs.renderFile(path.resolve(__dirname, 'readme.ejs'), { reduceFilesData }, function (err, str) {
     fs.writeFile(path.resolve('README.md'), `${str}`, function (err) {
       if (err) {
         console.log(err)
