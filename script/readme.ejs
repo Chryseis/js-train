@@ -7,7 +7,7 @@
     <%})%>
 <% })%>
 <% Object.keys(reduceFilesData).forEach(function(name){ %>
-## <%= name %>
+## <%= name.toUpperCase() %>
 <% reduceFilesData[name].forEach(function(file){%>
 ### <%= file.subName %>
 ```javascript
