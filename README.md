@@ -36,6 +36,11 @@
     - [jsBridge](#jsBridge)
     
 
++ [LUCKYDRAW](#luckyDraw)
+    
+    - [luckyDraw](#luckyDraw)
+    
+
 + [NEW](#new)
     
     - [new](#new)
@@ -62,6 +67,11 @@
     - [quickSort](#quickSort)
     
 
++ [STACK](#stack)
+    
+    - [stack](#stack)
+    
+
 + [THROTTLE](#throttle)
     
     - [throttle](#throttle)
@@ -69,7 +79,13 @@
 
 + [TREE](#tree)
     
-    - [tree](#tree)
+    - [expandTree](#expandTree)
+    
+    - [findPath](#findPath)
+    
+    - [genTree](#genTree)
+    
+    - [transform](#transform)
     
 
 + [WEBSOCKET](#websocket)
@@ -78,7 +94,7 @@
     
 
 
-## debounce
+## DEBOUNCE
 
 ### debounce
 ```javascript
@@ -101,7 +117,7 @@ const debounce = (fn, delay) => {
 ```
 
 
-## deepClone
+## DEEPCLONE
 
 ### deepClone
 ```javascript
@@ -197,7 +213,7 @@ console.log(+new Date() - start2, 'WeakMap')
 ```
 
 
-## dynamicPlanning
+## DYNAMICPLANNING
 
 ### getMax
 ```javascript
@@ -261,7 +277,7 @@ console.log(getMax1(arr2))
 ```
 
 
-## event
+## EVENT
 
 ### event
 ```javascript
@@ -350,7 +366,7 @@ export default Event
 ```
 
 
-## format
+## FORMAT
 
 ### number
 ```javascript
@@ -364,7 +380,7 @@ console.log(roundByFour(1000.12345678, 4))
 ```
 
 
-## inherit
+## INHERIT
 
 ### inherit
 ```javascript
@@ -372,7 +388,7 @@ console.log(roundByFour(1000.12345678, 4))
 ```
 
 
-## jsBridge
+## JSBRIDGE
 
 ### jsBridge
 ```javascript
@@ -431,7 +447,34 @@ console.log(roundByFour(1000.12345678, 4))
 ```
 
 
-## new
+## LUCKYDRAW
+
+### luckyDraw
+```javascript
+/*
+请实现抽奖函数rand，保证随机性
+输入为表示对象数组，对象有属性n表示人名，w表示权重
+随机返回一个中奖人名，中奖概率和w成正比
+*/
+let peoples = [
+  { n: 'p1', w: 100 },
+  { n: 'p2', w: 200 },
+  { n: 'p3', w: 100 }
+]
+let rand = function (p) {
+  const ret = p.map(o => ({ ...o, score: o.w * Math.random() }))
+
+  const max = Math.max(...ret.map(o => o.score))
+
+  return ret.find(o => o.score === max).n
+}
+
+console.log(rand(peoples))
+
+```
+
+
+## NEW
 
 ### new
 ```javascript
@@ -439,7 +482,7 @@ console.log(roundByFour(1000.12345678, 4))
 ```
 
 
-## promise
+## PROMISE
 
 ### promise
 ```javascript
@@ -685,7 +728,7 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 ```
 
 
-## reduxMiddleware
+## REDUXMIDDLEWARE
 
 ### reduxMiddleware
 ```javascript
@@ -693,7 +736,7 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 ```
 
 
-## sort
+## SORT
 
 ### bubbleSort
 ```javascript
@@ -762,7 +805,31 @@ console.log(quickSort(arr))
 ```
 
 
-## throttle
+## STACK
+
+### stack
+```javascript
+// 栈：先进后出，后进先出
+class Stack {
+  items = []
+
+  push(item) {}
+
+  pop() {}
+
+  peek() {}
+
+  isEmpty() {}
+
+  size() {}
+
+  toString() {}
+}
+
+```
+
+
+## THROTTLE
 
 ### throttle
 ```javascript
@@ -796,12 +863,130 @@ setInterval(() => {
 ```
 
 
-## tree
+## TREE
 
-### tree
+### expandTree
+```javascript
+// 把一个树平铺
+let tree = {
+  id: 1001,
+  parentId: 0,
+  name: 'AA',
+  children: [
+    {
+      id: 1002,
+      parentId: 1001,
+      name: 'BB',
+      children: [
+        { id: 1006, parentId: 1002, name: 'FF' },
+        { id: 1007, parentId: 1002, name: 'GG' }
+      ]
+    },
+    {
+      id: 1003,
+      parentId: 1001,
+      name: 'CC',
+      children: [
+        {
+          id: 1004,
+          parentId: 1003,
+          name: 'DD',
+          children: [{ id: 1008, parentId: 1004, name: 'HH' }]
+        },
+        {
+          id: 1005,
+          parentId: 1003,
+          name: 'EE',
+          children: [{ id: 1009, parentId: 1005, name: 'II' }]
+        }
+      ]
+    }
+  ]
+}
+
+const expandTree = tree => {
+  let result = []
+
+  const expand = tree => {
+    ;[tree].forEach(node => {
+      result.push(node)
+      if (node.children) expand(node.children)
+    })
+
+    return result
+  }
+
+  return expand(tree)
+}
+
+console.log(JSON.stringify(expandTree(tree)))
+
+```
+
+### findPath
+```javascript
+// 已知数组list，写一个函数，要求输入eg，输出ac->ce->eg.
+const list = [
+  {
+    id: 'ab',
+    children: [
+      {
+        id: 'cd',
+        children: [
+          {
+            id: 'ef',
+            children: []
+          }
+        ]
+      },
+      {
+        id: 'fg',
+        children: []
+      }
+    ]
+  },
+  {
+    id: 'ac',
+    children: [
+      {
+        id: 'ce',
+        children: [
+          {
+            id: 'eg',
+            children: []
+          }
+        ]
+      }
+    ]
+  }
+]
+
+const findPath = (list, key) => {
+  let result = []
+
+  const getPath = (list, pId = '') => {
+    list.forEach(node => {
+      let key = `${pId ? `${pId}->` : pId}${node.id}`
+      result.push(key)
+      getPath(node.children, key)
+    })
+  }
+
+  getPath(list)
+
+  console.log(result)
+
+  return result.find(str => str.indexOf(key) > -1)
+}
+
+console.log(JSON.stringify(findPath(list, 'eg')))
+
+```
+
+### genTree
 ```javascript
 /**
- *  var list = [
+ * 把 var list = [
  { id: 1001, parentId: 0, name: "AA" },
  { id: 1002, parentId: 1001, name: "BB" },
  { id: 1003, parentId: 1001, name: "CC" },
@@ -862,7 +1047,7 @@ const list = [
   { id: 1009, parentId: 1005, name: 'II' }
 ]
 
-const genTree = (arr, parentId = 0) => {
+const genTree = (arr, parentId) => {
   return arr.reduce((tree, node) => {
     if (node.parentId === parentId) {
       if (parentId === 0) {
@@ -878,8 +1063,45 @@ console.log(JSON.stringify(genTree(list, 0)))
 
 ```
 
+### transform
+```javascript
+// transform({
+//   0: {
+//     username: '0',
+//     department: 'A-B-C',
+//   },
+//   1: {
+//     username: '1',
+//     department: 'A-B-D',
+//   },
+//   2: {
+//     username: '2',
+//     department: 'A-X-Y',
+//   },
+// })
+// // 打印结果：
+//   [
+//   {
+//     name: 'A',
+//     path: 'A',
+//     children: [
+//       {
+//         name: '0',
+//         path: 'A-B',
+//         children: [
+//           { name: '0', path: 'A-B-C', children: [] },
+//           { name: '1', path: 'A-B-D', children: [] },
+//         ],
+//       },
+//       { name: '2', path: 'A-X', children: [{ name: '2', path: 'A-X-Y', children: [] }] },
+//     ],
+//   }
+//   ]
 
-## websocket
+```
+
+
+## WEBSOCKET
 
 ### websocket
 ```javascript

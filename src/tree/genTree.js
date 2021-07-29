@@ -1,5 +1,5 @@
 /**
- *  var list = [
+ * 把 var list = [
  { id: 1001, parentId: 0, name: "AA" },
  { id: 1002, parentId: 1001, name: "BB" },
  { id: 1003, parentId: 1001, name: "CC" },
@@ -60,7 +60,7 @@ const list = [
   { id: 1009, parentId: 1005, name: 'II' }
 ]
 
-const genTree = (arr, parentId = 0) => {
+const genTree = (arr, parentId) => {
   return arr.reduce((tree, node) => {
     if (node.parentId === parentId) {
       if (parentId === 0) {
