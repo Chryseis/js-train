@@ -1,6 +1,38 @@
 # js-train
+## 目录
 
-## debounce
++[debounce](#debounce)
+
++[deepClone](#deepClone)
+
++[getMax](#getMax)
+
++[event](#event)
+
++[inherit](#inherit)
+
++[jsBridge](#jsBridge)
+
++[new](#new)
+
++[promise](#promise)
+
++[promiseAll](#promiseAll)
+
++[promiseRace](#promiseRace)
+
++[reduxMiddleware](#reduxMiddleware)
+
++[bubbleSort](#bubbleSort)
+
++[quickSort](#quickSort)
+
++[throttle](#throttle)
+
++[websocket](#websocket)
+
+
+### debounce
 ```javascript
 const debounce = (fn, delay) => {
   let timer
@@ -20,7 +52,7 @@ const debounce = (fn, delay) => {
 
 ```
 
-## deepClone
+### deepClone
 ```javascript
 // 通过数组存储，查询访问对象
 // 尾调用，提高递归效率
@@ -113,7 +145,7 @@ console.log(+new Date() - start2, 'WeakMap')
 
 ```
 
-## getMax
+### getMax
 ```javascript
 /**
  * 假设你是一个专业的劫匪，你计划去打劫一条街上的家舍，每家有一定数量的钱财，
@@ -174,7 +206,7 @@ console.log(getMax1(arr2))
 
 ```
 
-## event
+### event
 ```javascript
 class Event {
   events = {}
@@ -260,12 +292,12 @@ export default Event
 
 ```
 
-## inherit
+### inherit
 ```javascript
 
 ```
 
-## jsBridge
+### jsBridge
 ```javascript
 ;(function () {
   const callbacks = {}
@@ -321,12 +353,12 @@ export default Event
 
 ```
 
-## new
+### new
 ```javascript
 
 ```
 
-## promise
+### promise
 ```javascript
 class MyPromise {
   status = 'pending'
@@ -483,7 +515,7 @@ console.log(MyPromise.resolve(1))
 
 ```
 
-## promiseAll
+### promiseAll
 ```javascript
 function promiseAll(arr) {
   let retVal = []
@@ -523,7 +555,7 @@ promiseAll([promise1(), promise2(), promise3(), promise4(), promise5()]).then(da
 
 ```
 
-## promiseRace
+### promiseRace
 ```javascript
 function promiseRace(arr) {
   if (arr && !arr.length) {
@@ -569,12 +601,12 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 
 ```
 
-## reduxMiddleware
+### reduxMiddleware
 ```javascript
 
 ```
 
-## bubbleSort
+### bubbleSort
 ```javascript
 function bubbleSort(arr) {
   let count = arr.length - 1
@@ -611,7 +643,7 @@ console.log(arr)
 
 ```
 
-## quickSort
+### quickSort
 ```javascript
 function quickSort(arr) {
   const count = arr.length
@@ -640,7 +672,7 @@ console.log(quickSort(arr))
 
 ```
 
-## throttle
+### throttle
 ```javascript
 const throttle = (fn, delay) => {
   let startTime = +new Date()
@@ -671,7 +703,7 @@ setInterval(() => {
 
 ```
 
-## websocket
+### websocket
 ```javascript
 import Event from '../event/index.mjs'
 
