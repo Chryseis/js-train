@@ -2,38 +2,58 @@
 ## 目录
 
 + [debounce](#debounce)
+  - [debounce](#debounce)
 
 + [deepClone](#deepClone)
+  - [deepClone](#deepClone)
 
-+ [getMax](#getMax)
++ [dynamicPlanning](#dynamicPlanning)
+  - [getMax](#getMax)
 
 + [event](#event)
+  - [event](#event)
+
++ [format](#format)
+  - [number](#number)
 
 + [inherit](#inherit)
+  - [inherit](#inherit)
 
 + [jsBridge](#jsBridge)
+  - [jsBridge](#jsBridge)
 
 + [new](#new)
+  - [new](#new)
 
 + [promise](#promise)
+  - [promise](#promise)
 
-+ [promiseAll](#promiseAll)
++ [promise](#promise)
+  - [promiseAll](#promiseAll)
 
-+ [promiseRace](#promiseRace)
++ [promise](#promise)
+  - [promiseRace](#promiseRace)
 
 + [reduxMiddleware](#reduxMiddleware)
+  - [reduxMiddleware](#reduxMiddleware)
 
-+ [bubbleSort](#bubbleSort)
++ [sort](#sort)
+  - [bubbleSort](#bubbleSort)
 
-+ [quickSort](#quickSort)
++ [sort](#sort)
+  - [quickSort](#quickSort)
 
 + [throttle](#throttle)
+  - [throttle](#throttle)
 
 + [tree](#tree)
+  - [tree](#tree)
 
 + [websocket](#websocket)
+  - [websocket](#websocket)
 
 
+## debounce
 ### debounce
 ```javascript
 const debounce = (fn, delay) => {
@@ -54,6 +74,7 @@ const debounce = (fn, delay) => {
 
 ```
 
+## deepClone
 ### deepClone
 ```javascript
 // 通过数组存储，查询访问对象
@@ -147,6 +168,7 @@ console.log(+new Date() - start2, 'WeakMap')
 
 ```
 
+## dynamicPlanning
 ### getMax
 ```javascript
 /**
@@ -208,6 +230,7 @@ console.log(getMax1(arr2))
 
 ```
 
+## event
 ### event
 ```javascript
 class Event {
@@ -294,11 +317,25 @@ export default Event
 
 ```
 
+## format
+### number
+```javascript
+//千分位格式化
+const roundByFour = (num, digits) => {
+  return parseFloat(num.toFixed(digits))
+}
+
+console.log(roundByFour(1000.12345678, 4))
+
+```
+
+## inherit
 ### inherit
 ```javascript
 
 ```
 
+## jsBridge
 ### jsBridge
 ```javascript
 ;(function () {
@@ -355,11 +392,13 @@ export default Event
 
 ```
 
+## new
 ### new
 ```javascript
 
 ```
 
+## promise
 ### promise
 ```javascript
 class MyPromise {
@@ -517,6 +556,7 @@ console.log(MyPromise.resolve(1))
 
 ```
 
+## promise
 ### promiseAll
 ```javascript
 function promiseAll(arr) {
@@ -557,6 +597,7 @@ promiseAll([promise1(), promise2(), promise3(), promise4(), promise5()]).then(da
 
 ```
 
+## promise
 ### promiseRace
 ```javascript
 function promiseRace(arr) {
@@ -603,11 +644,13 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 
 ```
 
+## reduxMiddleware
 ### reduxMiddleware
 ```javascript
 
 ```
 
+## sort
 ### bubbleSort
 ```javascript
 function bubbleSort(arr) {
@@ -645,6 +688,7 @@ console.log(arr)
 
 ```
 
+## sort
 ### quickSort
 ```javascript
 function quickSort(arr) {
@@ -674,6 +718,7 @@ console.log(quickSort(arr))
 
 ```
 
+## throttle
 ### throttle
 ```javascript
 const throttle = (fn, delay) => {
@@ -705,6 +750,7 @@ setInterval(() => {
 
 ```
 
+## tree
 ### tree
 ```javascript
 /**
@@ -785,6 +831,7 @@ console.log(JSON.stringify(genTree(list, 0)))
 
 ```
 
+## websocket
 ### websocket
 ```javascript
 import Event from '../event/index.mjs'

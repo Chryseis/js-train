@@ -10,6 +10,7 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
     const data = fs.readFileSync(path.resolve(src), 'utf8')
     if (subName === 'index') subName = name
     return {
+      name,
       subName,
       data
     }
