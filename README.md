@@ -1,35 +1,35 @@
 # js-train
 ## 目录
 
-+[debounce](#debounce)
++ [debounce](#debounce)
 
-+[deepClone](#deepClone)
++ [deepClone](#deepClone)
 
-+[getMax](#getMax)
++ [getMax](#getMax)
 
-+[event](#event)
++ [event](#event)
 
-+[inherit](#inherit)
++ [inherit](#inherit)
 
-+[jsBridge](#jsBridge)
++ [jsBridge](#jsBridge)
 
-+[new](#new)
++ [new](#new)
 
-+[promise](#promise)
++ [promise](#promise)
 
-+[promiseAll](#promiseAll)
++ [promiseAll](#promiseAll)
 
-+[promiseRace](#promiseRace)
++ [promiseRace](#promiseRace)
 
-+[reduxMiddleware](#reduxMiddleware)
++ [reduxMiddleware](#reduxMiddleware)
 
-+[bubbleSort](#bubbleSort)
++ [bubbleSort](#bubbleSort)
 
-+[quickSort](#quickSort)
++ [quickSort](#quickSort)
 
-+[throttle](#throttle)
++ [throttle](#throttle)
 
-+[websocket](#websocket)
++ [websocket](#websocket)
 
 
 ### debounce
