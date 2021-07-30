@@ -84,16 +84,17 @@
 ```javascript
 const debounce = (fn, delay) => {
   let timer
+  let result
 
   return function () {
     if (timer) {
       clearTimeout(timer)
-      timer = setTimeout(async function () {
-        await fn.apply(this, arguments)
+      timer = setTimeout(function () {
+        result = fn.apply(this, arguments)
         timer = null
       }, delay)
     } else {
-      fn.apply(this, arguments)
+      result = fn.apply(this, arguments)
     }
   }
 }
@@ -613,8 +614,6 @@ new MyPromise((resolve, reject) => {
   .finally(() => {
     console.log('finally')
   })
-
-console.log(MyPromise.resolve(1))
 ```
 
 ### promiseAll
@@ -818,13 +817,13 @@ const throttle = (fn, delay) => {
 
   return function () {
     if (first) {
-      fn.apply(this, arguments)
       startTime = +new Date()
       first = false
+      return fn.apply(this, arguments)
     } else {
       if (+new Date() - startTime > delay) {
-        fn.apply(this, arguments)
         startTime = +new Date()
+        return fn.apply(this, arguments)
       }
     }
   }
