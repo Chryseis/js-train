@@ -8,7 +8,7 @@ let peoples = [
   { n: 'p2', w: 200 },
   { n: 'p3', w: 100 }
 ]
-let rand = function (p) {
+const rand = function (p) {
   const ret = p.map(o => ({ ...o, score: o.w * Math.random() }))
 
   const max = Math.max(...ret.map(o => o.score))
