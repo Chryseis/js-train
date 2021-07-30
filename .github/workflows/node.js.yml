@@ -28,4 +28,6 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run genREADME
+    - run: git config --global user.email "294931812@qq.com"
+    - run: git config --global user.name "chrys"
     - run: git add . && git commit -m 'upgrade README' && git push
