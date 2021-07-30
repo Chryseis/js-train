@@ -28,3 +28,4 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run genREADME
+    - run: git add . && git commit -m 'upgrade README' && git push

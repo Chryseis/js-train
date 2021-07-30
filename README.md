@@ -1,102 +1,86 @@
 # js-train
+
 ## 目录
 
-+ [DEBOUNCE](#debounce)
-    
-    - [debounce](#debounce)
-    
+- [DEBOUNCE](#debounce)
 
-+ [DEEPCLONE](#deepClone)
-    
-    - [deepClone](#deepClone)
-    
+  - [debounce](#debounce)
 
-+ [DYNAMICPLANNING](#dynamicPlanning)
-    
-    - [getMax](#getMax)
-    
+- [DEEPCLONE](#deepClone)
 
-+ [EVENT](#event)
-    
-    - [event](#event)
-    
+  - [deepClone](#deepClone)
 
-+ [FORMAT](#format)
-    
-    - [number](#number)
-    
+- [DYNAMICPLANNING](#dynamicPlanning)
 
-+ [INHERIT](#inherit)
-    
-    - [inherit](#inherit)
-    
+  - [getMax](#getMax)
 
-+ [JSBRIDGE](#jsBridge)
-    
-    - [jsBridge](#jsBridge)
-    
+- [EVENT](#event)
 
-+ [LUCKYDRAW](#luckyDraw)
-    
-    - [luckyDraw](#luckyDraw)
-    
+  - [event](#event)
 
-+ [NEW](#new)
-    
-    - [new](#new)
-    
+- [FORMAT](#format)
 
-+ [PROMISE](#promise)
-    
-    - [promise](#promise)
-    
-    - [promiseAll](#promiseAll)
-    
-    - [promiseRace](#promiseRace)
-    
+  - [number](#number)
 
-+ [REDUXMIDDLEWARE](#reduxMiddleware)
-    
-    - [reduxMiddleware](#reduxMiddleware)
-    
+- [INHERIT](#inherit)
 
-+ [SORT](#sort)
-    
-    - [bubbleSort](#bubbleSort)
-    
-    - [quickSort](#quickSort)
-    
+  - [inherit](#inherit)
 
-+ [STACK](#stack)
-    
-    - [stack](#stack)
-    
+- [JSBRIDGE](#jsBridge)
 
-+ [THROTTLE](#throttle)
-    
-    - [throttle](#throttle)
-    
+  - [jsBridge](#jsBridge)
 
-+ [TREE](#tree)
-    
-    - [expandTree](#expandTree)
-    
-    - [findPath](#findPath)
-    
-    - [genTree](#genTree)
-    
-    - [transform](#transform)
-    
+- [LUCKYDRAW](#luckyDraw)
 
-+ [WEBSOCKET](#websocket)
-    
-    - [websocket](#websocket)
-    
+  - [luckyDraw](#luckyDraw)
 
+- [NEW](#new)
+
+  - [new](#new)
+
+- [PROMISE](#promise)
+
+  - [promise](#promise)
+
+  - [promiseAll](#promiseAll)
+
+  - [promiseRace](#promiseRace)
+
+- [REDUXMIDDLEWARE](#reduxMiddleware)
+
+  - [reduxMiddleware](#reduxMiddleware)
+
+- [SORT](#sort)
+
+  - [bubbleSort](#bubbleSort)
+
+  - [quickSort](#quickSort)
+
+- [STACK](#stack)
+
+  - [stack](#stack)
+
+- [THROTTLE](#throttle)
+
+  - [throttle](#throttle)
+
+- [TREE](#tree)
+
+  - [expandTree](#expandTree)
+
+  - [findPath](#findPath)
+
+  - [genTree](#genTree)
+
+  - [transform](#transform)
+
+- [WEBSOCKET](#websocket)
+  - [websocket](#websocket)
 
 ## DEBOUNCE
 
 ### debounce
+
 ```javascript
 const debounce = (fn, delay) => {
   let timer
@@ -113,13 +97,12 @@ const debounce = (fn, delay) => {
     }
   }
 }
-
 ```
-
 
 ## DEEPCLONE
 
 ### deepClone
+
 ```javascript
 // 通过数组存储，查询访问对象
 // 尾调用，提高递归效率
@@ -209,13 +192,12 @@ console.log(+new Date() - start1, 'Map')
 let start2 = +new Date()
 console.log(deepCloneByWeakMap(obj))
 console.log(+new Date() - start2, 'WeakMap')
-
 ```
-
 
 ## DYNAMICPLANNING
 
 ### getMax
+
 ```javascript
 /**
  * 假设你是一个专业的劫匪，你计划去打劫一条街上的家舍，每家有一定数量的钱财，
@@ -273,13 +255,12 @@ const arr1 = [2, 0, 0, 4, 5, 9, 10, 11]
 console.log(getMax(arr1))
 const arr2 = [2, 0, 0, 4, 5]
 console.log(getMax1(arr2))
-
 ```
-
 
 ## EVENT
 
 ### event
+
 ```javascript
 class Event {
   events = {}
@@ -362,13 +343,12 @@ event.emit('touch')
 event.emit('touch')
 
 export default Event
-
 ```
-
 
 ## FORMAT
 
 ### number
+
 ```javascript
 //千分位格式化
 const roundByFour = (num, digits) => {
@@ -376,21 +356,20 @@ const roundByFour = (num, digits) => {
 }
 
 console.log(roundByFour(1000.12345678, 4))
-
 ```
-
 
 ## INHERIT
 
 ### inherit
+
 ```javascript
 
 ```
 
-
 ## JSBRIDGE
 
 ### jsBridge
+
 ```javascript
 ;(function () {
   const callbacks = {}
@@ -443,13 +422,12 @@ console.log(roundByFour(1000.12345678, 4))
     window.JSBridge.dispatch('myJSBridgeReady')
   })
 })()
-
 ```
-
 
 ## LUCKYDRAW
 
 ### luckyDraw
+
 ```javascript
 /*
 请实现抽奖函数rand，保证随机性
@@ -461,7 +439,7 @@ let peoples = [
   { n: 'p2', w: 200 },
   { n: 'p3', w: 100 }
 ]
-let rand = function (p) {
+const rand = function (p) {
   const ret = p.map(o => ({ ...o, score: o.w * Math.random() }))
 
   const max = Math.max(...ret.map(o => o.score))
@@ -470,21 +448,20 @@ let rand = function (p) {
 }
 
 console.log(rand(peoples))
-
 ```
-
 
 ## NEW
 
 ### new
+
 ```javascript
 
 ```
 
-
 ## PROMISE
 
 ### promise
+
 ```javascript
 class MyPromise {
   status = 'pending'
@@ -638,10 +615,10 @@ new MyPromise((resolve, reject) => {
   })
 
 console.log(MyPromise.resolve(1))
-
 ```
 
 ### promiseAll
+
 ```javascript
 function promiseAll(arr) {
   let retVal = []
@@ -678,10 +655,10 @@ Promise.all([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 promiseAll([promise1(), promise2(), promise3(), promise4(), promise5()]).then(data => {
   console.log(data)
 })
-
 ```
 
 ### promiseRace
+
 ```javascript
 function promiseRace(arr) {
   if (arr && !arr.length) {
@@ -701,21 +678,26 @@ function promiseRace(arr) {
   }
 }
 
-const promise1 = () => new Promise(resolve => {
-  setTimeout(resolve.bind(this,1),1000)
-})
-const promise2 = () => new Promise(resolve => {
-  setTimeout(resolve.bind(this,2),3000)
-})
-const promise3 = () => new Promise(resolve => {
-  setTimeout(resolve.bind(this,3),2000)
-})
-const promise4 = () => new Promise(resolve => {
-  setTimeout(resolve.bind(this,4),5000)
-})
-const promise5 = () => new Promise(resolve => {
-  setTimeout(resolve.bind(this,5),6000)
-})
+const promise1 = () =>
+  new Promise(resolve => {
+    setTimeout(resolve.bind(this, 1), 1000)
+  })
+const promise2 = () =>
+  new Promise(resolve => {
+    setTimeout(resolve.bind(this, 2), 3000)
+  })
+const promise3 = () =>
+  new Promise(resolve => {
+    setTimeout(resolve.bind(this, 3), 2000)
+  })
+const promise4 = () =>
+  new Promise(resolve => {
+    setTimeout(resolve.bind(this, 4), 5000)
+  })
+const promise5 = () =>
+  new Promise(resolve => {
+    setTimeout(resolve.bind(this, 5), 6000)
+  })
 
 Promise.race([promise1(), promise2(), promise3(), promise4(), promise5()]).then(data => {
   console.log(data)
@@ -724,21 +706,20 @@ Promise.race([promise1(), promise2(), promise3(), promise4(), promise5()]).then(
 promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(data => {
   console.log(data)
 })
-
 ```
-
 
 ## REDUXMIDDLEWARE
 
 ### reduxMiddleware
+
 ```javascript
 
 ```
 
-
 ## SORT
 
 ### bubbleSort
+
 ```javascript
 function bubbleSort(arr) {
   let count = arr.length - 1
@@ -772,10 +753,10 @@ let arr = [2, 1, 3, 4, 5]
 
 bubbleSort(arr)
 console.log(arr)
-
 ```
 
 ### quickSort
+
 ```javascript
 function quickSort(arr) {
   const count = arr.length
@@ -801,13 +782,12 @@ function quickSort(arr) {
 
 let arr = [2, 1, 9, 10, 12, 11]
 console.log(quickSort(arr))
-
 ```
-
 
 ## STACK
 
 ### stack
+
 ```javascript
 // 栈：先进后出，后进先出
 class Stack {
@@ -825,13 +805,12 @@ class Stack {
 
   toString() {}
 }
-
 ```
-
 
 ## THROTTLE
 
 ### throttle
+
 ```javascript
 const throttle = (fn, delay) => {
   let startTime = +new Date()
@@ -859,13 +838,12 @@ let startTime = +new Date()
 setInterval(() => {
   fn()
 }, 100)
-
 ```
-
 
 ## TREE
 
 ### expandTree
+
 ```javascript
 // 把一个树平铺
 let tree = {
@@ -920,10 +898,10 @@ const expandTree = tree => {
 }
 
 console.log(JSON.stringify(expandTree(tree)))
-
 ```
 
 ### findPath
+
 ```javascript
 // 已知数组list，写一个函数，要求输入eg，输出ac->ce->eg.
 const list = [
@@ -980,10 +958,10 @@ const findPath = (list, key) => {
 }
 
 console.log(JSON.stringify(findPath(list, 'eg')))
-
 ```
 
 ### genTree
+
 ```javascript
 /**
  * 把 var list = [
@@ -1060,10 +1038,10 @@ const genTree = (arr, parentId) => {
 }
 
 console.log(JSON.stringify(genTree(list, 0)))
-
 ```
 
 ### transform
+
 ```javascript
 // transform({
 //   0: {
@@ -1097,13 +1075,12 @@ console.log(JSON.stringify(genTree(list, 0)))
 //     ],
 //   }
 //   ]
-
 ```
-
 
 ## WEBSOCKET
 
 ### websocket
+
 ```javascript
 import Event from '../event/index.mjs'
 
@@ -1119,7 +1096,4 @@ class MessageChannel extends Event {
 }
 
 new MessageChannel()
-
 ```
-
-
