@@ -2,43 +2,43 @@
 
 ## 目录
 
-- [DEBOUNCE](#Debounce)
+- [Debounce](#Debounce)
 
   - [debounce](#debounce)
 
-- [DEEPCLONE](#DeepClone)
+- [DeepClone](#DeepClone)
 
   - [deepClone](#deepClone)
 
-- [DYNAMICPLANNING](#DynamicPlanning)
+- [DynamicPlanning](#DynamicPlanning)
 
   - [getMax](#getMax)
 
-- [EVENT](#Event)
+- [Event](#Event)
 
   - [event](#event)
 
-- [FORMAT](#Format)
+- [Format](#Format)
 
   - [number](#number)
 
-- [INHERIT](#Inherit)
+- [Inherit](#Inherit)
 
   - [inherit](#inherit)
 
-- [JSBRIDGE](#JsBridge)
+- [JsBridge](#JsBridge)
 
   - [jsBridge](#jsBridge)
 
-- [LUCKYDRAW](#LuckyDraw)
+- [LuckyDraw](#LuckyDraw)
 
   - [luckyDraw](#luckyDraw)
 
-- [NEW](#New)
+- [New](#New)
 
   - [new](#new)
 
-- [PROMISE](#Promise)
+- [Promise](#Promise)
 
   - [promise](#promise)
 
@@ -46,25 +46,25 @@
 
   - [promiseRace](#promiseRace)
 
-- [REDUXMIDDLEWARE](#ReduxMiddleware)
+- [ReduxMiddleware](#ReduxMiddleware)
 
   - [reduxMiddleware](#reduxMiddleware)
 
-- [SORT](#Sort)
+- [Sort](#Sort)
 
   - [bubbleSort](#bubbleSort)
 
   - [quickSort](#quickSort)
 
-- [STACK](#Stack)
+- [Stack](#Stack)
 
   - [stack](#stack)
 
-- [THROTTLE](#Throttle)
+- [Throttle](#Throttle)
 
   - [throttle](#throttle)
 
-- [TREE](#Tree)
+- [Tree](#Tree)
 
   - [expandTree](#expandTree)
 
@@ -74,10 +74,10 @@
 
   - [transform](#transform)
 
-- [WEBSOCKET](#Websocket)
+- [Websocket](#Websocket)
   - [websocket](#websocket)
 
-## DEBOUNCE
+## Debounce
 
 ### debounce
 
@@ -99,7 +99,7 @@ const debounce = (fn, delay) => {
 }
 ```
 
-## DEEPCLONE
+## DeepClone
 
 ### deepClone
 
@@ -194,7 +194,7 @@ console.log(deepCloneByWeakMap(obj))
 console.log(+new Date() - start2, 'WeakMap')
 ```
 
-## DYNAMICPLANNING
+## DynamicPlanning
 
 ### getMax
 
@@ -257,7 +257,7 @@ const arr2 = [2, 0, 0, 4, 5]
 console.log(getMax1(arr2))
 ```
 
-## EVENT
+## Event
 
 ### event
 
@@ -345,7 +345,7 @@ event.emit('touch')
 export default Event
 ```
 
-## FORMAT
+## Format
 
 ### number
 
@@ -358,7 +358,7 @@ const roundByFour = (num, digits) => {
 console.log(roundByFour(1000.12345678, 4))
 ```
 
-## INHERIT
+## Inherit
 
 ### inherit
 
@@ -366,7 +366,7 @@ console.log(roundByFour(1000.12345678, 4))
 
 ```
 
-## JSBRIDGE
+## JsBridge
 
 ### jsBridge
 
@@ -424,7 +424,7 @@ console.log(roundByFour(1000.12345678, 4))
 })()
 ```
 
-## LUCKYDRAW
+## LuckyDraw
 
 ### luckyDraw
 
@@ -450,7 +450,7 @@ const rand = function (p) {
 console.log(rand(peoples))
 ```
 
-## NEW
+## New
 
 ### new
 
@@ -458,7 +458,7 @@ console.log(rand(peoples))
 
 ```
 
-## PROMISE
+## Promise
 
 ### promise
 
@@ -708,7 +708,7 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 })
 ```
 
-## REDUXMIDDLEWARE
+## ReduxMiddleware
 
 ### reduxMiddleware
 
@@ -716,7 +716,7 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 
 ```
 
-## SORT
+## Sort
 
 ### bubbleSort
 
@@ -784,7 +784,7 @@ let arr = [2, 1, 9, 10, 12, 11]
 console.log(quickSort(arr))
 ```
 
-## STACK
+## Stack
 
 ### stack
 
@@ -807,7 +807,7 @@ class Stack {
 }
 ```
 
-## THROTTLE
+## Throttle
 
 ### throttle
 
@@ -840,7 +840,7 @@ setInterval(() => {
 }, 100)
 ```
 
-## TREE
+## Tree
 
 ### expandTree
 
@@ -1077,7 +1077,7 @@ console.log(JSON.stringify(genTree(list, 0)))
 //   ]
 ```
 
-## WEBSOCKET
+## Websocket
 
 ### websocket
 
