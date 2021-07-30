@@ -8,9 +8,10 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
   const filesData = files.map(file => {
     let [src, name, subName] = file.match(reg)
     const data = fs.readFileSync(path.resolve(src), 'utf8')
+
     if (subName === 'index') subName = name
     return {
-      name,
+      name: name.charAt(0).toUpperCase() + name.slice(1),
       subName,
       data
     }
