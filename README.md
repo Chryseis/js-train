@@ -2,43 +2,43 @@
 
 ## 目录
 
-- [DEBOUNCE](#debounce)
+- [DEBOUNCE](#Debounce)
 
   - [debounce](#debounce)
 
-- [DEEPCLONE](#deepClone)
+- [DEEPCLONE](#DeepClone)
 
   - [deepClone](#deepClone)
 
-- [DYNAMICPLANNING](#dynamicPlanning)
+- [DYNAMICPLANNING](#DynamicPlanning)
 
   - [getMax](#getMax)
 
-- [EVENT](#event)
+- [EVENT](#Event)
 
   - [event](#event)
 
-- [FORMAT](#format)
+- [FORMAT](#Format)
 
   - [number](#number)
 
-- [INHERIT](#inherit)
+- [INHERIT](#Inherit)
 
   - [inherit](#inherit)
 
-- [JSBRIDGE](#jsBridge)
+- [JSBRIDGE](#JsBridge)
 
   - [jsBridge](#jsBridge)
 
-- [LUCKYDRAW](#luckyDraw)
+- [LUCKYDRAW](#LuckyDraw)
 
   - [luckyDraw](#luckyDraw)
 
-- [NEW](#new)
+- [NEW](#New)
 
   - [new](#new)
 
-- [PROMISE](#promise)
+- [PROMISE](#Promise)
 
   - [promise](#promise)
 
@@ -46,25 +46,25 @@
 
   - [promiseRace](#promiseRace)
 
-- [REDUXMIDDLEWARE](#reduxMiddleware)
+- [REDUXMIDDLEWARE](#ReduxMiddleware)
 
   - [reduxMiddleware](#reduxMiddleware)
 
-- [SORT](#sort)
+- [SORT](#Sort)
 
   - [bubbleSort](#bubbleSort)
 
   - [quickSort](#quickSort)
 
-- [STACK](#stack)
+- [STACK](#Stack)
 
   - [stack](#stack)
 
-- [THROTTLE](#throttle)
+- [THROTTLE](#Throttle)
 
   - [throttle](#throttle)
 
-- [TREE](#tree)
+- [TREE](#Tree)
 
   - [expandTree](#expandTree)
 
@@ -74,7 +74,7 @@
 
   - [transform](#transform)
 
-- [WEBSOCKET](#websocket)
+- [WEBSOCKET](#Websocket)
   - [websocket](#websocket)
 
 ## DEBOUNCE

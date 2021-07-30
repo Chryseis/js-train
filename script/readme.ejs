@@ -1,13 +1,13 @@
 # js-train
 ## 目录
 <% Object.keys(reduceFilesData).forEach(function(name){ %>
-+ [<%= name.toUpperCase() %>](#<%= name %>)
++ [<%= name %>](#<%= name %>)
     <% reduceFilesData[name].forEach(function(file){%>
     - [<%= file.subName %>](#<%= file.subName %>)
     <%})%>
 <% })%>
 <% Object.keys(reduceFilesData).forEach(function(name){ %>
-## <%= name.toUpperCase() %>
+## <%= name %>
 <% reduceFilesData[name].forEach(function(file){%>
 ### <%= file.subName %>
 ```javascript
