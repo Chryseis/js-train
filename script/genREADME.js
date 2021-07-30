@@ -17,8 +17,6 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
     }
   })
 
-  console.log(filesData)
-
   const reduceFilesData = filesData.reduce((data, item) => {
     if (data[item.name]) {
       return { ...data, [item.name]: data[item.name].concat(item) }
