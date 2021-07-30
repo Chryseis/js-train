@@ -148,5 +148,3 @@ new MyPromise((resolve, reject) => {
   .finally(() => {
     console.log('finally')
   })
-
-console.log(MyPromise.resolve(1))

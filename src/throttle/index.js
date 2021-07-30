@@ -4,13 +4,13 @@ const throttle = (fn, delay) => {
 
   return function () {
     if (first) {
-      fn.apply(this, arguments)
       startTime = +new Date()
       first = false
+      return fn.apply(this, arguments)
     } else {
       if (+new Date() - startTime > delay) {
-        fn.apply(this, arguments)
         startTime = +new Date()
+        return fn.apply(this, arguments)
       }
     }
   }
