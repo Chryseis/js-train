@@ -4,39 +4,21 @@
 
 - [Debounce](#Debounce)
 
-  - [debounce](#debounce)
-
 - [DeepClone](#DeepClone)
-
-  - [deepClone](#deepClone)
 
 - [DynamicPlanning](#DynamicPlanning)
 
-  - [getMax](#getMax)
-
 - [Event](#Event)
-
-  - [event](#event)
 
 - [Format](#Format)
 
-  - [number](#number)
-
 - [Inherit](#Inherit)
-
-  - [inherit](#inherit)
 
 - [JsBridge](#JsBridge)
 
-  - [jsBridge](#jsBridge)
-
 - [LuckyDraw](#LuckyDraw)
 
-  - [luckyDraw](#luckyDraw)
-
 - [New](#New)
-
-  - [new](#new)
 
 - [Promise](#Promise)
 
@@ -48,8 +30,6 @@
 
 - [ReduxMiddleware](#ReduxMiddleware)
 
-  - [reduxMiddleware](#reduxMiddleware)
-
 - [Sort](#Sort)
 
   - [bubbleSort](#bubbleSort)
@@ -58,11 +38,7 @@
 
 - [Stack](#Stack)
 
-  - [stack](#stack)
-
 - [Throttle](#Throttle)
-
-  - [throttle](#throttle)
 
 - [Tree](#Tree)
 
@@ -75,11 +51,8 @@
   - [transform](#transform)
 
 - [Websocket](#Websocket)
-  - [websocket](#websocket)
 
 ## Debounce
-
-### debounce
 
 ```javascript
 const debounce = (fn, delay) => {
@@ -101,8 +74,6 @@ const debounce = (fn, delay) => {
 ```
 
 ## DeepClone
-
-### deepClone
 
 ```javascript
 // 通过数组存储，查询访问对象
@@ -197,8 +168,6 @@ console.log(+new Date() - start2, 'WeakMap')
 
 ## DynamicPlanning
 
-### getMax
-
 ```javascript
 /**
  * 假设你是一个专业的劫匪，你计划去打劫一条街上的家舍，每家有一定数量的钱财，
@@ -259,8 +228,6 @@ console.log(getMax1(arr2))
 ```
 
 ## Event
-
-### event
 
 ```javascript
 class Event {
@@ -348,8 +315,6 @@ export default Event
 
 ## Format
 
-### number
-
 ```javascript
 //千分位格式化
 const roundByFour = (num, digits) => {
@@ -361,15 +326,11 @@ console.log(roundByFour(1000.12345678, 4))
 
 ## Inherit
 
-### inherit
-
 ```javascript
 
 ```
 
 ## JsBridge
-
-### jsBridge
 
 ```javascript
 ;(function () {
@@ -427,8 +388,6 @@ console.log(roundByFour(1000.12345678, 4))
 
 ## LuckyDraw
 
-### luckyDraw
-
 ```javascript
 /*
 请实现抽奖函数rand，保证随机性
@@ -452,8 +411,6 @@ console.log(rand(peoples))
 ```
 
 ## New
-
-### new
 
 ```javascript
 
@@ -709,8 +666,6 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 
 ## ReduxMiddleware
 
-### reduxMiddleware
-
 ```javascript
 
 ```
@@ -785,8 +740,6 @@ console.log(quickSort(arr))
 
 ## Stack
 
-### stack
-
 ```javascript
 // 栈：先进后出，后进先出
 class Stack {
@@ -808,34 +761,36 @@ class Stack {
 
 ## Throttle
 
-### throttle
-
 ```javascript
 const throttle = (fn, delay) => {
   let startTime = +new Date()
   let first = true
+  let result
 
   return function () {
     if (first) {
       startTime = +new Date()
       first = false
-      return fn.apply(this, arguments)
+      result = fn.apply(this, arguments)
     } else {
       if (+new Date() - startTime > delay) {
         startTime = +new Date()
-        return fn.apply(this, arguments)
+        result = fn.apply(this, arguments)
       }
     }
+
+    return result
   }
 }
 
 const fn = throttle(() => {
   console.log('show', +new Date() - startTime)
+  return 1
 }, 1000)
 
 let startTime = +new Date()
 setInterval(() => {
-  fn()
+  console.log(fn())
 }, 100)
 ```
 
@@ -1077,8 +1032,6 @@ console.log(JSON.stringify(genTree(list, 0)))
 ```
 
 ## Websocket
-
-### websocket
 
 ```javascript
 import Event from '../event/index.mjs'
