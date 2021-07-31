@@ -69,6 +69,8 @@ const debounce = (fn, delay) => {
     } else {
       result = fn.apply(this, arguments)
     }
+
+    return result
   }
 }
 ```
