@@ -16,11 +16,12 @@
 ```javascript
 <%- file.data %>
 ```
+[![Edit <%= file.subName%> demo](https://codesandbox.io/static/img/play-codesandbox.svg)](<%- reduceFilesData[name][0].codesandboxUrl %>)
 <% })%>
 <% } else {%>
 ```javascript
 <%- reduceFilesData[name][0].data %>
 ```
-[![Edit remark-codesandbox demo](<%- reduceFilesData[name][0].codesandboxUrl %>)
+[![Edit <%= name%> demo](https://codesandbox.io/static/img/play-codesandbox.svg)](<%- reduceFilesData[name][0].codesandboxUrl %>)
 <%}%>
 <% })%>
