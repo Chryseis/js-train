@@ -75,12 +75,7 @@ const debounce = (fn, delay) => {
 }
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;const debounce = (fn, delay) =&gt; {\n  let timer\n  let result\n\n  return function () {\n    if (timer) {\n      clearTimeout(timer)\n      timer = setTimeout(function () {\n        result = fn.apply(this, arguments)\n        timer = null\n      }, delay)\n    } else {\n      result = fn.apply(this, arguments)\n    }\n\n    return result\n  }\n}\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEmARqQK6rEyMC8jACjCoANMxhQAhgE8AlHwB8jYAB1UjRrCYUIAWxgAnNRq2MD8dlAprjZmBXYH1YTsR3lB81eo2MIYQR19Ay9bX0ZiWEkDABU9GA4KASDDWTDfFIM-Rjh7OP1EoVd3dQFQn3CNczhLJn5hHEkAByaoaWSACwg4MWiAc3Z9Sjg0isrM7NRLKHSNAF8xTCk5dLnGCVzlWbsaq2yG5tb2ii6exn7B6goR1Zsx8wcnHdrbObU31BA576A&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## DeepClone
 
@@ -175,12 +170,7 @@ console.log(deepCloneByWeakMap(obj))
 console.log(+new Date() - start2, 'WeakMap')
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;// 通过数组存储，查询访问对象\n// 尾调用，提高递归效率\nconst deepCloneByArray = val =&gt; {\n  const visitedObjs = []\n\n  const clone = val =&gt; {\n    if (val instanceof RegExp) return new RegExp(val)\n    if (val instanceof Date) return new Date(val)\n    if (val === null || typeof val !== &amp;apos;object&amp;apos;) return val // 简单类型\n\n    let retVal\n    let visitedObj = visitedObjs.find(({ obj }) =&gt; obj === val)\n    if (!visitedObj) {\n      retVal = Array.isArray(val) ? [] : {}\n      visitedObjs.push({ obj: val, retVal })\n      Object.keys(val).forEach(key =&gt; {\n        retVal[key] = clone(val[key])\n      })\n      return retVal\n    } else {\n      return visitedObj.retVal\n    }\n  }\n\n  return clone(val)\n}\n\n// 通过Map，提高搜索访问对象效率\nconst deepCloneByMap = val =&gt; {\n  const visitedObjs = new Map()\n\n  const clone = val =&gt; {\n    if (val instanceof RegExp) return new RegExp(val)\n    if (val instanceof Date) return new Date(val)\n    if (val === null || typeof val !== &amp;apos;object&amp;apos;) return val // 简单类型\n\n    let retVal\n    if (!visitedObjs.has(val)) {\n      retVal = Array.isArray(val) ? [] : {}\n      visitedObjs.set(val, retVal)\n      Object.keys(val).forEach(key =&gt; {\n        retVal[key] = clone(val[key])\n      })\n      return retVal\n    } else {\n      return visitedObjs.get(val)\n    }\n  }\n\n  return clone(val)\n}\n\n// WeakMap 比 Map更安全，防止Map的key不被垃圾回收\nconst deepCloneByWeakMap = (obj, hash = new WeakMap()) =&gt; {\n  // 递归拷贝\n  if (obj instanceof RegExp) return new RegExp(obj)\n  if (obj instanceof Date) return new Date(obj)\n  if (obj === null || typeof obj !== &amp;apos;object&amp;apos;) return obj // 简单类型\n\n  if (hash.has(obj)) return hash.get(obj) // 循环引用\n\n  const instance = new obj.constructor()\n  hash.set(obj, instance)\n\n  for (const key in obj) {\n    if (obj.hasOwnProperty(key)) {\n      instance[key] = deepCloneByWeakMap(obj[key], hash)\n    }\n  }\n  return instance\n}\n\nconst obj = { a: 2 }\nobj.b = { d: 1, c: obj, e: [1, 2, 3, obj] }\nobj.b.f = obj.b.c\nobj.f = obj.b.e\n\nlet start = +new Date()\nconsole.log(deepCloneByArray(obj))\nconsole.log(+new Date() - start, &amp;apos;Array&amp;apos;)\n\nlet start1 = +new Date()\nconsole.log(deepCloneByMap(obj))\nconsole.log(+new Date() - start1, &amp;apos;Map&amp;apos;)\n\nlet start2 = +new Date()\nconsole.log(deepCloneByWeakMap(obj))\nconsole.log(+new Date() - start2, &amp;apos;WeakMap&amp;apos;)\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFgJg4_GAOpoCN-gGtqAVCoDD_gU_NAR9GB-6MB3qYE_tQIYxAHVQNGgPh1AwDGAKV36AF40AbWYCQEwEr6gCVNA4c7yyqOBUaYYABwDCUcjABCATwCCAJy8BDN4wAvIwAbr5QQQB8jMDyjIzmlqEQcBBU6ADyAEYEQYwA2gC68nEJ5EnETqgweWERgdGxqPHxEGCMABR1jGiWvqjEMKTtAEowAOYAoli2AJSMXjAUAK5ezdUA7oxjUzNd4bOlre37Eb0U_YPDjAAivlTziytrjJu39zCnh80tbZ3dgUBr2WUAiAB8wYwKG5bEN2t0AIRAgDkpByMGIFGRjyWq2a3UUgADvQCqyoBvH0A0eolH7xWBWJ4ANXCR0YtOSqXS2TwtRSaRgmRycBwkAwHQ6wEYaK5AF95g0JTkgkC6t8Wj0TgiQjyOTl5k1VfEGeE8t4_G4cCkTf4vowAPwFQqMRAxKXM-Ka9l8zmC2zLOAACzF8rwTrqABoFktGREZa7GJyMRQcABrGBuOBfIWkLyTXzEAMpgJyvX6g2R8L5AsO4KVZynCupwoq_Ux6ktJ54iMUKPMqWMGBQOA1Yuq9svd28_l4HCGqA90ou1ClUfNGvVL7yBfyRRsACyvlsWm0gBwTQBEvhIZCYzOUrDYHFVXG497Zakai6VElZx9rcsE3k-Ot877Xgk94vvUjTMn8pw9BYFwDHC2wTNMcydh2bw7Mh66tlB3TnJcCF3A8qEvG8hGfMqkEnACQKoCC4KQtCsLXIiKKSgm2LEfiRpEmSlKLq2rIzpRnQalqnoCjgfq-Omyq6rGM7Gj4_jmnAlpuNadpFI6zqxl-4kEDgg4UKc4Yzk2qrxpiyapjJByZtmub5qmUQxLGpZduWlZ5Ku5GeQ25ktC2JbLp23atr2_aDq5rbuR2emToK4xLFhqoLvEm4_CFPlYRligAOowL4SZPowgAr1owT6AC9mgCR2oAFor8IATGmAEbWT6ACFuBaALBygDVEYAweqAHzqgB7aoAbKZXrB1gwHYjjOO4BVFSVwQdJK4ZSf6eRvLNxX7gBsoQT8igGIA70aALixpRQZKMF9PB1wYTMOLPOsMBbDdtiLTqp0nOdeFXe0ZF3Whj3vFQr14E2Z0KoCv50YwEJQjCCHnUiwSouimIcSF508RSVLHJ0K1-pJ0nA7Mf0vHjOBJcZkrzIogBV-oA9c6AKj6ajY2UY1fYMa0A5KOAfl4yyYlmAGlGTRnA-G7MwIBPxgFmnQfowBYwUGcnYR9OQE3AGQbKgAAKXikLCXjQh0BbE9FJYS_WbhVuNk33jNhWbS9kpW4Uy3SX6AVpYw3shRLG5UvL53BOKvhOgATD78jc1keTiugToAIzhsQTpLX2Tr5MnjDh-GADM4aSg6C4x0KeSl8Q0fq-0wSlzAVKsn0Rt5AA1KRHxCwM5SkLAOBOOMHS3lN1TuGpRPfIkPcwH3pAD23ANkQBjAALSME3FDhsianYg3SxrxcRuJ637dAxP3e9_3g8TXe02PltVNnxYU8z3PJ-fPMq_r9nyJPjv_GNwfCgkdgjzy2IvR-cBn6XyHvbNwG1_wP1GpAi-s8OigMBu_Fe-9fBG1zowZE8D9x_xAFKUhQA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## DynamicPlanning
 
@@ -243,14 +233,7 @@ const arr2 = [2, 0, 0, 4, 5]
 console.log(getMax1(arr2))
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;/**\n * 假设你是一个专业的劫匪，你计划去打劫一条街上的家舍，每家有一定数量的钱财，\n * 但相邻两家有一个彼此连接的安全系统，一旦相邻两家在同一晚被打劫，那么这个安全系统就会自动报警。\n *\n * 给你一个由非负整数组成的数组，用来代表每家的钱财，在不让安全系统自动报警的前提下，\n * 求你能打劫到的钱财的最大数量。\n *\n * 比如 [2, 0, 0, 4, 5]，能打劫到的最大钱财是7\n */\nfunction getMax(arr) {\n  let total = 0\n\n  while (arr.length &gt; 0) {\n    if (arr.length &lt; 2) {\n      total += arr[0]\n      arr.splice(0, 1)\n    } else if (arr[0] &gt; arr[1]) {\n      total += arr[0]\n      arr.splice(0, 2)\n    } else {\n      if (arr[0] + arr[2] &lt; arr[1]) {\n        total += arr[1]\n        arr.splice(0, 3)\n      } else {\n        total += arr[0] + arr[2]\n        arr.splice(0, 4)\n      }\n    }\n  }\n\n  return total\n}\n\nfunction getMax1(arr) {\n  let max = 0\n  const length = arr.length\n  for (let i = length - 1; i &gt;= 0; i--) {\n    const nextIndex = i + 2\n    if (nextIndex &gt; length - 1) continue\n    if (nextIndex + 1 &lt;= length - 1) {\n      arr[i] =\n        arr[i] + arr[nextIndex + 1] &gt; arr[i] + arr[nextIndex] ? arr[i] + arr[nextIndex + 1] : arr[i] + arr[nextIndex]\n    } else {\n      arr[i] = arr[i] + arr[nextIndex]\n    }\n    if (arr[i] &gt; max) {\n      max = arr[i]\n    }\n  }\n  return max\n}\n\nconst arr1 = [2, 0, 0, 4, 5, 9, 10, 11]\nconsole.log(getMax(arr1))\nconst arr2 = [2, 0, 0, 4, 5]\nconsole.log(getMax1(arr2))\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0AVAwDqoAEDbg4gqB90YAbygejNAAHKAqOUDIcoCw5QCFugaqVAVMqAYf76BC6MBISoG7lQMpGMoYENzQOoRgKDkpgNu1AsEELA89YnAkOZDAWdqAHU0DziVMCNKYCJYhaw5tAYvKAH26A3QmAJHK2ooA--oAm1oB78YClxlKAkdqAFoqA3z6A-34KQoBnpsFhgBTqgDAqQoBaZoDVEdoKgMUJgBJygJvxIikZgIw6gFjygFeBgBVKgKVGgGbRgEAMPizsnICbfnyigIyugHrpgPixgC6mjoAjfoAIRlLLCoAUroCm5oDHcoAWEdbuXvmAsHKAldFN6V19UoCySoALxoDQct4jbIBCNnyAvwHagAxKx1JAADmgHJNFyDEZDNiAFetAEGabAA2gAmAA0bAADKiMWwACyogCsAF0FD8ZP8QZ4BAB2IZ0VhgACuqGIFAg5DYAHMYBQALIAQywAApeQAnYUASjYwB8bFgFDYFFIFF5UDYAF50axpQB3AAW0BgbCFopwsFQ7IoOrYAD50RKpew2I6IGBDSLhSbqObLQAeNiIu3Sx2OhVKlUAanVbvhaIJgaDbpwcAADlAIMQYAKsQBGMVxgC-bBgUDgBudrtF0YJ1rYUazBIDDqD8sVyrYEZrFZjccdCeTqfTmdR_vzheLBvtTadLqNwsrbY7s8RVd9tfrku7QZDrfbq43PeNfbTGaxAGZc42gwWiyX1xem1vw5HO1WwwukbG7_GDymj4OcefJzYPN82lYDUGlYUuXpYV2AfVgwLpRlmVZdhOR5fksxnBtHVlNgAFt-TVDUHTIVA4DlU0vSIhNKItaUwFIYVDVwiAiNoy0AFo2CzABuNhWKtdU0T4iAOI47Cg1I8i2FQbAKAASQwbAiNY19ETjMsBVkrAFKUrBq3YtguJzNhSJZVB6RgDTp203TMH018szYb11UM4yJKbKMICrVU9zfbz5yjWzFPs-c62rLyXzfYK9KrAB-fyoqCuSQuUxyq0QRLAorGL7I_JsrzHW9AMi6iKwC19kp01KsHyy9rPLWcAptAisA8oNWrKpq6sdMDeogqCYPw_l4M1JlyGkt0nPVJFMTmnF8VRABOVEs2zOtWCk0hYBNUh2QFNC-UFKaxXPKS5TdREiNm9F5txNhCU2ibtpgXb9sOjCZ39c8QDzP6gA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Event
 
@@ -338,14 +321,7 @@ event.emit('touch')
 export default Event
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;class Event {\n  events = {}\n  constructor(initEvents = {}) {\n    this.events = initEvents\n  }\n\n  on(event, fn) {\n    if (Array.isArray(event)) {\n      for (let i = 0, l = event.length; i &lt; l; i++) {\n        this.on(event[i], fn)\n      }\n    } else {\n      this.events[event] = (this.events[event] || []).concat(fn)\n    }\n    return this\n  }\n\n  emit(event) {\n    let cbs = this.events[event]\n    const args = Array.from(arguments).slice(1)\n    if (cbs) {\n      cbs.forEach(function (cb) {\n        cb.apply(this, args)\n      })\n    }\n\n    return this\n  }\n\n  off(event, fn) {\n    if (Array.isArray(event)) {\n      for (let i = 0, l = event.length; i &lt; l; i++) {\n        this.off(event[i], fn)\n      }\n    } else {\n      let cbs = this.events[event]\n      if (!fn) {\n        this.events[event] = null\n        return this\n      }\n\n      if (cbs) {\n        this.events[event] = cbs.filter(cb =&gt; cb !== fn)\n      }\n    }\n\n    return this\n  }\n\n  once(event, fn) {\n    const on = () =&gt; {\n      this.off(event, on)\n      fn.apply(this, arguments)\n    }\n\n    this.on(event, on)\n\n    return this\n  }\n}\n\nconst event = new Event()\n\nconst fn = () =&gt; {\n  console.log(&amp;apos;I click&amp;apos;)\n}\n\nevent.on(&amp;apos;click&amp;apos;, fn)\n\nevent.once(&amp;apos;touch&amp;apos;, function () {\n  console.log(&amp;apos;I touch&amp;apos;)\n})\n\nevent.emit(&amp;apos;click&amp;apos;)\n\nevent.off(&amp;apos;click&amp;apos;, fn)\nevent.emit(&amp;apos;click&amp;apos;)\nevent.emit(&amp;apos;touch&amp;apos;)\nevent.emit(&amp;apos;touch&amp;apos;)\n\nexport default Event\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIlQCGccABAKIBu1FzwAOqs2YxOlFgF4eAX36CyqOBQBOAV2IVSigBRoIFDl3FSAlDxmDmFABYQ4OYQeYSdekRThnpqM-U33KAGmYwVBM-AXMIMGZNAEFFRXoATxwbOITE31cjULNzII1o2G4IR2YABkCoUr8KHFhUAHMrAG5mEoAeZihWiABqXpzwvMErGxwfGoBtCABdQOCjXPNPPMkhKDgYUyHzUdsauEmamdLNPbtXQ-PmAB8b5kmZoxw5YnoKTQWllfNFGAplIoBHsPPwzDAALa6TJcQZ5IrMYgAI0M5wOR1cMyWcgUzHoigahjSSRwYEUpAhmnxDWUEIMzzgUAgxBgmgAjIsdpFosi4HDhrzSRpWPRiJZPspUGoIOQeUj-cNEUicPQAA6qqAZPaBal8paCSSc1ZgnZ_AFAizWdzhTzeMBgGEBIIhbZ5bmxeIk1KejI1bKu4ZgAqaBElCQVLrVVx1ahNSw9ZidbptfoK4bnUj2x0UaZzZ1G4Y_A3rTYB-H_JWoq0XAwYrhYnaCd0AQgWZfT1fR1wkqGUUCg-t-_0BwKtg9tjbaUU0vLTeTRlzrlBOEkFkCgVC0yMcAD4lcxm2IJF9J0XmBO8maR5abKCvOFyCzs_MXWE8jjuLKJJoTGI92-OzGTMHRqQJyALPJghVdVNTOK0dQJWl6W-E152rCZXDAkJUKHc1R1vG1-AnD8hFcUpUBgAB3NhXB_E0SOCU5f3_MwcVIWA6lIBpNAAcgASURJliAAax4zkJxqcZUF44ghNEl9OX4STH1ZHj1FUSwePmSVpVlH8AzYjioC43iBPUsUxKIxSKOjSFoR42TmVE6zlKzBy5K0_MlNsqEPncpzLJsrg7F83jzM0zlJLsvzwsCpSsFVDRuEwMB6D7bh9EofgQEkXKgA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Format
 
@@ -358,14 +334,7 @@ const roundByFour = (num, digits) => {
 console.log(roundByFour(1000.12345678, 4))
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;//千分位格式化\nconst roundByFour = (num, digits) =&gt; {\n  return parseFloat(num.toFixed(digits))\n}\n\nconsole.log(roundByFour(1000.12345678, 4))\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dgwsqBgSoLLygPBaDw-oGjKAOqmVRwKAAgBOpAK4YAQgE8AYlLEiAvCIAUqSQFsANCPQQA5hApwAlGoB8I4PxHiYFSWNQiADgEMxcGAqhSLwotXRwKUgUILBh0DSNTcwsLfgBffn5BOFJYHEDjDQlpdHklVw0ARgAGGpwKgCYAZgAWAFYANgB2AA4DZuT-EFThoA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Inherit
 
@@ -373,14 +342,7 @@ console.log(roundByFour(1000.12345678, 4))
 
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggC-jQA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## JsBridge
 
@@ -438,14 +400,7 @@ console.log(roundByFour(1000.12345678, 4))
 })()
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;;(function () {\n  const callbacks = {}\n\n  // 如果使用iframe传值\n  function renderIframe(url) {\n    try {\n      let iframeElem = document.createElement(&amp;apos;iframe&amp;apos;)\n      iframeElem.setAttribute(&amp;apos;src&amp;apos;, url)\n      iframeElem.setAttribute(&amp;apos;style&amp;apos;, &amp;apos;display:none;&amp;apos;)\n      iframeElem.setAttribute(&amp;apos;height&amp;apos;, &amp;apos;0px&amp;apos;)\n      iframeElem.setAttribute(&amp;apos;width&amp;apos;, &amp;apos;0px&amp;apos;)\n      iframeElem.setAttribute(&amp;apos;frameborder&amp;apos;, &amp;apos;0&amp;apos;)\n      document.body.appendChild(iframeElem)\n      setTimeout(() =&gt; {\n        document.body.removeChild(iframeElem)\n        iframeElem = null\n      }, 300)\n    } catch (e) {}\n  }\n\n  window.JSBridge = {\n    dispatch(name, data) {\n      const event = document.createEvent(&amp;apos;Events&amp;apos;)\n      event.initEvent(name, false, true)\n      event.data = data\n      document.dispatchEvent(event)\n    },\n\n    invoke(bridgeName, data, callback) {\n      const callbackId = `${name}_${Math.floor(Math.random() * new Date().getTime())}`\n      callbacks[callbackId] = callback\n      window.postBridgeMessage({\n        bridgeName,\n        data,\n        callbackId\n      })\n    },\n\n    receiveMessage(msg) {\n      const { data, callbackId } = msg\n      if (callbacks[callbackId]) {\n        callbacks[callbackId](data)\n        delete callbacks.callbackId\n      }\n    }\n  }\n\n  document.addEventListener(&amp;apos;DOMContentLoaded&amp;apos;, () =&gt; {\n    window.JSBridge.dispatch(&amp;apos;myJSBridgeReady&amp;apos;)\n  })\n})()\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgDcAFGAK6rEUTkAEDAlF8AA6qLlzKo4FMQEMoUAEbTiAazhcAvAIC-w4aID0-roCDNQDnmgf3lAFK4QwAJ2kBbGIAJ5QDwKerizYdut6plsASTtHGAZmWyh-IRFRLgpbAE8BDziuWCkbeycAUVgHDS50UmJmJ0ocYj9pKjyYcooGAHIs0KbeVLjW3PycOBgKAEEKBIh5ZipmuFtiJoAaLgioztFumDqHPoHh0fHJpslE2HmuJvQIOAAHKGlExFRyGDp2la41ja2hkdsxibCmgAWMAgAHMARQTk0AAyXLAvWJpd69fpfXZ_ZoAdwg6AoAMhMLhHQRXRCPXqnx2Pz2_1JMHkpFsAXx8LSomKpQaOHp6ESOGkl0u_gAwgDoOgGEj6kTWVwUQAVCBOUgTBh8DQAPhSxLS7LK1AoXNIPJwfgcpAAbjARWKJbSNtKZW87flCqhmHJXloFgBmKFQh2iLQyCjEAE8GDRHSxKMeLEYUgYnAAKQAygAhH7oEEwQoxHUXS41UMMVChBboGrSaKvcSSLgwS2UQq6zlVGA1daNxpNHJduAs1kN_U4NAQCi9_UlsueWT9BYJZgR15DioVijSZuV14t4fnK5FgETygMFcUANcL26Yloc2kZRheSZ7MAOWna-kC2IsgUSmU1e1YjkHWX5yIoKiBOghQAAYACTAKWThaAA-nBACyNQAjgYBQKQDIMOhuImtI8YOGqABUXCoDAGJcAAIh2fA4NmFAKk4fC8FoUE1t-YGqAA2iBP7gegAC6hSCbxrxxsUiaXKQkgZti2aofAcDSNmDB5o6j5KTAr5OHMrxspWhkAaIEm_hBnrnpeqCdH4xDApaKlwGpGkOHAIL_jKtZSMARQmTIoGWZBQaaB5IKvDYPAWSocACTxIUid5jqxfxaUQSJDDvueOowBkOZpXAlSJcJnqdFGgZXmyJR6hU0joOgR4UAAMhcVBUbYzS0QA8qhQrkB1rWkA1MDoCcarqJqWmiNJCbJumT4wDge6FiGALNA4iSpopWYwAASu2PIDloRKnXwwggFo11AA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## LuckyDraw
 
@@ -471,14 +426,7 @@ const rand = function (p) {
 console.log(rand(peoples))
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;/*\n请实现抽奖函数rand，保证随机性\n输入为表示对象数组，对象有属性n表示人名，w表示权重\n随机返回一个中奖人名，中奖概率和w成正比\n*/\nlet peoples = [\n  { n: &amp;apos;p1&amp;apos;, w: 100 },\n  { n: &amp;apos;p2&amp;apos;, w: 200 },\n  { n: &amp;apos;p3&amp;apos;, w: 100 }\n]\nconst rand = function (p) {\n  const ret = p.map(o =&gt; ({ ...o, score: o.w * Math.random() }))\n\n  const max = Math.max(...ret.map(o =&gt; o.score))\n\n  return ret.find(o =&gt; o.score === max).n\n}\n\nconsole.log(rand(peoples))\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0AVADqqDv0YHnagDc6C9RoGqagv4qAHUwBOAQwyAYf8C78oEHowPFpgLnNA5AYtAyfGBTRUBccoAsIwFyegT-1AhjGDAI34SjgSHNAejpLUewF1ygWBUJAdz2Bhc0CziS0WAV-MB7aoAAcoBUcoC0crxOEuGAQZaA4c6AMSougAhGgMbWgCvWLAx0LLAUAAQADjCkBbBweQC8eQDaLHl5wHmoiHkA5AUAjK0ANHkuLR0ADIN5AL7ddQ1NLe0ATD19LbPDYxOo9Y3NbQUAzAv9eUMjoywAuixkqHD5YhiVeWAArqjEFBDkeQAUBQCUDZOXa55YQwfJVAo4AC2ogKn1IlQAfF9GjhUaRenAyCCWqQcC48gw8gBZUQUAAWOFu6FIkM-f1GPx-LAB5CB0Kw9xJ5Khoiwn1RlNBPNh8IqSNxmNIIMZzPWwNBj2E6xBFBwkAwcMReQlWJglQqVXZPxwqBYJ1NL1ZpFgOCgpAA5p8qd9iqV4DLUCBRt6gA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## New
 
@@ -486,14 +434,7 @@ console.log(rand(peoples))
 
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggC-jQA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Promise
 
@@ -749,14 +690,7 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggC-jQA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Sort
 
@@ -847,14 +781,7 @@ class Stack {
 }
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;// 栈：先进后出，后进先出\nclass Stack {\n  items = []\n\n  push(item) {}\n\n  pop() {}\n\n  peek() {}\n\n  isEmpty() {}\n\n  size() {}\n\n  toString() {}\n}\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIBAWgWP-ASioNvxgcCqBfioDD_3Tu14AdVMSgBDOHEYBlClOIBrRsHGNGEKgFs5AXkYBtALrjNjAA4BXOAAsAFDpi6AlOoC-F1FqukrRw9gb1RLKxgYFSCvHy0IOABRXSsKAE8YkLjGOAgALxhM0MsKUkUAJzQAcyLxUJBPRqA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Throttle
 
@@ -891,14 +818,7 @@ setInterval(() => {
 }, 100)
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;const throttle = (fn, delay) =&gt; {\n  let startTime = +new Date()\n  let first = true\n  let result\n\n  return function () {\n    if (first) {\n      startTime = +new Date()\n      first = false\n      result = fn.apply(this, arguments)\n    } else {\n      if (+new Date() - startTime &gt; delay) {\n        startTime = +new Date()\n        result = fn.apply(this, arguments)\n      }\n    }\n\n    return result\n  }\n}\n\nconst fn = throttle(() =&gt; {\n  console.log(&amp;apos;show&amp;apos;, +new Date() - startTime)\n  return 1\n}, 1000)\n\nlet startTime = +new Date()\nsetInterval(() =&gt; {\n  console.log(fn())\n}, 100)\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEFAFgE6kUWyMC8jACjCoANI0xQAhgE8AlHwB8jYAB1UjRrCYNJbCgBUIAWxh9GAalQwA7owAikqgNlqNWxpDYMzFNgFcYV00YJjZ4PygKNSCwij82dTA_VGIKCHJBeVV1DUYIMEFPBiyg3MYdPUMTM0sbe0cYZ1LcoqZ-MEkoOECcsrC4CLaPVBxJAAcxqGkBVgg4MV0Acz8TSjgXXsYAX0YYLtNsso18wVrbByd5AFpyil0DY1MlCRkSzbKKh-r-M_rL5r64UiZmEowmUxmLDmCzYy1WFHWAO2zS20U2sXi6n6gyCqNQeLUZFQ3mEPnYnG4jWcimUQSJcFIsBwUFIiwEAHI4CxSNZ2WJfhdGtdbvcqjANhoMQlGABGNRbMQygAMKo2ancnzFNSs5waTWJIQAkpQYGwAG6dATU3hKQ6MemMmDM1lCVDODYK2WqtQgLZ-oA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Tree
 
@@ -1156,11 +1076,4 @@ class MessageChannel extends Event {
 new MessageChannel()
 ```
 
-<pre>
-<form action="https://codepen.io/pen/define" method="POST" target="_blank">
-<input type="hidden" name="data" value="&amp;quot;import Event from &amp;apos;../event/index.mjs&amp;apos;\n\nconst HEARTBEAT_TIME = 20 * 1000\n\nclass MessageChannel extends Event {\n  timer = null\n  interval = null\n\n  constructor() {\n    super()\n  }\n}\n\nnew MessageChannel()\n&amp;quot;">
-<input type="image" src="http://s.cdpn.io/3/cp-arrow-right.svg" width="40" height="40" value="Create New Pen with Prefilled Data" class="codepen-mover-button">
-</form>
-</pre>
-
-<iframe id="cp_embed_dPrEvP" class="cp_embed_iframe" style="width: 100%; overflow: hidden;" src="https://codepen.io/superoak/embed/preview/dPrEvP?height=300&slug-hash=dPrEvP&default-tab=result&host=http%3A%2F%2Fcodepen.io" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+[![Edit remark-codesandbox demo](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgQC2ADqQE4UAEAogG7UdgtS9dgHIcOAPQxelCWky56BEQB1UasqjgcAEpwCCAJQAqAIQPGA-sYCSAWU7sAvOwBMABnYAqdgEZ3AWoaUACGcHDsdvBwIQDmMADCABYhqKgwUOzYVBgRPHzswGrs7BQMMCzO7KgArlBQxexoVCzcIZkutfVBqCWa2iw1xBSsABQAlIWNJXA1jBUTjQC-aivqaTAA7pHRcYkpG1CLqCBLZ0A&fontsize=14px&hidenavigation=1&theme=dark)
