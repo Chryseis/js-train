@@ -10,10 +10,12 @@
   "author": "allen",
   "license": "MIT",
   "devDependencies": {
+    "codesandbox": "^2.2.3",
     "ejs": "^3.1.6",
     "glob": "^7.1.7",
     "husky": "^7.0.1",
     "lint-staged": "^11.1.1",
+    "node-fetch": "^2.6.1",
     "prettier": "^2.3.2"
   },
   "lint-staged": {

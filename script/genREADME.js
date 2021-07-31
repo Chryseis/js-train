@@ -2,7 +2,8 @@ const path = require('path')
 const fs = require('fs')
 const glob = require('glob')
 const ejs = require('ejs')
-const { JSONString } = require('./utils')
+const querystring = require('querystring')
+const { getParameters } = require('codesandbox/lib/api/define')
 
 glob('src/**/*.{js,mjs,css}', (err, files) => {
   const reg = /^src\/(.+)\/(.+)\.(?:mjs|js)$/
@@ -11,11 +12,25 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
     const data = fs.readFileSync(path.resolve(src), 'utf8')
 
     if (subName === 'index') subName = name
+
+    const parameters = getParameters({
+      files: {
+        'index.js': {
+          content: data
+        }
+      }
+    })
+
     return {
       name: name.charAt(0).toUpperCase() + name.slice(1),
       subName,
       data,
-      codePenFile: JSONString(data)
+      codesandboxUrl: `https://codesandbox.io/api/v1/sandboxes/define?${querystring.stringify({
+        parameters,
+        fontsize: '14px',
+        hidenavigation: 1,
+        theme: 'dark'
+      })}`
     }
   })
 
