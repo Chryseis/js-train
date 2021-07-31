@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const glob = require('glob')
 const ejs = require('ejs')
+const { JSONString } = require('./utils')
 
 glob('src/**/*.{js,mjs,css}', (err, files) => {
   const reg = /^src\/(.+)\/(.+)\.(?:mjs|js)$/
@@ -13,7 +14,8 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
     return {
       name: name.charAt(0).toUpperCase() + name.slice(1),
       subName,
-      data
+      data,
+      codePenFile: JSONString(data)
     }
   })
 
