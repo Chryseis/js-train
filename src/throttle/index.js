@@ -1,26 +1,30 @@
 const throttle = (fn, delay) => {
   let startTime = +new Date()
   let first = true
+  let result
 
   return function () {
     if (first) {
       startTime = +new Date()
       first = false
-      return fn.apply(this, arguments)
+      result = fn.apply(this, arguments)
     } else {
       if (+new Date() - startTime > delay) {
         startTime = +new Date()
-        return fn.apply(this, arguments)
+        result = fn.apply(this, arguments)
       }
     }
+
+    return result
   }
 }
 
 const fn = throttle(() => {
   console.log('show', +new Date() - startTime)
+  return 1
 }, 1000)
 
 let startTime = +new Date()
 setInterval(() => {
-  fn()
+  console.log(fn())
 }, 100)

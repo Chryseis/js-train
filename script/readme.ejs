@@ -2,16 +2,25 @@
 ## 目录
 <% Object.keys(reduceFilesData).forEach(function(name){ %>
 + [<%= name %>](#<%= name %>)
+  <% if (reduceFilesData[name].length>1) {%>
     <% reduceFilesData[name].forEach(function(file){%>
     - [<%= file.subName %>](#<%= file.subName %>)
     <%})%>
+  <%}%>
 <% })%>
 <% Object.keys(reduceFilesData).forEach(function(name){ %>
 ## <%= name %>
+<% if (reduceFilesData[name].length>1) {%>
 <% reduceFilesData[name].forEach(function(file){%>
 ### <%= file.subName %>
 ```javascript
 <%- file.data %>
 ```
 <% })%>
+<%}%>
+<% else {%>
+```javascript
+<%- reduceFilesData[name][0].data %>
+```
+<%}%>
 <% })%>
