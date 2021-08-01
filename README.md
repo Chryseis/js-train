@@ -410,11 +410,18 @@ console.log(roundByFour(1000.12345678, 4))
 输入为表示对象数组，对象有属性n表示人名，w表示权重
 随机返回一个中奖人名，中奖概率和w成正比
 */
-let peoples = [
-  { n: 'p1', w: 100 },
-  { n: 'p2', w: 200 },
-  { n: 'p3', w: 100 }
-]
+const genPeoples = count => {
+  let arr = []
+  for (let i = 0; i < count; i++) {
+    arr.push({ n: `p${i + 1}`, w: Math.floor(Math.random() * 5000000) })
+  }
+
+  return arr
+}
+
+const peoples = genPeoples(200)
+
+// 方法1
 const rand = function (p) {
   const ret = p.map(o => ({ ...o, score: o.w * Math.random() }))
 
@@ -423,10 +430,30 @@ const rand = function (p) {
   return ret.find(o => o.score === max).n
 }
 
+let startTime = +new Date()
 console.log(rand(peoples))
+console.log(+new Date() - startTime, 'rand1')
+
+// 方法2
+const rand2 = function (p) {
+  const ret = p.reduce((arr, o) => {
+    const multiple = Math.floor(o.w / 100)
+    for (let i = 0; i < multiple; i++) {
+      arr.push(o)
+    }
+    return arr
+  }, [])
+
+  const randomIdx = Math.floor(ret.length * Math.random())
+  return ret[randomIdx]
+}
+
+let startTime1 = +new Date()
+console.log(rand2(peoples).n)
+console.log(+new Date() - startTime1, 'rand2')
 ```
 
-[![Edit LuckyDraw demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0AVADqqDv0YHnagDc6C9RoGqagv4qAHUwBOAQwyAYf8C78oEHowPFpgLnNA5AYtAyfGBTRUBccoAsIwFyegT-1AhjGDAI34SjgSHNAejpLUewF1ygWBUJAdz2Bhc0CziS0WAV-MB7aoAAcoBUcoC0crxOEuGAQZaA4c6AMSougAhGgMbWgCvWLAx0LLAUAAQADjCkBbBweQC8eQDaLHl5wHmoiHkA5AUAjK0ANHkuLR0ADIN5AL7ddQ1NLe0ATD19LbPDYxOo9Y3NbQUAzAv9eUMjoywAuixkqHD5YhiVeWAArqjEFBDkeQAUBQCUDZOXa55YQwfJVAo4AC2ogKn1IlQAfF9GjhUaRenAyCCWqQcC48gw8gBZUQUAAWOFu6FIkM-f1GPx-LAB5CB0Kw9xJ5Khoiwn1RlNBPNh8IqSNxmNIIMZzPWwNBj2E6xBFBwkAwcMReQlWJglQqVXZPxwqBYJ1NL1ZpFgOCgpAA5p8qd9iqV4DLUCBRt6gA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit LuckyDraw demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0AVADqqDv0YHnagDc6C9RoGqagv4qAHUwBOAQwyAYf8C78oEHowPFpgLnNA5AYtAyfGBTRUBccoAsIwFyegT-1AhjGDAI34SjgSHNAejpLUewF1ygWBUJAdz2Bhc0CziS0WAV-MB7aoAAcoBUcoC0crxOEuGAQZaA4c6AMSougAhGgMbWgCvWLAx0LGSocBQABADm1AAKMKQADrBwBQC8BWQArpT1AHwFwCwFBbCFosLC9QUA2gC63QVgpEMAFH0FEMMADADciwUAPI2kLRTrEADUhwCUnZM9A8I4lU1wABazwAWoiAUABpUAJMBLhwUARgAvu8ADQFFxvACyogo9xwYCgpBmsxhcJwYgwpAAtrMzgwCgBWZYk0lnIEnSZAliTYQwChNYSoApXFjU1A5cj5AqVCrVeDDEqocpVGqzABMJMpHNQdDoBUAnaaAVZsAZy8oVMehhmAWsQKBByAVZpUzl1mTt1QU6YUGpUcNjRJVZqR2kbnjgPaRwXAyHS3qQcC4CgS0fDNTi8QUKdLJrluQ6sMNQ_bRFhZh6MfSU06XXUOgGfTMYCcY-brYzmdaEWh0M7XQXfTB6nUGgmTjgZeyWAt8gMKAAVCDYpsNQ6oGBBgAisJgeLVcFIsBwSKKs01xr5NRL88XMGXpFXY4nBWnVEjAFoCr3hAOhzBwQByTUAh-luWKpXi-ca8TocXa3V9UNY1TVjLkNXpYY7TpdAmmIWdZiucFSDOPNznNHo40KbEmigfV-STWF4URZFhGdQMCnlAEpQuKYZiNBYlgaNYNm2HC8IgfkDmOUCMJ6FlBhuO5HhQ2j2X4q16QrAThCpcFxlLTDwKtX8cQASXQRMGmTEiUSrWBUCKOFgwKZNw1xbcyykplJIoEZzI0rAJlQLtUB7Cg-0HYcAWGI8pxnOdUDjXd91XTVxQ3UV4HbVBpWCpcV1mPyTwCs5L2vW9vMfcLXxYEAgQKoA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## New
 
