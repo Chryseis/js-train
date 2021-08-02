@@ -58,15 +58,17 @@
 const debounce = (fn, delay) => {
   let timer
   let result
+  let first = true
 
   return function () {
-    if (timer) {
+    if (first) {
+      first = false
+      result = fn.apply(this, arguments)
+    } else {
       clearTimeout(timer)
       timer = setTimeout(function () {
         result = fn.apply(this, arguments)
       }, delay)
-    } else {
-      result = fn.apply(this, arguments)
     }
 
     return result
@@ -80,7 +82,7 @@ const fn = debounce(() => {
 setInterval(fn, 100)
 ```
 
-[![Edit Debounce demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEmARqQK6rEyMC8jACjCoANMxhQAhgE8AlHwB8jYAB1UjRrCYUIAWxgAnNRq2MD8dlAprjZmBXYH1YTsR3lB81eo2MIYQR19Ay9bX0ZiWEkDABU9GA4KASDDWTDfFIM-Rjh7OP1EoVd3dQFQn3CNczhLJn5hHEkAByaoaWSACwg4MWiAc3Z9Sjg0it8AXzFMKTl08cYJXOV0qosrbIbm1vaKLp7GfsHqChG5mzHzByc7GqtbcbUH1DUyVAZGYWzWDi4YATLFMsfK84KRYDgoKQ-gIAOTsXJZSIQYgAaxho0mjAArAAGHGjNS5CgASUohgAbpIoEJRIwAIx40YgSYgNCYXAdCi6KBIUCvKg0RAgAA8AEIACIAeQAwjEAJoABQAooxOdyFGphWqoJpJKg-rwYdQYRrUFqYJJ0KaNML9BRJBEOtEiYaAKoxABiAFoABwm2zCnQUWAKOLBmDCgD0QZDmsjHQtVs1bHQ0lNwvQEHJCkAykaAAH0QWCYIBpW0Aq9GAY7lAIAeUcz2c1cGIBggTSYcAMxENOEjbOw-DgJqjDabLfTkZTabj2tNzPG4yAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Debounce demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEmARqQK6rEyMC8jACjCoANMxhQAhgE8AlHwB8jYAB1UjRrCYUIAWxgAnNRq2MD8dlArHNMJpAMM-jCgfYw1N8xXYH1YTmIdckF5VXUNRggwQQcGMJtIxjimfjBJKDgPCKTzOEtU5NQcSQAHUqhpAQoACwg4MUkDAHN2fUo4WUTGAF9GCSzlbo1iWCaAFT0YDgpqqYMunMidfQNnLIpJ_RmhQOD1AQSl3IsrZ2ES8srquobGJtb2ik7h3rFMKTluns8l7191HkCjYfqhQWoyKgnMJnKwOFwYAJDoohhFIXBSLAcFBSM0BABydhZNajCDEADW-MWPTEAFYAAz0xZqDYASUohgAbhkhKJGABGRmLEA0kBoTC4GoUXRQJCgSFUGiIEAAHgAhAARADyAGFxgBNAAKAFFGFKZQo1CrzVBNJJUM1ePjqPjLahrTBJOg3RoVfoKJJGMQak0Nk6AKrjABiAFoAByumwqnQUWAKSapmAqgD0KbTVuzNU93qtbHQ0jdKvQEE5CkAykaAAH10ZiYIBpW0Aq9GAY7lAIAeOertatcGIBggpSYcAMxCdOGz4uw-DgrpzQ5HY8r2bLFYLNrdIp6PSAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## DeepClone
 
