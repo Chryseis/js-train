@@ -4,13 +4,15 @@ const debounce = (fn, delay) => {
   let first = true
 
   return function () {
+    const context = this
+    const args = arguments
     if (first) {
       first = false
-      result = fn.apply(this, arguments)
+      result = fn.apply(context, args)
     } else {
       clearTimeout(timer)
       timer = setTimeout(function () {
-        result = fn.apply(this, arguments)
+        result = fn.apply(context, args)
       }, delay)
     }
 
