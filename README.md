@@ -830,11 +830,22 @@ class Stack {
   }
 
   // 以字符串形式输出栈内元素
-  toString() {}
+  toString() {
+    return this.items.reduce((str, item) => {
+      return str.concat(item.toString())
+    }, '')
+  }
 }
+
+const stack = new Stack()
+
+stack.push({ name: 'allen' })
+console.log(stack.peek())
+console.log(stack.size())
+console.log(stack.toString())
 ```
 
-[![Edit Stack demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIBAWgWP-ASioNvxgcCqBfioDD_3Tu14AdVMSgBDOHEYBlClOIBrRsHGNGEKgFs5AXkYBtALrjNjBo0DRys0sAHAK5wAFgAodMXQEp1lrQpXCDgcL30cZzdPPR9LAF8LVC1rXntkxgdSB3c_DQytACcYCidC5KCQsL1QrJy4jMTUS2tAU_NAaHdmQDcMwGFFQAJfRxgYFVz_AsZi0vLGStDwuGNZ6u9Q2FQAcyDGAFpGAEZzRqSUpkASJUBa02ZAejNAMhVALjlALy9LEIBRXQcKAE9R_K0ikrKFWCcxqODWm1cjAM0MYAAYEscrExAO3BgDXlZiAWjl-oAQt0AVHKAB1NLHAIAAvGA_AITAHTJbzMHUCEI5oZayAU7lAOragDJvQBMcoAjfUA8PqAZPi0oBQxX6lgopEUhTQ6x-TSaIHiyqAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Stack demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIBAWgWP-ASioNvxgcCqBfioDD_3Tu14AdVMSgBDOHEYBlClOIBrRsHGNGEKgFs5AXkYBtALrjNjBo0DRys0sAHAK5wAFgAodMXQEp1lrQpXCDgcL30cZzdPPR9LAF8LVC1rXntkxgdSB3c_DQytACcYCidC5KCQsL1QrJy4jMTUS2tAU_NAaHdmQDcMwGFFQAJfRxgYFVz_AsZi0vLGStDwuGNZ6u9Q2FQAcyDGAFpGAEZzRqSUpkASJUBa02ZAejNAMhVALjlALy9LEIBRXQcKAE9R_K0ikrKFWCcxqODWm1cjAM0MYAAYEscrExAO3BgDXlZiAWjl-oAQt0AVHKAB1NLHAIAAvGA_AITAHTJbzMHUCEI5oZayAU7lAOragDJvQBMcoAjfUA8PqAZPi0oBQxX6lgopEUhTQ6wp40mgJmwOWEWK6CcxHJ7jgFEKABptLEoQA-MZ_P6K6a6wo4MgSKQUGLeHCS6Wy3INC3xQ0Acl9XsYTSa4ntusYuuUaiMqBgAHcFEpVLkkpHVJEXB5gIxUFJdDBEIxfVIoGtfUGGmHSLAwaQ5WmVJEhiMfJXyHBqzBa_Wk43iWTPaH253uzre66pXqPa3xCB4vOgA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Throttle
 
