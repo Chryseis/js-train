@@ -193,28 +193,19 @@ console.log(+new Date() - start2, 'WeakMap')
  *
  * 比如 [2, 0, 0, 4, 5]，能打劫到的最大钱财是7
  */
-function getMax(arr) {
-  let total = 0
-
-  while (arr.length > 0) {
-    if (arr.length < 2) {
-      total += arr[0]
-      arr.splice(0, 1)
-    } else if (arr[0] > arr[1]) {
-      total += arr[0]
-      arr.splice(0, 2)
-    } else {
-      if (arr[0] + arr[2] < arr[1]) {
-        total += arr[1]
-        arr.splice(0, 3)
-      } else {
-        total += arr[0] + arr[2]
-        arr.splice(0, 4)
-      }
+function getMax(nums) {
+  if (nums.length === 0) {
+    return 0
+  }
+  let maxMoney = nums[0]
+  for (let i = 0; i < nums.length; i++) {
+    nums[i] = Math.max(nums[i - 2] || 0, nums[i - 3] || 0) + nums[i]
+    if (nums[i] > maxMoney) {
+      maxMoney = nums[i]
     }
   }
 
-  return total
+  return maxMoney
 }
 
 function getMax1(arr) {
@@ -236,13 +227,13 @@ function getMax1(arr) {
   return max
 }
 
-const arr1 = [2, 0, 0, 4, 5, 9, 10, 11]
+const arr1 = [2, 0, 0, 4, 5, 10, 12, 19]
 console.log(getMax(arr1))
-const arr2 = [2, 0, 0, 4, 5]
+const arr2 = [2, 0, 0, 4, 5, 10, 12, 19]
 console.log(getMax1(arr2))
 ```
 
-[![Edit DynamicPlanning demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0AVAwDqoAEDbg4gqB90YAbygejNAAHKAqOUDIcoCw5QCFugaqVAVMqAYf76BC6MBISoG7lQMpGMoYENzQOoRgKDkpgNu1AsEELA89YnAkOZDAWdqAHU0DziVMCNKYCJYhaw5tAYvKAH26A3QmAJHK2ooA--oAm1oB78YClxlKAkdqAFoqA3z6A-34KQoBnpsFhgBTqgDAqQoBaZoDVEdoKgMUJgBJygJvxIikZgIw6gFjygFeBgBVKgKVGgGbRgEAMPizsnICbfnyigIyugHrpgPixgC6mjoAjfoAIRlLLCoAUroCm5oDHcoAWEdbuXvmAsHKAldFN6V19UoCySoALxoDQct4jbIBCNnyAvwHagAxKx1JAADmgHJNFyDEZDNiAFetAEGabAA2gAmAA0bAADKiMWwACyogCsAF0FD8ZP8QZ4BAB2IZ0VhgACuqGIFAg5DYAHMYBQALIAQywAApeQAnYUASjYwB8bFgFDYFFIFF5UDYAF50axpQB3AAW0BgbCFopwsFQ7IoOrYAD50RKpew2I6IGBDSLhSbqObLQAeNiIu3Sx2OhVKlUAanVbvhaIJgaDbpwcAADlAIMQYAKsQBGMVxgC-bBgUDgBudrtF0YJ1rYUazBIDDqD8sVyrYEZrFZjccdCeTqfTmdR_vzheLBvtTadLqNwsrbY7s8RVd9tfrku7QZDrfbq43PeNfbTGaxAGZc42gwWiyX1xem1vw5HO1WwwukbG7_GDymj4OcefJzYPN82lYDUGlYUuXpYV2AfVgwLpRlmVZdhOR5fksxnBtHVlNgAFt-TVDUHTIVA4DlU0vSIhNKItaUwFIYVDVwiAiNoy0AFo2CzABuNhWKtdU0T4iAOI47Cg1I8i2FQbAKAASQwbAiNY19ETjMsBVkrAFKUrBq3YtguJzNhSJZVB6RgDTp203TMH018szYb11UM4yJKbKMICrVU9zfbz5yjWzFPs-c62rLyXzfYK9KrAB-fyoqCuSQuUxyq0QRLAorGL7I_JsrzHW9AMi6iKwC19kp01KsHyy9rPLWcAptAisA8oNWrKpq6sdMDeogqCYPw_l4M1JlyGkt0nPVJFMTmnF8VRABOVEs2zOtWCk0hYBNUh2QFNC-UFKaxXPKS5TdREiNm9F5txNhCU2ibtpgXb9sOjCZ39c8QDzZEQDQeycB1Cg8KgJBQDM6gKFob0AEIABEAHkAGEABUAE0AAUAFE2BBsGrVYb0CZVKBeTNVUAHJqCponUBJmBeXQenHW9PCuV5UydRFEsKGpgBVNGADEOIADjp6VvRZChYCtNGIFlmBvToGW5eJugdSZlniYAI1IdAAE96e9dAIAANytTRAAB9LbYEAaVtAFXo3ZAEAPFWzct4m4GIYUICTOU4GFYhqZwOhAewfA4DplXvd9_2TbofWjYT0n6d-vM8yAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit DynamicPlanning demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0AVAwDqoAEDbg4gqB90YAbygejNAAHKAqOUDIcoCw5QCFugaqVAVMqAYf76BC6MBISoG7lQMpGMoYENzQOoRgKDkpgNu1AsEELA89YnAkOZDAWdqAHU0DziVMCNKYCJYhaw5tAYvKAH26A3QmAJHK2ooA--oAm1oB78YClxlKAkdqAFoqA3z6A-34KQoBnpsFhgBTqgDAqQoBaZoDVEdoKgMUJgBJygJvxIikZgIw6gFjygFeBgBVKgKVGgGbRgEAMPizsnICbfnyigIyugHrpgPixgC6mjoAjfoAIRlLLCoAUroCm5oDHcoAWEdbuXvmAsHKAldFN6V19UoCySoALxoDQct4jbIBCNnyAvwHagAxKx1JAADmgHJNFyDEZDNiAFetAEGabAA2gAmAA0bAADKiMWwACyogCsAF0FD8ZP8QZ4BAB2IZ0VhgACuqGIFAg5DYAHMYBQALIAQywAApUPSALZwACUbGAPjYEDAbCForgOFgqHZFAAFmwALy69GS6XsNjGgBOXPpJvYaJlAF8ZbAKGwRfzueQYABPHVsYVi-FogkysCkE0Kh2yr1ogDc4YAPN6lSrqOqNdGIABqNMGmXGn1weEQAlevmanDOwW5_NsAC0bERhYAPvX0aiKxBq2wAMwNptoyVp-O-gvZ2XyxWDwsAPidLrd7qzRuNxrLrtQHq9rYDC7YdqNO5lZooFvYy9nrD3qAZTJZbM5PP5AEYBbyTSb58aw2WIzKyKg4I7VcmXrPiaiZqpqgbBqGXLhtqbAAZq7b3qmbATrBUaylWVZvouP5_t62AUAAkhg2Bem2_aIsOcoKquWBESRWAoXBSYITW96Sj-LLCjAVGjrR9GYIx_b3mwMawfBWpsdhi5sMB-aFtqw4yXJBZsP2cn8cRglqWw96TrJL7yTpGkEVp2CFgA_AZJpGephmaQxOl6WwiDWbZbkOYJm4yTabAwFAcAwFKSluapsEqYWdk2Z55nDjuMnUU-hmqVOZbSYun7hcl3mLvF277ualrTlgZ6sKwuGOsBImwUimJ1Ti-KoveWL3iiukAJybrhpCwCqpDsgKt58oKVXiuK5XkHhwGIl6tXNvNuJsHiTUtW196dRNv49TAfUDUND5JSaiJjawIA2siIBoIJOAahQIpQEgoCcdQFC0DGACEAAiADyADCAAqACaAAKACibC3fdE6sDGkNQHBvJqtqADk1DI9DqCwzAvLoBjxoxiKXK8mwxAas-gUUCjACq_0AGJVgAHOjMoxiyFCwBO_0QOzMAxnQbMczDdAatjuMwwARqQ6DuhjMboBAABuE6aIAAPrdbAgDStoAq9G7IAgB58_LSsw3AxAmhAAAOjpwCaxAozgdBXdg-BwOjfMm2bluy3QkvS17cMY2dNo2kAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Event
 
