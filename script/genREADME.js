@@ -10,6 +10,7 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
   const filesData = files.map(file => {
     let [src, name, subName] = file.match(reg)
     const data = fs.readFileSync(path.resolve(src), 'utf8')
+    const html = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf8')
 
     if (subName === 'index') subName = name
 
@@ -17,6 +18,9 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
       files: {
         'index.js': {
           content: data
+        },
+        'index.html': {
+          content: html
         }
       }
     })
