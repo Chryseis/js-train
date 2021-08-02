@@ -28,5 +28,16 @@ class Stack {
   }
 
   // 以字符串形式输出栈内元素
-  toString() {}
+  toString() {
+    return this.items.reduce((str, item) => {
+      return str.concat(item.toString())
+    }, '')
+  }
 }
+
+const stack = new Stack()
+
+stack.push({ name: 'allen' })
+console.log(stack.peek())
+console.log(stack.size())
+console.log(stack.toString())
