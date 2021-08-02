@@ -7,7 +7,6 @@ const debounce = (fn, delay) => {
       clearTimeout(timer)
       timer = setTimeout(function () {
         result = fn.apply(this, arguments)
-        timer = null
       }, delay)
     } else {
       result = fn.apply(this, arguments)
@@ -16,3 +15,9 @@ const debounce = (fn, delay) => {
     return result
   }
 }
+
+const fn = debounce(() => {
+  console.log('user click')
+}, 500)
+
+setInterval(fn, 100)
