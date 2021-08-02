@@ -7,28 +7,19 @@
  *
  * 比如 [2, 0, 0, 4, 5]，能打劫到的最大钱财是7
  */
-function getMax(arr) {
-  let total = 0
-
-  while (arr.length > 0) {
-    if (arr.length < 2) {
-      total += arr[0]
-      arr.splice(0, 1)
-    } else if (arr[0] > arr[1]) {
-      total += arr[0]
-      arr.splice(0, 2)
-    } else {
-      if (arr[0] + arr[2] < arr[1]) {
-        total += arr[1]
-        arr.splice(0, 3)
-      } else {
-        total += arr[0] + arr[2]
-        arr.splice(0, 4)
-      }
+function getMax(nums) {
+  if (nums.length === 0) {
+    return 0
+  }
+  let maxMoney = nums[0]
+  for (let i = 0; i < nums.length; i++) {
+    nums[i] = Math.max(nums[i - 2] || 0, nums[i - 3] || 0) + nums[i]
+    if (nums[i] > maxMoney) {
+      maxMoney = nums[i]
     }
   }
 
-  return total
+  return maxMoney
 }
 
 function getMax1(arr) {
@@ -50,7 +41,7 @@ function getMax1(arr) {
   return max
 }
 
-const arr1 = [2, 0, 0, 4, 5, 9, 10, 11]
+const arr1 = [2, 0, 0, 4, 5, 10, 12, 19]
 console.log(getMax(arr1))
-const arr2 = [2, 0, 0, 4, 5]
+const arr2 = [2, 0, 0, 4, 5, 10, 12, 19]
 console.log(getMax1(arr2))
