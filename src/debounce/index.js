@@ -1,15 +1,17 @@
 const debounce = (fn, delay) => {
   let timer
   let result
+  let first = true
 
   return function () {
-    if (timer) {
+    if (first) {
+      first = false
+      result = fn.apply(this, arguments)
+    } else {
       clearTimeout(timer)
       timer = setTimeout(function () {
         result = fn.apply(this, arguments)
       }, delay)
-    } else {
-      result = fn.apply(this, arguments)
     }
 
     return result
