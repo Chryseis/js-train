@@ -804,21 +804,37 @@ console.log(quickSort(arr))
 class Stack {
   items = []
 
-  push(item) {}
+  // 压栈
+  push(item) {
+    this.items.push(item)
+  }
 
-  pop() {}
+  // 出栈
+  pop() {
+    return this.items.pop()
+  }
 
-  peek() {}
+  // 查看栈顶元素
+  peek() {
+    return this.items[this.items.length - 1]
+  }
 
-  isEmpty() {}
+  // 判断栈是否为空
+  isEmpty() {
+    return this.items.length === 0
+  }
 
-  size() {}
+  // 获取栈中元素的个数
+  size() {
+    return this.items.length
+  }
 
+  // 以字符串形式输出栈内元素
   toString() {}
 }
 ```
 
-[![Edit Stack demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIBAWgWP-ASioNvxgcCqBfioDD_3Tu14AdVMSgBDOHEYBlClOIBrRsHGNGEKgFs5AXkYBtALrjNjAA4BXOAAsAFDpi6AlOoC-F1FqukrRw9gb1RLKxgYFSCvHy0IOABRXSsKAE8YkLjGOAgALxhM0MsKUkUAJzQAcyLxUJBPRqA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Stack demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIBAWgWP-ASioNvxgcCqBfioDD_3Tu14AdVMSgBDOHEYBlClOIBrRsHGNGEKgFs5AXkYBtALrjNjBo0DRys0sAHAK5wAFgAodMXQEp1lrQpXCDgcL30cZzdPPR9LAF8LVC1rXntkxgdSB3c_DQytACcYCidC5KCQsL1QrJy4jMTUS2tAU_NAaHdmQDcMwGFFQAJfRxgYFVz_AsZi0vLGStDwuGNZ6u9Q2FQAcyDGAFpGAEZzRqSUpkASJUBa02ZAejNAMhVALjlALy9LEIBRXQcKAE9R_K0ikrKFWCcxqODWm1cjAM0MYAAYEscrExAO3BgDXlZiAWjl-oAQt0AVHKAB1NLHAIAAvGA_AITAHTJbzMHUCEI5oZayAU7lAOragDJvQBMcoAjfUA8PqAZPi0oBQxX6lgopEUhTQ6x-TSaIHiyqAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Throttle
 
