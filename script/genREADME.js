@@ -10,7 +10,7 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
   const reg = /^src\/(.+)\/(.+)\.(mjs|js)$/
 
   const filesData = files.map(file => {
-    let [src, name, subName, ext] = file.match(reg)
+    let [src, name, subName] = file.match(reg)
     const data = fs.readFileSync(path.resolve(src), 'utf8')
     const html = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf8')
 
