@@ -10,6 +10,9 @@
   "author": "allen",
   "license": "MIT",
   "devDependencies": {
+    "@babel/generator": "^7.14.9",
+    "@babel/parser": "^7.14.9",
+    "@babel/traverse": "^7.14.9",
     "codesandbox": "^2.2.3",
     "ejs": "^3.1.6",
     "glob": "^7.1.7",

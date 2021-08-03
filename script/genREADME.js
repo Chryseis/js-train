@@ -4,23 +4,28 @@ const glob = require('glob')
 const ejs = require('ejs')
 const querystring = require('querystring')
 const { getParameters } = require('codesandbox/lib/api/define')
+const { parseCode } = require('./utils')
 
 glob('src/**/*.{js,mjs,css}', (err, files) => {
-  const reg = /^src\/(.+)\/(.+)\.(?:mjs|js)$/
+  const reg = /^src\/(.+)\/(.+)\.(mjs|js)$/
   const filesData = files.map(file => {
-    let [src, name, subName] = file.match(reg)
+    let [src, name, subName, ext] = file.match(reg)
     const data = fs.readFileSync(path.resolve(src), 'utf8')
     const html = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf8')
 
     if (subName === 'index') subName = name
 
+    if (ext === 'mjs') parseCode(fs.readFileSync(path.resolve(src), 'utf8'))
+
     const parameters = getParameters({
       files: {
         'index.js': {
-          content: data
+          content: data,
+          isBinary: false
         },
         'index.html': {
-          content: html
+          content: html,
+          isBinary: false
         }
       }
     })
@@ -51,7 +56,7 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
       if (err) {
         console.log(err)
       } else {
-        console.log('readme 生成成功', str)
+        // console.log('readme 生成成功', str)
       }
     })
   })
