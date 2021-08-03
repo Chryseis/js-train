@@ -1,13 +1,14 @@
 const fs = require('fs')
+const path = require('path')
 const { parse } = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 const generator = require('@babel/generator').default
 
-const parseCode = code => {
+const parseCode = filePath => {
   const dependencies = []
   const reg = /^\.\.\/(.+)\/.+$/
 
-  const ast = parse(code, {
+  const ast = parse(fs.readFileSync(path.resolve(filePath), 'utf8'), {
     sourceType: 'module'
   })
 
@@ -23,12 +24,17 @@ const parseCode = code => {
   })
 
   return {
-    'index.js': generator(ast).code,
+    'index.js': { content: generator(ast).code, isBinary: false },
     ...dependencies.reduce((o, d) => {
       const key = d.match(reg)?.[1]
-      const code = fs.readFileSync(d, 'utf8')
+      const absolutePath = d.replace(/\.\./, 'src')
+      const code = fs.readFileSync(absolutePath, 'utf8')
       return {
-        ...o
+        ...o,
+        [key]: {
+          content: code,
+          isBinary: false
+        }
       }
     }, {})
   }

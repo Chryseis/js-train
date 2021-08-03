@@ -8,6 +8,7 @@ const { parseCode } = require('./utils')
 
 glob('src/**/*.{js,mjs,css}', (err, files) => {
   const reg = /^src\/(.+)\/(.+)\.(mjs|js)$/
+  let parameters
   const filesData = files.map(file => {
     let [src, name, subName, ext] = file.match(reg)
     const data = fs.readFileSync(path.resolve(src), 'utf8')
@@ -15,20 +16,30 @@ glob('src/**/*.{js,mjs,css}', (err, files) => {
 
     if (subName === 'index') subName = name
 
-    if (ext === 'mjs') parseCode(fs.readFileSync(path.resolve(src), 'utf8'))
-
-    const parameters = getParameters({
-      files: {
-        'index.js': {
-          content: data,
-          isBinary: false
-        },
-        'index.html': {
-          content: html,
-          isBinary: false
+    if (ext === 'mjs') {
+      parameters = getParameters({
+        files: {
+          ...parseCode(src),
+          'index.html': {
+            content: html,
+            isBinary: false
+          }
         }
-      }
-    })
+      })
+    } else {
+      parameters = getParameters({
+        files: {
+          'index.js': {
+            content: data,
+            isBinary: false
+          },
+          'index.html': {
+            content: html,
+            isBinary: false
+          }
+        }
+      })
+    }
 
     return {
       name: name.charAt(0).toUpperCase() + name.slice(1),
