@@ -31,7 +31,7 @@ const parseCode = filePath => {
       const code = fs.readFileSync(absolutePath, 'utf8')
       return {
         ...o,
-        [key]: {
+        [`${key}.js`]: {
           content: code,
           isBinary: false
         }
