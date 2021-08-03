@@ -17,9 +17,9 @@ const parseCode = filePath => {
       const node = path.node
       dependencies.push(node.source.value)
       const dirName = node.source.value.match(reg)?.[1]
-      node.source.value = `./${dirName}.js`
-      node.source.extra.rawValue = `./${dirName}.js`
-      node.source.extra.raw = `./${dirName}.js`
+      node.source.value = `'./${dirName}.js'`
+      node.source.extra.rawValue = `'./${dirName}.js'`
+      node.source.extra.raw = `'./${dirName}.js'`
     }
   })
 
