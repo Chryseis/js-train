@@ -28,6 +28,8 @@
 
   - [promiseRace](#promiseRace)
 
+- [ReadFiles](#ReadFiles)
+
 - [ReduxMiddleware](#ReduxMiddleware)
 
 - [Sort](#Sort)
@@ -716,6 +718,31 @@ promiseRace([promise1(), promise2(), promise3(), promise4(), promise5()]).then(d
 ```
 
 [![Edit promiseRace demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIlQCGccABALICeACgE6kC2EODGbAAOqmbM4FehQCuLALzMA5AAdq6NAHMVAbnGTu8OVArNlcjDEioY6A6kPMyqadznEKpbgAowqACUIs6SsObE9FBQAEb0xADWSswA2gC6jqEu5NLMxnCkUABuwsr5hSUAalEWAHwhEpJNFNzsDU0dzBQAFoI40rIKFqpgppDR9vpZHT19-abmZfAVMNVQmY2dzBBgzL6R0XGJcDiwqNo9zPUADMFim1vbu76zJwPyLACEisrqmjoqO7TR6uXL3R6PcrFGAAMScDwhAF9hgdYvEkv01FAIMQYL5rgAaZgARkCKWuGWBW1e_RkH2GfwwAMcEI6UKqNSWBWhcN87NWUUCLNZkgAjnIYBLWDjeDI4AlfL5gop6uCRc1em86UNfqMoONYOgpgjWTT5mZhvy1ht1U0dnsrTU0ANULjSLsODx-IIYECTSL7XzltC1rTBkofiMxtBDYD2rbOo6oDgetR_FYvBByHt0LJ6H6E5DgyVfLmZEKqerERX_azkTAoEJ44WjMWBcnU6hS3m6iJEUSYNxuL21S2msY8DAvL5B9wa2PJNXhYXEZWtvXG8JRwn-UHuRyoPOE6vax0l2vmCekcDkZEKMRuntZwWi5Pp8_l00r1-bU1QeYJynRY8hgN8KDWEdgRpd4dVUQCvEmT9JDNEwLSWMDrXEYFA1RI4MTOC5HxuF8tkDaDtS-SNGS0c4423LZ_2bVl4IoOEL2RZRcPRN4sRxPFCRJMkKSQzpyPDBkNCZWiRLZUCgIg9CgN5Fi1iPCFxUlGBpWIWVGAVJVINPDU-hg5IVBYxCL2QzUcHNYCVKiX8A2eByoG2NwZFdGB3TYLheAEIQSPVQNXLDekfl-CyjSC21Qs7bsZBHftmFnQyFxAsCZyHNTjxykUNybej1Ti7o0zLeg0oXXdyryqsByHJLauvIzFxSzcmJFFigwwwUZM6b8kSay8byyREnK6VoOuYAI9xWIkWJy29ZAfJ9sqmrqP1GrCHhpTthlmnlUHmuSvDhZVVWBLjjhwNQFG6XwitbfdYSOysWLYk1z3hUjnjE-lvl-SSaN0GKmg0qUZVIOV9POqaOjImzTIsKi9QNSZQa2XcULgBYhtahtCqsjKgJeGy7Lx4bay-9dtsxmB5G4CRXk_MbaeMk47xW5RZzhXtdtKrsrEwWx7Hq7gzvGmlbCiKA2mUaXonYXmVSm_m0wV2W4SJDWlaCFnhRPcRDdQT1_J9Wy22GUZXQoLMJF8IpBXjYwGYkOwAHdfK9AK8X5SqnpWB3eucL7WfhU3vSEC2wKtjNbezIPD2d-m5EZ5gPa9s2hEVfljrA2Hty6x3DwNmsw_EDOI59nO2zzoCC-cIQKAAFQgPhvLkChFQbh5d1JA2iQAVmuW5HGrFMBYSiqVbVUFChgU5SG0KeiXMttAWFF3U7dmBParn0a-euuvB72TMoAJiPUOxcqufYEX5fZ1XliN-cLe04AZjHwIJ7KnsZ-cHfBeUAl4rzguvMuN8AGNCAQ_LK3Bn4nQoK_VA49Ob3QMtAyQsCQHLxULOFB48dbd1vjkeecCVA60IUKEABIQCCAAEJoHoK0JAYAohCH7PQ6wuBugUD4FAJAoBXBUBoIgEAAAeT4AARAA8gAYWbgATU4AAUWYHwgRtRxASM0W5Bg5xFD4NQCobRqBdEwHoOgMxkgJHt0Sg-FhTcjEAFVm4wgALQAA5THOAkbbCgsBait0CTACRAB6AJQSdHhNKlYsxEiYikHQOwBJWgii1EAMpGgAAfSAYAaVtACr0YAY7lACAHhE9JCS4A6QgGocwcBuDECMTgcJaBMC4AIKYiJVTuA1IoAk8JSSUn9L0WY2h9C4BMNQCw9gbCOEwERAsoAA&fontsize=14px&hidenavigation=1&theme=dark)
+
+## ReadFiles
+
+```javascript
+const path = require('path')
+const glob = require('glob')
+const fs = require('fs')
+
+const readCss = function (pattern) {
+  return new Promise(resolve => {
+    glob(pattern, function (err, files) {
+      const str = files.reduce((cssStr, file) => {
+        return cssStr.concat(fs.readFileSync(path.resolve(file), 'utf8'))
+      }, '')
+      resolve(str)
+    })
+  })
+}
+
+readCss('less/**/*.{css,less,scss,sass}').then(cssStr => {
+  console.log(cssStr)
+})
+```
+
+[![Edit ReadFiles demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEADgIYUAWjAvIwE4wAjgFcIAgBQByNp0kBKANwAdVCrKoGjAOZRSAIx78hoiZJ375y1anWawcQwJFiYU-5ZVr6TAa3QBhOAdeMGEbCghyRnEZKj5UOUZgFUYjCmF4xlQYAHdGAAU-UgBbCDhXAThSKAA3GB4APiSU1O1dPRj2ONQAGkZQ8MjUaJg-Pj7IWDhE5OHW1NsmBj5DSfgcAXRhYldxYiCAZQpx_ugYRO4m2fn5gXTM_bgjvhx1YnZxew2YPwAxM4OAE8bJ1ON8qrVXGs5H1JMIKGAABzyRQteYAX1hHjmt3g1Tq4mWqJxjHRxNSZKs6KsKl8ASCUimcAA9AAqVlsnDAR49Jk9OA8uCsILo-Q4TjUPaHY6NZpzWzVGA4XRaKVPY7EykgHogMoAITQrD4gKQYFYUHKmN1GGwOA4FGKUCQoHUVBoiBAAB4AIQAEQA8v4ACoATXyAFFGPbHQ0VJ7o1BGFBWKgtNxJNRJLHUPGfuhs6lPcUYBRWIxiBwjeUKOmAKpB34AWmRBcYnoiFFgDSDEE7ME9zI7XbjzI4eeznr0pHQgIn6AgNQagGUjQAA-grYIBpW0Aq9GAY7lAIAeA_ni7jAr4EGYSz4xHTOGZaEwuAIWYHp_PFAnzKnM4_Cez2t1cAGqgRomogZoWjA6JQUAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## ReduxMiddleware
 
