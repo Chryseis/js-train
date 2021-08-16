@@ -39,9 +39,9 @@ const expandTree = tree => {
   let result = []
 
   const expand = tree => {
-    ;[tree].forEach(node => {
-      result.push(node)
-      if (node.children) expand(node.children)
+    tree.forEach(({ children, ...rest }) => {
+      result.push(rest)
+      if (children) expand(children)
     })
 
     return result
@@ -50,4 +50,4 @@ const expandTree = tree => {
   return expand(tree)
 }
 
-console.log(JSON.stringify(expandTree(tree)))
+console.log(JSON.stringify(expandTree([tree])))
