@@ -1016,9 +1016,9 @@ const expandTree = tree => {
   let result = []
 
   const expand = tree => {
-    ;[tree].forEach(node => {
-      result.push(node)
-      if (node.children) expand(node.children)
+    tree.forEach(({ children, ...rest }) => {
+      result.push(rest)
+      if (children) expand(children)
     })
 
     return result
@@ -1027,10 +1027,10 @@ const expandTree = tree => {
   return expand(tree)
 }
 
-console.log(JSON.stringify(expandTree(tree)))
+console.log(JSON.stringify(expandTree([tree])))
 ```
 
-[![Edit expandTree demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFFGgAHKBUcoIgWgznqBfKQDqpYFRhQBOMGIwC8jYIMaMI6RIwCMABg1qANAsYAHAIYTKASRWMNe1ItRGAtjFUByAIJuXNxcQAW0dFNVAG15W0UlS00NACZvCONTCgtVaN19O0dnRhcAIVyvDMY_AKDGUKLFZVStADZ4iMMTamSorTjKxnsnVwAxXpcigF8dOU7q9S0AdgaE5vM22NnMnpyAcTXB8MUhgF19EbHtyJqNAGZZxJaUye1Z7uyXAGEnwuOSqEDqELDGqsWACzLJpJG7RC6dB6uAAi0Lef2K_k-ZQqx0aE2iAA5gYorgtTkDOitHgAJElbBF7YajX5_DFaACswLxrVOELRXSyrgAotz4X8Pl9UD8iSdbgBOHEg66LJmiqE5MxmCl_KnHNU7faoIYAbkEgjIqDgImwxgwABUJFJZOJJDIAHxHRTCRgSOAAVygIlkwV2etQ-kNxsYpqMGBkoitDqdEX9jWCtpguxwYFIYm5Rj8AApUKRMNHaY03Z6KDgDO64L4c3mYABKON0sCMauYHCC0y1kNYM3oFswNtIoX14bD44SCjusS2Ytehu6_XhceT2yhjBZxOj-cB1BB0iwHBQUgAcyzACkAMoAeQAcjhjWI0EeIGAAJ5Z1foS2SddW2t_nUgDoIAQHAuRoCYL5IGARhQHAMAjMBGDYDgvgUA4UBIKAhpUDQiAgAAPAAhNCl5POaACaAAK3KMKh6H2oI-F0VAjBQGGR7SC41AuAxqBMTARjoLxij4U4FBGIiJhwRQnEAKrmr0AC0mI8fo-EUBAFCwPa5qabA-F0BpWkwLxBm-AJQmMQARnmL6megEAAG72oAykaAAD6u6wIA0raAKvRgDHcoAgB4GQ5zmMXAxAPgYIhwGIxCcTgdBoJguAEDxBnhZFFCmXQNnoHZjF0MxvGAcBoHgWIkGINBsHwUMQxAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit expandTree demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFFGgAHKBUcoIgWgznqBfKQDqpYFRhQBOMGIwC8jYIMaMI6RIwCMABg1qANAsYAHAIYTKASRWMNe1ItRGAtjFUByAIJuXNxcQAW0dFNVAG15W0UlS00NACZvCONTCgtVaN19O0dnRhcAIVyvDMY_AKDGUKLFZVStADZ4iMMTamSorTjKxnsnVwAxXpcigF8dOU7q9S0AdgaE5vM22NnMnpyAcTXB8MUhgF19EbHtyJqNAGZZxJaUye1Z7uyXAGEnwuOSqEDqELDGqsWACzLJpJG7RC6dB6uAAi0Lef2K_k-ZQqx0aE2iAA5gYorgtTkDOitHgAJElbBF7YajX5_DFaACswLxrVOELRXSyrgAotz4X8Pl9UD8iSdbgBOHEg66LJmiqE5MxmCl_KnHNU7faoIYAbkEgjIqDgImwxgwABUJFJZOJJDIAHxHRTCRgSOAAVygIlkwV2etQ-kNxsYpqMGBkoitDqdEVtMBwYFIYm5Rj8AAo07TGoLTMCcPm3RRhgBKaNZiJuz0UHAGd1wXxpwvF_0IiBgRhpnPUUuhjCdpFC5sllsVmAUd1iWyVr0j3X68ISceTkNYM3oNNxofa_0G8hwUiwHBQUgAczTACkAMoAeQAcjhjWI0Ce2wBPNO99CWyRp4Jx3bFoBOogDoIAQHAuRoCYr5IGARhQHAMAjGBGDYDgvgUA4UBIKAhpUDQiAgAAPAAhNC15POaACaAAK3KMBhWH2oIRGMVAjBQGGJ7SC41AuMxqCsTARjoAJihEU4FBGIiJiIRQPEAKrmr0AC0mL8foREUBAFCwPa5o6bARF0NpukwAJxm-MJoksQARqQ6CvhZ6AQAAbvagDKRoAAPpBgeMCANK2gCr0YAx3KAIAexkue5LFwMQT4GCIcBiMQPE4HQaCYLgBD8cZMVxRQFl0PZjkFWxAkgWBEFQWIMGIHBCFIUMQxAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ### findPath
 
@@ -1092,7 +1092,7 @@ const findPath = (list, key) => {
 console.log(JSON.stringify(findPath(list, 'eg')))
 ```
 
-[![Edit findPath demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFFGgAHKBUcoIgWgznqBfKQDqpYFRhQBOMGIwC8jYIMaMI6RIwCMABg1qANAsYAHAIYTKASRWMNe1ItRGAtjFUByAIJuXNxcQAW0dFNVAG15W0UlS00NACZvCONTCgtVaN19O0dnRhcAIVyvDMY_AKDGUKLFZVStADZ4iMMTamSorTjKxnsnVwAxXpcigF8dOU7q9S0AdgaE5vM22NnMnpyAcTXB8MUhgF19EbHtyJqNAGZZxJaUye1Z7uyXAGEnwuOSqEDqELDGqsWACzLJpJG7RC6dB6uAAi0Lef2K_k-ZQqx0aE2iAA5gYorgtTkDOitHgAJElbBF7YajX5_DFaACswLxrVOELRXSyrgAotz4X8Pl9UD8iSdbgBOHEg66LJmiqE5MxmCl_KnHNU7faoIYAbkEgjIqDgImwxgwABUJFJZOJJDIAHxHRTCRgSOAAVygIlkwV2etQ-kNxsYpqMGBkoitDqdEX9jWCtpguxwYFIYm5Rj8AApUKRMNHaY03Z6KDgDO64L4c3mYABKON0sCMauYHCC0y1kNYM3oFswNtIoX14bD44SCjusS2Ytehu6_XhceT2yhjBZxOj-cB1BB0iwHBQUgAcyzACkAMoAeQAcjhjWI0EeIGAAJ5Z1foS2SddW2t_nUgDoIAQHAuRoCYL5IGARhQHAMAjMBGDYDgvgUA4UBIKAhpUDQiAgAAPAAhNCl5POaACaAAK3KMKh6H2oI-F0VAjBQGGR7SC41AuAxqBMTARjoLxij4U4FBGIiJhwRQnEAKrmr0AC0mI8fo-EUBAFCwPa5qabA-F0BpWkwLxBm-AJQmMQARnmL6megEAAG72oAykaAAD6u6wIA0raAKvRgDHcoAgB4GQ5zmMXAxAPgYIhwGIxCcTgdBoJguAEDxBnhZFFCmXQNnoHZjF0MxvGAcBoHgWIkGINBsHwUMQxAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit findPath demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFFGgAHKBUcoIgWgznqBfKQDqpYFRhQBOMGIwC8jYIMaMI6RIwCMABg1qANAsYAHAIYTKASRWMNe1ItRGAtjFUByAIJuXNxcQAW0dFNVAG15W0UlS00NACZvCONTCgtVaN19O0dnRhcAIVyvDMY_AKDGUKLFZVStADZ4iMMTamSorTjKxnsnVwAxXpcigF8dOU7q9S0AdgaE5vM22NnMnpyAcTXB8MUhgF19EbHtyJqNAGZZxJaUye1Z7uyXAGEnwuOSqEDqELDGqsWACzLJpJG7RC6dB6uAAi0Lef2K_k-ZQqx0aE2iAA5gYorgtTkDOitHgAJElbBF7YajX5_DFaACswLxrVOELRXSyrgAotz4X8Pl9UD8iSdbgBOHEg66LJmiqE5MxmCl_KnHNU7faoIYAbkEgjIqDgImwxgwABUJFJZOJJDIAHxHRTCRgSOAAVygIlkwV2etQ-kNxsYpqMGBkoitDqdEVtMBwYFIYm5Rj8AAo07TGoLTMCcPm3RRhgBKaNZiJuz0UHAGd1wXxpwvF_0IiBgRhpnPUUuhjCdpFC5sllsVmAUd1iWyVr0j3X68ISceTkNYM3oNNxofa_0G8hwUiwHBQUgAczTACkAMoAeQAcjhjWI0Ce2wBPNO99CWyRp4Jx3bFoBOogDoIAQHAuRoCYr5IGARhQHAMAjGBGDYDgvgUA4UBIKAhpUDQiAgAAPAAhNC15POaACaAAK3KMBhWH2oIRGMVAjBQGGJ7SC41AuMxqCsTARjoAJihEU4FBGIiJiIRQPEAKrmr0AC0mL8foREUBAFCwPa5o6bARF0NpukwAJxm-MJoksQARqQ6CvhZ6AQAAbvagDKRoAAPpBgeMCANK2gCr0YAx3KAIAexkue5LFwMQT4GCIcBiMQPE4HQaCYLgBD8cZMVxRQFl0PZjkFWxAkgWBEFQWIMGIHBCFIUMQxAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ### genTree
 
@@ -1174,7 +1174,7 @@ const genTree = (arr, parentId) => {
 console.log(JSON.stringify(genTree(list, 0)))
 ```
 
-[![Edit genTree demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFFGgAHKBUcoIgWgznqBfKQDqpYFRhQBOMGIwC8jYIMaMI6RIwCMABg1qANAsYAHAIYTKASRWMNe1ItRGAtjFUByAIJuXNxcQAW0dFNVAG15W0UlS00NACZvCONTCgtVaN19O0dnRhcAIVyvDMY_AKDGUKLFZVStADZ4iMMTamSorTjKxnsnVwAxXpcigF8dOU7q9S0AdgaE5vM22NnMnpyAcTXB8MUhgF19EbHtyJqNAGZZxJaUye1Z7uyXAGEnwuOSqEDqELDGqsWACzLJpJG7RC6dB6uAAi0Lef2K_k-ZQqx0aE2iAA5gYorgtTkDOitHgAJElbBF7YajX5_DFaACswLxrVOELRXSyrgAotz4X8Pl9UD8iSdbgBOHEg66LJmiqE5MxmCl_KnHNU7faoIYAbkEgjIqDgImwxgwABUJFJZOJJDIAHxHRTCRgSOAAVygIlkwV2etQ-kNxsYpqMGBkoitDqdEX9jWCtpguxwYFIYm5Rj8AApUKRMNHaY03Z6KDgDO64L4c3mYABKON0sCMauYHCC0y1kNYM3oFswNtIoX14bD44SCjusS2Ytehu6_XhceT2yhjBZxOj-cB1BB0iwHBQUgAcyzACkAMoAeQAcjhjWI0EeIGAAJ5Z1foS2SddW2t_nUgDoIAQHAuRoCYL5IGARhQHAMAjMBGDYDgvgUA4UBIKAhpUDQiAgAAPAAhNCl5POaACaAAK3KMKh6H2oI-F0VAjBQGGR7SC41AuAxqBMTARjoLxij4U4FBGIiJhwRQnEAKrmr0AC0mI8fo-EUBAFCwPa5qabA-F0BpWkwLxBm-AJQmMQARnmL6megEAAG72oAykaAAD6u6wIA0raAKvRgDHcoAgB4GQ5zmMXAxAPgYIhwGIxCcTgdBoJguAEDxBnhZFFCmXQNnoHZjF0MxvGAcBoHgWIkGINBsHwUMQxAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit genTree demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFFGgAHKBUcoIgWgznqBfKQDqpYFRhQBOMGIwC8jYIMaMI6RIwCMABg1qANAsYAHAIYTKASRWMNe1ItRGAtjFUByAIJuXNxcQAW0dFNVAG15W0UlS00NACZvCONTCgtVaN19O0dnRhcAIVyvDMY_AKDGUKLFZVStADZ4iMMTamSorTjKxnsnVwAxXpcigF8dOU7q9S0AdgaE5vM22NnMnpyAcTXB8MUhgF19EbHtyJqNAGZZxJaUye1Z7uyXAGEnwuOSqEDqELDGqsWACzLJpJG7RC6dB6uAAi0Lef2K_k-ZQqx0aE2iAA5gYorgtTkDOitHgAJElbBF7YajX5_DFaACswLxrVOELRXSyrgAotz4X8Pl9UD8iSdbgBOHEg66LJmiqE5MxmCl_KnHNU7faoIYAbkEgjIqDgImwxgwABUJFJZOJJDIAHxHRTCRgSOAAVygIlkwV2etQ-kNxsYpqMGBkoitDqdEVtMBwYFIYm5Rj8AAo07TGoLTMCcPm3RRhgBKaNZiJuz0UHAGd1wXxpwvF_0IiBgRhpnPUUuhjCdpFC5sllsVmAUd1iWyVr0j3X68ISceTkNYM3oNNxofa_0G8hwUiwHBQUgAczTACkAMoAeQAcjhjWI0Ce2wBPNO99CWyRp4Jx3bFoBOogDoIAQHAuRoCYr5IGARhQHAMAjGBGDYDgvgUA4UBIKAhpUDQiAgAAPAAhNC15POaACaAAK3KMBhWH2oIRGMVAjBQGGJ7SC41AuMxqCsTARjoAJihEU4FBGIiJiIRQPEAKrmr0AC0mL8foREUBAFCwPa5o6bARF0NpukwAJxm-MJoksQARqQ6CvhZ6AQAAbvagDKRoAAPpBgeMCANK2gCr0YAx3KAIAexkue5LFwMQT4GCIcBiMQPE4HQaCYLgBD8cZMVxRQFl0PZjkFWxAkgWBEFQWIMGIHBCFIUMQxAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ### transform
 
@@ -1182,11 +1182,11 @@ console.log(JSON.stringify(genTree(list, 0)))
 // transform({
 //   0: {
 //     username: '0',
-//     department: 'A-B-C',
+//     department: 'A-B-C', {path:'A'} {path:'A-B'} {path:'A-B-C'}
 //   },
 //   1: {
 //     username: '1',
-//     department: 'A-B-D',
+//     department: 'A-B-D', {path:'A'} {path:'A-B'} {path:'A-B-D'}
 //   },
 //   2: {
 //     username: '2',
@@ -1211,9 +1211,67 @@ console.log(JSON.stringify(genTree(list, 0)))
 //     ],
 //   }
 //   ]
+
+const transform = data => {
+  const expand = originData => {
+    const expandData = []
+    Object.values(originData).forEach(value => {
+      const departmentList = value.department.split('-')
+
+      departmentList.forEach((d, i) => {
+        expandData.push({
+          path: departmentList.slice(0, i + 1).join('-'),
+          parentId: i > 0 ? departmentList.slice(0, i).join('-') : '',
+          username: i
+        })
+      })
+    })
+
+    return expandData
+  }
+
+  const removeDuplicate = originData => {
+    const retObj = originData.reduce((obj, item) => {
+      return {
+        ...obj,
+        [item.path]: item
+      }
+    }, {})
+
+    return Object.values(retObj)
+  }
+
+  const genTree = (originData, parentId = '') => {
+    return originData.reduce((tree, node) => {
+      if (node.parentId === parentId) {
+        return tree.concat({ ...node, children: genTree(originData, node.path) })
+      }
+      return tree
+    }, [])
+  }
+
+  return genTree(removeDuplicate(expand(data)))
+}
+
+const data = {
+  0: {
+    username: '0',
+    department: 'A-B-C'
+  },
+  1: {
+    username: '1',
+    department: 'A-B-D'
+  },
+  2: {
+    username: '2',
+    department: 'A-X-Y'
+  }
+}
+
+console.log(transform(data))
 ```
 
-[![Edit transform demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFFGgAHKBUcoIgWgznqBfKQDqpYFRhQBOMGIwC8jYIMaMI6RIwCMABg1qANAsYAHAIYTKASRWMNe1ItRGAtjFUByAIJuXNxcQAW0dFNVAG15W0UlS00NACZvCONTCgtVaN19O0dnRhcAIVyvDMY_AKDGUKLFZVStADZ4iMMTamSorTjKxnsnVwAxXpcigF8dOU7q9S0AdgaE5vM22NnMnpyAcTXB8MUhgF19EbHtyJqNAGZZxJaUye1Z7uyXAGEnwuOSqEDqELDGqsWACzLJpJG7RC6dB6uAAi0Lef2K_k-ZQqx0aE2iAA5gYorgtTkDOitHgAJElbBF7YajX5_DFaACswLxrVOELRXSyrgAotz4X8Pl9UD8iSdbgBOHEg66LJmiqE5MxmCl_KnHNU7faoIYAbkEgjIqDgImwxgwABUJFJZOJJDIAHxHRTCRgSOAAVygIlkwV2etQ-kNxsYpqMGBkoitDqdEX9jWCtpguxwYFIYm5Rj8AApUKRMNHaY03Z6KDgDO64L4c3mYABKON0sCMauYHCC0y1kNYM3oFswNtIoX14bD44SCjusS2Ytehu6_XhceT2yhjBZxOj-cB1BB0iwHBQUgAcyzACkAMoAeQAcjhjWI0EeIGAAJ5Z1foS2SddW2t_nUgDoIAQHAuRoCYL5IGARhQHAMAjMBGDYDgvgUA4UBIKAhpUDQiAgAAPAAhNCl5POaACaAAK3KMKh6H2oI-F0VAjBQGGR7SC41AuAxqBMTARjoLxij4U4FBGIiJhwRQnEAKrmr0AC0mI8fo-EUBAFCwPa5qabA-F0BpWkwLxBm-AJQmMQARnmL6megEAAG72oAykaAAD6u6wIA0raAKvRgDHcoAgB4GQ5zmMXAxAPgYIhwGIxCcTgdBoJguAEDxBnhZFFCmXQNnoHZjF0MxvGAcBoHgWIkGINBsHwUMQxAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit transform demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFFGgAHKBUcoIgWgznqBfKQDqpYFRhQBOMGIwC8jYIMaMI6RIwCMABg1qANAsYAHAIYTKASRWMNe1ItRGAtjFUByAIJuXNxcQAW0dFNVAG15W0UlS00NACZvCONTCgtVaN19O0dnRhcAIVyvDMY_AKDGUKLFZVStADZ4iMMTamSorTjKxnsnVwAxXpcigF8dOU7q9S0AdgaE5vM22NnMnpyAcTXB8MUhgF19EbHtyJqNAGZZxJaUye1Z7uyXAGEnwuOSqEDqELDGqsWACzLJpJG7RC6dB6uAAi0Lef2K_k-ZQqx0aE2iAA5gYorgtTkDOitHgAJElbBF7YajX5_DFaACswLxrVOELRXSyrgAotz4X8Pl9UD8iSdbgBOHEg66LJmiqE5MxmCl_KnHNU7faoIYAbkEgjIqDgImwxgwABUJFJZOJJDIAHxHRTCRgSOAAVygIlkwV2etQ-kNxsYpqMGBkoitDqdEVtMBwYFIYm5Rj8AAo07TGoLTMCcPm3RRhgBKaNZiJuz0UHAGd1wXxpwvF_0IiBgRhpnPUUuhjCdpFC5sllsVmAUd1iWyVr0j3X68ISceTkNYM3oNNxofa_0G8hwUiwHBQUgAczTACkAMoAeQAcjhjWI0Ce2wBPNO99CWyRp4Jx3bFoBOogDoIAQHAuRoCYr5IGARhQHAMAjGBGDYDgvgUA4UBIKAhpUDQiAgAAPAAhNC15POaACaAAK3KMBhWH2oIRGMVAjBQGGJ7SC41AuMxqCsTARjoAJihEU4FBGIiJiIRQPEAKrmr0AC0mL8foREUBAFCwPa5o6bARF0NpukwAJxm-MJoksQARqQ6CvhZ6AQAAbvagDKRoAAPpBgeMCANK2gCr0YAx3KAIAexkue5LFwMQT4GCIcBiMQPE4HQaCYLgBD8cZMVxRQFl0PZjkFWxAkgWBEFQWIMGIHBCFIUMQxAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Websocket
 
