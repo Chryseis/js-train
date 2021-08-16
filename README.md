@@ -6,6 +6,8 @@
 
 - [DeepClone](#DeepClone)
 
+- [DismantleArray](#DismantleArray)
+
 - [DynamicPlanning](#DynamicPlanning)
 
 - [Event](#Event)
@@ -182,6 +184,62 @@ console.log(+new Date() - start2, 'WeakMap')
 ```
 
 [![Edit DeepClone demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFgJg4_GAOpoCN-gGtqAVCoDD_gU_NAR9GB-6MB3qYE_tQIYxAHVQNGgPh1AwDGAKV36AF40AbWYCQEwEr6gCVNA4c7yyqOBUaYYABwDCUcjABCATwCCAJy8BDN4wAvIwAbr5QQQB8jMDyjIzmlqEQcBBU6ADyAEYEQYwA2gC6ANzycQnkScROqDB5YRGB0bGo8fEQYIwAFA2MaJa-qMQwpJ0ASjAA5gCiWLYAlIxeMBQArl6ttQDujBMzcz3h86WtbR3dvf0Ug8OjjAAivlSLy2sbjNsPTzCHUMfl7U6vyCgWCqFWUAiAB8oYwKG5bCNOr0AISgxgAclIORgxAoGJeK3WrQaxUYikAAd6AVWVAN4-gGj1MqneKwKyvABq4RObUYLOSqXS2Tw9RSaRgmRycBwkAwXS6LW58WxeABjAAvosmowlSDgg1_qgVecuiiQiKBTlFvKFezwnlvH43DgUvb_L9FgB-AqFRiIGKqrkK038sWCyW2VZwAAWcpV3KVvoaABpY20bVAU-qA9zBbiKDgANYwNxwN1S0heaa-YjRwsBTVWhVLFYcqD5Wve4LVZy_NtFwr6xuZlOvYlNigtrNqxgwKBwOoN1NE95B0XivA4NOT1Xlf2M-Ij95d2puk7-8lMNgAWV8ti02kAOCaAIl8JDITIyzJUrDYHDVXG5r7Y9S2vW5SJFYK7mrkYIwDsAFdPqoGfgkv5AY0zSGkClwWNcQxIrsUyzAsY6jp8eyESeGEXLaVw3HhjzPMR7yfPRPx6pORq9KCYIQtCsLwoidyouiWI4niBKMSSnLnow1L0nubS8pu8mAt0JpmiGEo4JGvglnqlrDs2wGMC6jrOj4rp6ownpFD6fqTvEEEaQQOBzhQvyJmOLYDgqOZ4gWRa6UcZYVlWNZFlEMQpvuhmtu2eRHqx4S9m4_b2Wq3ncgerRKUyU4znOkW5dFbwkupa6SpMKwUbl26nLuBqnFlyHdmx8hnooADqMC-PmAGMIAK9aMABgAvZoAkdqABaK_CAExpgBG1gBgAhbrWgCwcoA1RGAMHqgB86oAe2qAGym75DEh36OM47hdT1fXBF0SoedpUZ5J8Z29Te8EauhpyKAYgDvRoAuLHlEa2o0bhdxkXMhIlR8MH4fsthXRaAb_TkfTYbRdwsWDJGQyxsN4N5CNClxHw8YwMJwgieHamiwQiXgubiU1SpkpStIMg1KldLdkZaTp2PzOj7wczglVuUqxzSYAVfqAPXOgCo-mo8lgUjAy4fdkNKjgYFeKseLlvBAYC652MeYDwwIacYDlt08u1kjWoWoV3J41zcAZFsqAAApeKQiJePCXS1rzdsKkbMDJR21gwHYx21Kd3VPTDSohzdOmRhlao7vJTVB6eJwfthNv4wHvi-gATG1Jyq1keRWugvoAIzJqcxC-td5QwL6-R14wRceQAzB5SqFKX8jl1KeTD8QZc5CPwTDzAJy8gM3t5AA1Mx3w6zncCkLAOBOJMXRHb-7gmTz-qJFvMA76Qe8r5ja-LAAtIwC8UB5GImQSc8rE_1zezXy-r1QdeB0LDn0vnvA-J1_zPRFqfSooDd5dBvjsLGD9v6-F_q_ACH95Dzx_hQIu_9b6ANgSA7eCCIFRzcI9OCMCThnzIVfRBACfioOfl3TE1CbwfxAImEAKQXBoHQW4JAYBwhzlVLwtAmBcCRgoAAWygEgUA5gqA0EQCAAAPCie4GR7AABUACartpiMFkQoyI8gNFmIiFAQYkxAgYmoBiCxqArHdXQC4-IGi5ErF8AkbSXhXIOIAKp6IAGL3wABzOPKBoigaRYCRD0QkmAGi6DxIoIkyxdBIzuJcRorIpB0BuHyegCAIRIiAGUjQAAPr0JgIAaVtACr0YAY7lACAHmkspFTLFwGIF4CAtgrBwC8MQBxOA6BSOwPgOAzi0k9L6QM_JdBCnFMWdYlxPC-FwAEagIRIixEwFVIcoAA&fontsize=14px&hidenavigation=1&theme=dark)
+
+## DismantleArray
+
+```javascript
+/**
+ *  输入：[1, [2, 3, [4]], 5]  '[a, [b, [c], e], d, f]'
+ * 输出：{ a: 1, b: 2, c: 4, e: undefined, d: 5, f: undefined }
+ * 注意：e和f没有匹配到任何值
+ * @param a
+ * @param b
+ * @returns {{}}
+ */
+
+function dismantleArray(a, b) {
+  try {
+    b = JSON.parse(b.replace(/(\w+)/g, '"$1"'))
+  } catch (e) {
+    console.log('输入字符串有误')
+  }
+
+  function parse(initArr, matchArr, initRet = {}) {
+    for (let i = 0, j = 0; i < matchArr.length; i++, j++) {
+      let key = matchArr[i]
+      if (Array.isArray(key) && Array.isArray(initArr[j])) {
+        parse(initArr[j], matchArr[i], initRet)
+      } else if (!Array.isArray(key) && Array.isArray(initArr[j])) {
+        if (!initRet[key]) {
+          initRet[key] = undefined
+        }
+        j = j - 1
+      } else if (Array.isArray(key) && !Array.isArray(initArr[j])) {
+        if (j < initArr.length) {
+          i = i - 1
+        } else {
+          parse([], matchArr[i], initRet)
+        }
+      } else {
+        if (!initRet[key]) {
+          initRet[key] = initArr[j]
+        }
+      }
+    }
+    return initRet
+  }
+
+  return parse(a, b)
+}
+
+let arr = [1, 2, [2, 3, [4]], 5, [7, 8, [10]], [null, 'o']]
+
+let arrStr = '[a,h,[w,y],[b,z, g, y, [c], e], d, f,[t], [k,p,[o,[u]]]]'
+
+console.log(dismantleArray(arr, arrStr))
+```
+
+[![Edit DismantleArray demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0AVAwDqoAEDbbgyfGCmioFj_AbQCMAGjaCATOIDM4wQBYAukvEBWJVwDkggIbyARvOKq2MU-nFglW1hx6AvxX7A2uxGzFsD76W2LuFcRh3AFcMGEhUGEs2dHc1K1DwyOi2AF87TkALm0B4Q34YQBiVMEBCm0BIc0BOZUBZRMAGJUBvuUBVeUAeBUy2AAEAB10AJ10AW1cWju6-r0GumAoQrtQ4NmBgNIz2BjpWMDDiCghyWIg4Xt1KWABBLp6ATwAKfS8ASjm7Ngou84f2Li82AF42ACkAZQA8gA5HCdLpwGCXAw4cbtKC6YhQuiXZjMADuAGpbnQAObiWwgAAkwmYIC0t1uAG5Hmk_LoKMQABZsS4we7AR5cMgzUiwHBQUi4y5aPiAdW1AGTegCY5UqAe-iKTT3ktHutUJttuxwZDLmgIBRTl1xAdGUyDeJdRQAEoTb5zNIcrlsMCkLqs2AUNgQW0ABnEeB9VM9bAAPGxjcyDQLqLiKEzAxBMZi_YmHe8Pmx3WwANYwV4_cOms6CCBKRWOrgQMCsg26c44PY1q45873ABkrbYjfrcEbOtQeoNgjwSkpb3T6a1UItg-HRoZEaLJfN_atE2p5fSZigkM9VcuAEIuw2zrXLs22x2jz2T1dp0Xh6POWnx5XWfuLdaKIJmyOx-P0x-Ezfrmmg_GEmApOgir_lwyrPum_o_P6AC0HjQeOdIwNuMC7tWN7dr255sO2bCHvhx4XH2A73iOqYwbhlz-qGd5dFGqAxkydH0UGPxeqhwjof-mHYX-9GTpcgimAWg5Lp6K6fuu8EfEsQlbjuT70a-B6AV-P5cZp8lAT-tosUOpYbrBG4qcprCOuMkzTHJeqfuhcFcPZUyat02o3AYilwZm3Suj8IjiL4UiyPIyimAkEgAOziAAHPIwjeio8ioCEUBQASpBaCoiqBWc_zPLaOj6EyoiCOiojnKoghGAAXuI-JsOcximOY4gxGAVUUKY36iO0VWkFVIQqCoWiKjycB8jAApCpc6B7AcRwwL2QXiEFJVdJSVIgKIIB7AAQmg3TnEgYC6NhaSHWgmC4EyFC9FASCgDyVA0IgIDBvuAAigIAMIACoAJoAAoAKJsE9L0AHysMGsNQBmhy4l8WjUFoCOoEjMC6OgONcMGvQTLofhMt5EwYwAqsDABiyGJdjjzBlsFCwHDwN6rAwZ0OznOI3QTL44TiMGKQ6DnDjwbLQAbnDgDKRoAAPozXNgDStoAq9GAMdygCAHnz8sy3AxBdBA7QenAXTEBjOB0Pd2D4HA2N88bpvmzLdAS1LHvIzjB1HXAp2oOdl3XZCixpEAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## DynamicPlanning
 
