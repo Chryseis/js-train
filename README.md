@@ -32,7 +32,11 @@
 
 - [ReadFiles](#ReadFiles)
 
-- [ReduxMiddleware](#ReduxMiddleware)
+- [Redux](#Redux)
+
+  - [redux](#redux)
+
+  - [middleware](#middleware)
 
 - [Sort](#Sort)
 
@@ -802,13 +806,58 @@ readCss('less/**/*.{css,less,scss,sass}').then(cssStr => {
 
 [![Edit ReadFiles demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEADgIYUAWjAvIwE4wAjgFcIAgBQByNp0kBKANwAdVCrKoGjAOZRSAIx78hoiZJ375y1anWawcQwJFiYU-5ZVr6TAa3QBhOAdeMGEbCghyRnEZKj5UOUZgFUYjCmF4xlQYAHdGAAU-UgBbCDhXAThSKAA3GB4APiSU1O1dPRj2ONQAGkZQ8MjUaJg-Pj7IWDhE5OHW1NsmBj5DSfgcAXRhYldxYiCAZQpx_ugYRO4m2fn5gXTM_bgjvhx1YnZxew2YPwAxM4OAE8bJ1ON8qrVXGs5H1JMIKGAABzyRQteYAX1hHjmt3g1Tq4mWqJxjHRxNSZKs6KsKl8ASCUimcAA9AAqVlsnDAR49Jk9OA8uCsILo-Q4TjUPaHY6NZpzWzVGA4XRaKVPY7EykgHogMoAITQrD4gKQYFYUHKmN1GGwOA4FGKUCQoHUVBoiBAAB4AIQAEQA8v4ACoATXyAFFGPbHQ0VJ7o1BGFBWKgtNxJNRJLHUPGfuhs6lPcUYBRWIxiBwjeUKOmAKpB34AWmRBcYnoiFFgDSDEE7ME9zI7XbjzI4eeznr0pHQgIn6AgNQagGUjQAA-grYIBpW0Aq9GAY7lAIAeA_ni7jAr4EGYSz4xHTOGZaEwuAIWYHp_PFAnzKnM4_Cez2t1cAGqgRomogZoWjA6JQUAA&fontsize=14px&hidenavigation=1&theme=dark)
 
-## ReduxMiddleware
+## Redux
+
+### redux
+
+```javascript
+const createStore = (config = {}) => {
+  let state = config.initialState || {}
+  const reducers = config.reducers
+  const listens = []
+
+  return {
+    dispatch(name, data) {
+      if (reducers[name]) {
+        state = reducers[name](state, data)
+        listens.forEach(fn => {
+          fn(state)
+        })
+      }
+    },
+    getState() {
+      return state
+    },
+    subscribe(fn) {
+      listens.push(fn)
+    }
+  }
+}
+
+const store = createStore({
+  initialState: {
+    a: 1
+  },
+  reducers: {
+    change(state, data) {
+      return { ...state, a: data }
+    }
+  }
+})
+
+store.subscribe(() => console.log(store.getState()))
+store.dispatch('change', 2)
+```
+
+[![Edit redux demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAExATjAIZUDKFpbjAXkYAKMqkgBzQY2ABfAJSCAfDIA6qRo1hMGnGNLGScaCBQjsoPPYwA-NmbIDc6zWIaM26AK7EYLOAbkRp4-fnDOGsz0TFAQDNQBQgDaALoRmmwUXiwawC6ajOhxAA6cxAAWwqjsALYwADSFnOyKeZEFjBBgIiG-_knVdSmt-R2aulTSvWEDtTApwhMNTRQt6WOasfGocDhgfACi7BXCYBoCKm0bHWeLq1Ty6xsKTwWyo4yy9eofEjAUViowhG7QKmWyGiWry-P1BcC8ACM4KwIAiYKdUCCNlsqDscMUvHBKmdHh93qh8k51FSKag3DpePwhKwONxGeirp1UKZzJZ7jBEGpQexBQBGSnfSLTfyCzmucrsVB_O56RroZpYsbgnIyRg4fVLSXXRgilbsD6aGkdcmU6mknbsnDwpEotHCYHKKI7UiwHBQUgSO58GA4P4A_nA-T2hjBnBFOClCgnADkFUVf2TjQATI8QPUQHEAEJodgsACeSDAFjgMC-BYw2Bw5QoNSgSFAYlxFFoAB4AIQAEQA8gBhAAqAE0AAoHRjN1tKdQ9-dQLTpgTJ6jJxeoZccdA7zQ9uqrZgK_z_DcAVTHADEALQADm3-R7ZgosCUY9MsB7AHp30_Jc_3Kfcdx7BFSHQMtwKKAA3JRAGUjQAAfTcH0YEAaVtAFXowBjuUAQA9_3g8DkRYCBih0FhiA3HA_zQTBcAIbd_xIsiKHAv9IOg9iVx3PMCzgYtqnLStq1rWRZCAA&fontsize=14px&hidenavigation=1&theme=dark)
+
+### middleware
 
 ```javascript
 
 ```
 
-[![Edit ReduxMiddleware demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggA0IEcAQmgIYBOAnkmO1DgwAvozSZcACwoBbKElBlK1CrQA8AQgAiAeQDCAFQCaABQCiAAmlyAfAB1Ua61AtR2qAOYBeAOTUf9o6SMOzogRYWajIwFOwWxJJcQhS-AKoGAGIAtAAcAQ4RahQQFLA2BiWwagD0xaUwgTXBoY0ARqTo3I3oEABuNoDKRoAA-kpwpLCA0raAq9GAx3KAgB41Pf0OanDEnBAADhQWcJzEvjjV4tj4cAE1axvbjdXtnbfOgQxMrBw8fAJCwj9AA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit middleware demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggA0IEcAQmgIYBOAnkmO1DgwAvozSZcACwoBbKElBlK1CrQA8AQgAiAeQDCAFQCaABQCiAAmlyAfAB1Ua61AtR2qAOYBeAOTUf9o6SMOzogRYWajIwFOwWxJJcQhS-AKoGAGIAtAAcAQ4RahQQFLA2BiWwagD0xaUwgTXBoY0ARqTo3I3oEABuNoDKRoAA-kpwpLCA0raAq9GAx3KAgB41Pf0OanDEnBAADhQWcJzEvjjV4tj4cAE1axvbjdXtnbfOgQxMrBw8fAJCwj9AA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Sort
 
