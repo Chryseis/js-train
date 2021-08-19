@@ -38,6 +38,8 @@
 
   - [middleware](#middleware)
 
+- [Regex](#Regex)
+
 - [Sort](#Sort)
 
   - [bubbleSort](#bubbleSort)
@@ -858,6 +860,14 @@ store.dispatch('change', 2)
 ```
 
 [![Edit middleware demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggA0IEcAQmgIYBOAnkmO1DgwAvozSZcACwoBbKElBlK1CrQA8AQgAiAeQDCAFQCaABQCiAAmlyAfAB1Ua61AtR2qAOYBeAOTUf9o6SMOzogRYWajIwFOwWxJJcQhS-AKoGAGIAtAAcAQ4RahQQFLA2BiWwagD0xaUwgTXBoY0ARqTo3I3oEABuNoDKRoAA-kpwpLCA0raAq9GAx3KAgB41Pf0OanDEnBAADhQWcJzEvjjV4tj4cAE1axvbjdXtnbfOgQxMrBw8fAJCwj9AA&fontsize=14px&hidenavigation=1&theme=dark)
+
+## Regex
+
+```javascript
+
+```
+
+[![Edit Regex demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggA0IEcAQmgIYBOAnkmO1DgwAvozSZcACwoBbKElBlK1CrQA8AQgAiAeQDCAFQCaABQCiAAmlyAfAB1Ua61AtR2qAOYBeAOTUf9o6SMOzogRYWajIwFOwWxJJcQhS-AKoGAGIAtAAcAQ4RahQQFLA2BiWwagD0xaUwgTXBoY0ARqTo3I3oEABuNoDKRoAA-kpwpLCA0raAq9GAx3KAgB41Pf0OanDEnBAADhQWcJzEvjjV4tj4cAE1axvbjdXtnbfOgQxMrBw8fAJCwj9AA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Sort
 
