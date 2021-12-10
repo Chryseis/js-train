@@ -548,14 +548,18 @@ const middleware = [
   }
 ]
 
-middleware.reduceRight(async (exec, fn, i) => {
-  if (exec instanceof Promise) exec = await exec
-  if (i === 0) await fn(ctx, exec)
-  return async () => fn(ctx, exec)
-}, next)
+// 推倒过程
+// middleware.reduceRight((exec, fn, i) => {
+//   if (i === 0) return fn(ctx, exec)
+//   return () => fn(ctx, exec)
+// }, next)
+
+const compose = middleware => next => middleware.reduceRight((exec, fn) => ctx => fn(ctx, exec), next)
+
+compose(middleware)(next)(ctx)
 ```
 
-[![Edit Middleware demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAExFWjAvI8AL4DcAOqkFlUDRqmxNOAQzgBPVMUYAKAJQcAfFz6Dh9JgFsI6dLADu0gE4wOjANqyFSsAFdFFCOUYBBZSywANOKS6sCCjMz0pLA4UKQA5soAjKoCqBHSFhBMElgUamkRInDRMLEJygBsqYLcQY6KjK7unukAQn6sQbkUoeGRoqXliQBMNemMmdLZwXkF_cVDcYkArON1k_KNzSytjADCnYGzvVwLUTHLygDM4xlZOZLzE4uXFQAs6wC6aUYm5lYytZ0C5iDAAEoQeIAC3yDSUymwMGIQTAqCCEHU7C0YQmEDAKiRSjQDGkihgpAJAAVLKQjHAYOoibYpjMiYVGPiVBAOOxOAAGdSsphoo5BIl3RjWCguSzpeEqLFaUX-cVYZHrbohXggAIgCBwNpoKxyJBgaRQBl1fUYbA4WEGKBIUAiKg0RAgAA8AEIACIAeX2ABUAJpUgCijAdUA0gk90cYUDJ8XYAHJqKnY6h4zBpOgsxFPQYYBRpMxoVYGRQ0wBVIMAMQAtAAOTP9T0eCiwDRB7KwT0Aek73bjA-hufzcYARqR0HIs570BAAG4aQDKRoAAfVeMEA0raAVejAMdygEAPQdL1dxuDESwQAAOTDglmIaZwA7QmFwBEzg8v17vC4HM5zv-0ZZrq-qGsalimog5qWjA3AIUAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Middleware demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAExFWjAvI8AL4DcAOqkFlUDRqmxNOAQzgBPVMUYAKAJQcAfFz6Dh9JgFsI6dLADu0gE4wOjANqyFSsAFdFFCOUYBBZSywANOKS6sCCjMz0pLA4UKQA5soAjKoCqBHSFhBMElgUamkRInDRMLEJygBsqYLcQY6KjK7unukAQn6sQbkUoeGRoqXliQBMNemMmdLZwXkF_cVDcYkArON1k_KNzSytjADCnYGzvVwLUTHLygDM4xlZOZLzE4uXFQAs6wC6vIwA9H9GIAK40ASAqAcfjANBeggBjCMJnMVjK1nQLmIMAAShB4gALfLKbAwYhBMCoIIQdTsLRhVAwiIQMAqCAcdicAAM6msFBclnSJKOQQJxFU0MBEU53PSak0TVQ_MYguFNMBGx6ir0oiYZAMAAdSHAbJw4aYYBZrNKetKjQjrDhkaiMVjccp8VhCcTUBStP5pXz_ALXULuiE0nodXqYMorSbEaplKqjqkQAEQBA4G00FY5EgwNIoPq6imMNgcLiDFAkKARFQaIgQAAeACEABEAPL7AAqAE0AAoAUUYpagGkEdcHjCg0lQ8XYAHJqDPh6hRzBpOhFxE6wYYBRpMxsVZ9RRZwBVdsAMQAtAAOBf9OseCiwDTt7KwOt_B9Pkd_bErtcjgAjUh0DkRc63QCAADcNEAZSNAAB9V4YEAaVtAFXowBjuUAQA93wg6CRzgYhLAgbUmDgSxiFnHA_jQTBcAIBd33wwjiLAv4gJAljB0XJMUzTDNLCzRAczzGBuFEoA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## New
 
