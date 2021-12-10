@@ -20,7 +20,7 @@ const middleware = [
   }
 ]
 
-// 推到结果
+// 推倒过程
 // middleware.reduceRight((exec, fn, i) => {
 //   if (i === 0) return fn(ctx, exec)
 //   return () => fn(ctx, exec)
