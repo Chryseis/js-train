@@ -8,11 +8,11 @@ const { parseCode } = require('./utils')
 
 glob('src/**/*.{js,mjs,css}', (err, files) => {
   const reg = /^src\/(.+)\/(.+)\.(mjs|js)$/
+  const html = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf8')
 
   const filesData = files.map(file => {
     let [src, name, subName] = file.match(reg)
     const data = fs.readFileSync(path.resolve(src), 'utf8')
-    const html = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf8')
 
     if (subName === 'index') subName = name
 
