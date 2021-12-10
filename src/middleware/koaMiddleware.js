@@ -20,8 +20,12 @@ const middleware = [
   }
 ]
 
-middleware.reduceRight(async (exec, fn, i) => {
-  if (exec instanceof Promise) exec = await exec
-  if (i === 0) await fn(ctx, exec)
-  return async () => fn(ctx, exec)
-}, next)
+// 推到结果
+// middleware.reduceRight((exec, fn, i) => {
+//   if (i === 0) return fn(ctx, exec)
+//   return () => fn(ctx, exec)
+// }, next)
+
+const compose = middleware => next => middleware.reduceRight((exec, fn) => ctx => fn(ctx, exec), next)
+
+compose(middleware)(next)(ctx)
