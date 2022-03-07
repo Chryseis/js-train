@@ -62,6 +62,8 @@
 
   - [transform](#transform)
 
+- [Websocket](#Websocket)
+
 ## Debounce
 
 ```javascript
@@ -1369,3 +1371,247 @@ console.log(transform(data))
 ```
 
 [![Edit transform demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABBQE4CGqcYpLAtgBTAAOqgaNxABkSNhopuPEBXODBao2vGNIDkE7QBoRYhY0wAHNiwqbKOgIIBaAEIOAwgZkWKAC0Ta72gC-nmw-fo5OQSFh_s5uQUbyjIGGcgoAjNKyxgrKquqaOukGiSamMBZWNhT2cQAiHsBevv5RTaEtEW3N4fUJaeIppeIATFnDuSpqGlqM2iMlAwrmltbUNXOOABoOAJqLOUNpgQCUpWKAykaADsqAy36AOeaAWP8TANoT2UniBbOtqTniPZsDh9GMRvNB0CxqNJXksTO8yiYvjo9L9gSYAbFIqiEQpQeDIahoRMcTJGEi5ijGBiIvF9CCwVAIVDGM8ALrJbEk8TAMkzIoeal9Ol4xkE6Hso5_MqszllSVo0nk-YCjq1LYeEVMwksnlKhZ0wU7fbChla8XJCWy8QyiaBCaskRkTgUZjsTjcPiMAC8plCbG9AD4ZCJxE64C7sBYMN7GDwIABzNB1P2B4OoExhiNYKPoZMUf0-tkAbhDCgA8gAjPAwYgUHAANzYUEU8H4ccTqDzbBOOA9AFE2KD-I3mzBU7IEZnypU1pQADIQcMxkctnArKrrHBwMxQCAUfjaBzaE4l9NldezigL8O9ngDof8dB0iAncelhGRji5v04MzKbyCO-OIAhe1TXnWcC7sQMD8BIz6MAA1Iw6Q9ngpBoAeR4nKkXJUpY6wAJLoNIECMEGEiMAA_NOqxgYuEFQTBcGMC--DoagmHHowOiLLheTTIULFASYpyngiolARJZ7iJCFCKGojCfhgXZickp6llOkK8KQ9YwHUig7hAxChGOPrtkmKZekGE64uQS6yZWeAxuZnY_pC6CKNB_BtlWz5ULwr5WWmCKyfJ6Y8jgkWkL5wkKM8e4wLwv4dKyJH-bFgSqYMdLAFJJihQpjk1nWK6tg5VYnqWmUiBpdkuvG1AACqQqZjBtiwCYWfmBr4ZQRExtoXFBTZMkwHJCkuV2ODuZ5MH8KwMAwHSqCkJggXWbFEBgG1K2YMlBIUP1XrHXhB1Ea-I1lAV6YLTAOBOsZ-4RZFu1LbFGammKjANagzWLe1nWud1ZKrXdzRnNJcqVZDgw1TDjDXa6i1ZRyLKstDgzqWeiM_X9MFaTpekGVBJn8Ep6CPn6JzU6e1WoI6dW-vmMY2VIwWTPkfIUrxywVLR6y1C47hVThyHjJD_FKsUoviKBAubH0IulmM7NKFMeo87LfMbrYCtGtoVUiHTYakLAOBQKQ8bzW6XA8AI6BUyeID6CAi5OGglgAJ5IGATYqCkrsYNgODeNYUBIKATpUDQiAgAAPAAhHUZauI1uwAAp9owoe8FAAYiHHOdQIwUAcPGXraNQ2j56ghcwGw6A1-IceaMzoKWCoFAVwAqo1ABiDgABzV6WccUHusABo1E8wHHdDjxQk8F3Q3j143BcVqtns13H6AQPWAYXIAAPom7AgDStoAq9GAMdygCAHnPe8HwXcDEB1ZgunALDEBXOB0GgmC4AQauc9n6vwoDvOgm90Db2XkXGuztXZwHduoFg3tEC-ygP7QIgQgA&fontsize=14px&hidenavigation=1&theme=dark)
+
+## Websocket
+
+```javascript
+import Events from '../event/index.mjs'
+
+const md5 = str => {
+  // todo
+  return encodeURIComponent(str)
+}
+
+export const MSG_TYPE = {
+  /*
+   * 心跳
+   * */
+  HEARTBEAT_CHECK: 0,
+  /*
+   *  文本
+   * */
+  TEXT: 1,
+  /*
+   * 图片
+   * */
+  IMAGE: 2
+}
+
+export const SEND_MSG_TYPE = {
+  /*
+   * 心跳
+   * */
+  HEARTBEAT_CHECK: 1,
+  /*
+   * 回执
+   * */
+  ACK: 2
+}
+
+const HEARTBEAT_TIME = 30 * 1000
+
+/*
+ * 消息通道类
+ * 接收报文
+ * {
+ *  "id":"消息id",
+ *  "msgType": 1, 0--心跳  1--文本  2--图片url
+ *  "content": "http://www.baidu.com" 内容 { "bizType":"","content":""}
+ * }
+ *
+ * 发送报文
+ * {
+ *  "type":1   1-心跳 2-ack
+ * }
+ * 对外暴露 init reconnection sendMessage destroy方法
+ * 对外暴露 open message error close 事件
+ * e.g let instance =  MessageChannel.init({url:''}); instance.on('message',data=>{console.log(data)})
+ * */
+
+class MessageChannel extends Events {
+  timer
+  timer2
+  count
+  __ws__
+  url
+  static instanceMap = {}
+
+  constructor(url, initEvents = {}) {
+    super(initEvents)
+    this.timer = null
+    this.timer2 = null
+    this.count = 0
+    this.__ws__ = {}
+    this.url = url
+    this.connect()
+    this.handleMessage()
+    this.handleClose()
+    this.handleError()
+    this.handleBrowserEvent()
+  }
+
+  /*
+   * 初始化消息通道，同一个websocket只创建一次实例
+   * */
+  static init({ url }) {
+    const instanceId = md5(url)
+    if (!MessageChannel.instanceMap[instanceId]) {
+      MessageChannel.instanceMap[instanceId] = new MessageChannel(url)
+    }
+    return MessageChannel.instanceMap[instanceId]
+  }
+
+  /*
+   * 重新连接
+   * */
+  reconnection() {
+    let initEvents = {}
+    const instanceId = md5(this.url)
+    if (this.__ws__.readyState !== WebSocket.CONNECTING && this.__ws__.readyState !== WebSocket.OPEN) {
+      this.closeWebSocket()
+      if (MessageChannel.instanceMap[instanceId]) {
+        initEvents = MessageChannel.instanceMap[instanceId].events
+      }
+      Object.assign(MessageChannel.instanceMap[instanceId], new MessageChannel(this.url, initEvents))
+    }
+  }
+
+  /*
+   * 发送消息
+   * */
+  sendMessage(message) {
+    this.__ws__.send(JSON.stringify(message))
+  }
+
+  /*
+   * 销毁消息通道
+   * */
+  destroy() {
+    this.closeWebSocket()
+    const instanceId = md5(this.url)
+    delete MessageChannel.instanceMap[instanceId]
+  }
+
+  /*
+   * 连接websocket
+   * */
+  connect() {
+    if (window.WebSocket) {
+      if (this.__ws__.readyState !== WebSocket.CONNECTING && this.__ws__.readyState !== WebSocket.OPEN) {
+        this.__ws__ = new WebSocket(this.url)
+        this.__ws__.addEventListener('open', e => {
+          console.log('连接成功，ws=', e.target)
+          this.emit('open', e)
+          this.heartbeatStart()
+        })
+      }
+    } else {
+      console.log('浏览器不支持WebSocket')
+      this.emit('error', new Error('浏览器不支持WebSocket'))
+    }
+  }
+
+  /*
+   * 接收websocket消息
+   * */
+  handleMessage() {
+    this.__ws__.addEventListener('message', e => {
+      const receiveMsg = JSON.parse(e.data)
+
+      // 不是心跳才回执
+      if (receiveMsg?.msgType !== MSG_TYPE.HEARTBEAT_CHECK) {
+        this.emit('message', receiveMsg)
+
+        // 发送回执报文
+        const message = JSON.stringify({
+          id: receiveMsg.id,
+          type: SEND_MSG_TYPE.ACK
+        })
+        if (this.__ws__) {
+          this.__ws__.send(message)
+        }
+      } else {
+        this.heartbeatReset()
+        this.heartbeatStart()
+      }
+    })
+  }
+
+  /*
+   * 连接断开
+   * */
+  handleClose() {
+    this.__ws__.addEventListener('close', e => {
+      console.log('连接断开，ws=', e.target)
+      this.emit('close', e)
+    })
+  }
+
+  /*
+   * 连接错误
+   * */
+  handleError() {
+    this.__ws__.addEventListener('error', e => {
+      console.log('连接错误，ws=', e)
+      this.closeWebSocket()
+      this.emit('error', e)
+    })
+  }
+
+  /*
+   * 监听浏览器事件
+   * */
+  handleBrowserEvent() {
+    window.addEventListener('online', this.reconnection.bind(this))
+  }
+
+  /*
+   * 心跳开始
+   * */
+  heartbeatStart() {
+    this.timer = window.setTimeout(() => {
+      if (this.__ws__.readyState === WebSocket.OPEN) {
+        // 连接还在发心跳报文
+        const msg = JSON.stringify({
+          type: SEND_MSG_TYPE.HEARTBEAT_CHECK
+        })
+        this.__ws__.send(msg)
+
+        // 心跳补偿，重试三次心跳未应答关闭连接
+        this.timer2 = window.setInterval(() => {
+          if (this.count < 3) {
+            this.count = this.count + 1
+            this.__ws__.send(msg)
+          } else {
+            this.timer2 && clearInterval(this.timer2)
+            this.closeWebSocket()
+          }
+        }, HEARTBEAT_TIME)
+      } else {
+        // 连接失败时 关闭websocket
+        this.closeWebSocket()
+      }
+    }, HEARTBEAT_TIME)
+  }
+
+  /*
+   * 心跳重置
+   * */
+  heartbeatReset() {
+    this.count = 0
+    this.timer2 && clearInterval(this.timer2)
+  }
+
+  /*
+   * 关闭webSocket
+   * */
+  closeWebSocket() {
+    this.__ws__.close()
+    this.timer && clearTimeout(this.timer)
+  }
+}
+
+export default MessageChannel
+```
+
+[![Edit Websocket demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgQC2ADqQE4UAEAogG7UVzswLUvXYByHAHoYvSvjhiA3AB1Uqsqjgd66AKzsAvOy0tDAPnbBV7dpMnsKpdKWvsWMCgFcWqdtTKYAKoASgCSAMIizKh8ABQmAJQqqAC-yarYzGzsGlrsALIAygDiAPoAKgCaAAqchpaukgBUruxN7IDD-oDPsa3tTZKuABKcAILB5QBCo-Wl4cPhANKI7AAMADSqjS2-Nu3sgOGmgDTmvW0DO-WcABrlywCMG2o7zSeAf2qA4k4n_a6h-SPFnMsAEyqNIZLBZDi5DiFTgAOQAIqUimUqrV6lYntsbG1Oj0djivjthmNJtNZvMlux7ptMSdAHtqgHMjT5nGwjRZAkHJKHsYnjKYjGblH51IwAZhWONuK2lyWevnagAjbQD2BoAsBMAygmAbx9rO1AKXGgDZTQClRvttQ15TZlHR0BbEBblRArSAHjj2Bb6HAAOblACejBg1qpa1WAFog90bLcQ0cbICQ-9vFATS6SOQqJR_RaABYUCiMRB2ADuhZwACMAIb2zw4Mj0C3sQChioBO7UsSeLEAAXt7fdaLRaNsnKHxuyALSkTaP5SbAIvKgEAEo0mjHOi0UH1-pC3bERsMx0vEADWY5NgE_tQBomoAWs0ATOnsNAQDjuDQxYgUCDkYzUdD5eBwUvumDsTAmUgvUATtNAFWbI8z0vUhfV8ehP2_X8YBYYRTGIKBSDgX9AGi5QA3uRNGAcHddhYA4NAtFLVBiF_IwCjgn9wgzciYigHBrwoWJgHjRAxDEFIkivTQKHIyicHIWIxFguAvx_MQ1nQUtBIMMxgFyUhYBwND3ViOTBISXiTUJdQoFLSSaMk-D6MYmAoD8LBU3QAQeD4AQFwcBhEOSGwn1glhAQ8nJSE8Sg_NKUp8zgEK_PjPyyKfYh-LIiiYHyUtGHRUFHhsKEWE8R9WFieNA1YxzKAEIxgF401sWMTxfRYWIitkfgklaBwMwgOAcC8xD6lQTwoCgPzPLajqup8nq-oGlqKGGqsAsoeoVkG1r2pwEKwpCtKlumlb43qKKppm-8YEfWJmvxZaOoYjBYA_Myf1OraZqu9BYHCNCMIeg6Vue2BOCQvKzqq7bLvIl6YAmYQwsQ4q2MB9hxxsOVsXaQBcJUAac1ADRlZV1UAGH_ABgVQAAOUAKjl8xgYs4FIPcPEAK-VAGwlQAvvQJwBCa0APO1AGj5ZkaVcGKIDi1j2Ja-NXAqlzMvIPJSMExLQnQeodF0fKWCgM6WogMB2FiABCW6pJgCzUCYliBKEpKUoAbUlk2ZYAXQSSqqtM3X9cNy3EuSxgLeN6X0GtnqYHzR3zKupjFeVpbxxa9wvB8QO6ODqyjYSyj3c9pOYBtvyEdsLFdnYQBZxMABtNAD34nVOceVw73IB8n1Eu3RaIjx-JvGHSssdKqu5V3KJluW9FiYGcHjFXzrVjWB7W8LShwdxS3QL1CkEqh2E1gwjAAdTJwpKd3DwcHCAB5WFYU4cIhVhYp2AAMkvi7VtCyfp5gWf58X38V_Xzft93_falhOuWqGitVC6EYAb2LFvKmsN0jnRsKPWIOsg6WWYl3U2HsUE23_jA7EDUnL1AQXHJBicpbJ3Nugn2OAZBOSWjYCOWD97FjwMdCgOBjJwAgO6VA8DaJ63jsgr2JC0H8PTj7QMMQA74J4Ug_uM0CpNwoC3BIcMaHCy2CcGcyoy40hsBhDAEjYgSV1pgoGM0J4hRwDo9AsQABShRD7mIoCwNA7o1Zen0dwxRmdVH4naIAAFTACD1tjNUmiMp_ngA4wCp17aAI6sAjCYCIE7ygS1TuQie5GHltInaSslGhOIr-CRzsE4oJTmQ62njaTePYCXUm5Mv4UGCa4I6J0jHYPVrEfMaBnD5hwPEupLSqpwPHvfMxM854L3km_Ve7BemQL3ofY-p9QjnyvjfIZ60p6jJfhM5eUyZmJJwD_OE_SHZrMnn7AOeyPCZI6kPaBDtsSnLMbPdAMMAAy7VUyITElBagMk_DmCifc_ymhVL4Q0mJEugAEI0APlKOMwoGD-fhQSLAfwUByfcgeMB6A3m-dBRF6KTlPSfmwYsT8KDjLYJ9LBNCCVZxoX4KAGFAVixBWpcFYhADytoACcjAAWaoAWDlAD0poAQGNLkUDEASzF2K2JiEQshP5YiuD_Tqpy3lgqRWf0geKnJWcs5I1zvqGpFNIEaMqQZEJP0krcMifXR5U9nlvI-dQL54luGIoBfXFleQ7wwAgLwfIHp6g2LsYwUsLAPr4W0qWPidh2B8sAPRm3RACyRoyLRDs4Het9UlD0AB-HAbpPQrh2UYZEFQaicBwLyUkApyQnwWMc4xK0sU4pdXdGAfyM1-o9NG-wM5GRzhCfc7kBj4KBtsbCexjjUDOLAK4j1ab0DLA7Vm90LF0BOiBZ5FcywYQIiRCUUttQcBsgWAA7EvE7lAsGSY4ZpR62EpWqYqeFi3GtoJcorBKQGVMrndEnAGZiUUFJfJYI8Arlvtvv-0NgGyUUqSR-lq56VEVORlUnUgBa00AAD6DSdgWreiA61X0OqPpYegF5jV3laCdcq2JbbAxUQsHOlSbLSCaTECXTDcK4AIro51UNqKJUzSbdKmj-Lw5w11TnHEJdACYqYAe-jsM2AtX9ZCBHzq2pI2RvgFHPnKtlawN1ilmXAopsx1jMnZOce434ATQD3qgI1YkqlGLBNSrEnplgomEPia8ShwAi26ABoVblPKcIKfYBaiGpAoYsBhqpqqHSMCRY0w6yjMRlXkCgGgWjt9K4GyYc-VAJZOnXI8UhxGkn2jdAw2jULkGSUweRbDQFA9Rr1Hi108xHhyhuQCmxSJhm51XofTex-z9xlL1Xh_cBdSDm_zvYjewJdAAb8YACnVJzdH7RuodAajBBvHSYJxLiBbUoeVu9gO7EQltROWyt_IZhzFraemlF7nNDfWR1jA-iu2KFsPYbogBTCMAP4KOM86AFXowAkHJM26IAKnNAApeoAFW9ADOioAW9SS5c2O81tyY0jBtcSxhCgoQBwsG4KWKAsQ-sMce60seh05ocAADzsFFHN-9MTaf1AHmQQKHAADUVJnsbtvsR59-bwP0qst-ynDaRqY8BCsnIsBQ0E6oETkn1zOoy9Fw8w6dnRVOYF3Sh2KRAw3bJEKfInBaVft_D-n7qHACMmoAUljABvpuwZHhq6mU45zrhzYHqHwwQ8b0YfJTfCm88h3O3Q86ADt_GrAGgMUBA3j2LWugFs6MItQj6vvKy-vvL4lSvELE9Jxj7PYeysnDdz7-ppqzippo7r456maNUszy13PqFiVddgj1tXo0w8ghpJkVgHBMBgFLH1DgBTeGKEdHQOAEw0Chq9EgMfjKYBG5AJQuQBAkCgA0KmCgtBUKsK4I1e2W_-BpUaeLBxOVHB1RwSVNKjfBONVbo__gSHXCiQv4GMAqBjk4ERgkJSwvQWI4BgCWBQDYgL9FEjMwBWANZiIrwFpAxrIjAL91JqB3RppvsIB2AGcBorxududmcB4f9GoLZrY_8ADT0DdP1xdrdT1MU38zYL9fYjA1cL84A2DGpfYAAffg9gM2W2WaCieSWIf_BIBDSODwbwXwYGL_HYITGAxqY5ZA4gcmdnV_JyXgvga2ZJG_dgPjVuSA0AnAIQEQWIPjTwWCEqBIcxDLSiWIW4aQkeNpTQuAO9Twiw1gTgHcDMSQwKR8fLDWTQ5nTQlhRgRgKAVxYGQMEwtw-5PSc6WhKqKOeQi6JQmwUgMAMAVQvgGgwAtpMwsA9qUogoygOAudBA0wWIZA_A9PNA-oTA2AKdXAlAwgvAkgsgmaXI_Ii_KgooughDK3IzDQrQowFg3Q9g09OBTWKQozX9bgvQygDg9gXqfqSnDImORQ-DAdKnWITw3oxtVg9g-oHwyAKAZXI44sAFTQotQQWg_YqqNI7EHYhQ4abI9gcgZw3_J445bkF8Tgu2frZgvovIyoigQMcgJIh2f_KImIuI4aBIlFWwpyOE99TPCgwon4542Q6OT49qJDWhbkC_c5U_OINw9QIw__eocne2JjMFFjMSUIeXXmXccVAfR4TA0SMQVCDkv5KQwfRqESRKMSRwHKDMIU4ImuXwZPJk9SFksQNkyU4gaUtwlIjIUUlQ_kpwzk6kmIUU_osSAUvcIU54zA3Us0g07UvgChVzMQNUjUu0uQXU50rknk8EYfUJMfCfSktMVAWfdqBfVAJfFfEnDCDfTpbAP9CgegKAXffsA_WgOnTWeEfeU-MtMLeMqAMwVQOnLMBMoicid0BFX5fM1AQsp-dASsmwOnWCQSHIBiMNDwBFQIcoAAMSDAAA4xA6yCCnwKBYAzAuthyYA6dJAhyRyCzJBINayCziwnAvRKy6d0BfUzBABlIwwyZMAGlbEHQAY7lABAD0nPXO4FXLgGIEcUYA4DgBYGIARSkBjNwAIH7MnMvOvIoFXMkCXLnm_KLLzNUGDPn0XxYGX0QFXyjJSBSCAA&fontsize=14px&hidenavigation=1&theme=dark)
