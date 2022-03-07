@@ -1371,7 +1371,7 @@ console.log(transform(data))
 ## Websocket
 
 ```javascript
-import Event from '../event/index.mjs'
+import Event from '../event/index.ts'
 
 const HEARTBEAT_TIME = 20 * 1000
 
