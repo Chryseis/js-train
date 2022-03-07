@@ -1,7 +1,9 @@
-// @ts-ignore
-import md5 from 'blueimp-md5'
-
 import Events from '../event/index.mjs'
+
+const md5 = str => {
+  // todo
+  return encodeURIComponent(str)
+}
 
 export const MSG_TYPE = {
   /*
@@ -55,7 +57,7 @@ class MessageChannel extends Events {
   count
   __ws__
   url
-  static instanceMap
+  static instanceMap = {}
 
   constructor(url, initEvents = {}) {
     super(initEvents)
@@ -140,7 +142,7 @@ class MessageChannel extends Events {
       const receiveMsg = JSON.parse(e.data)
 
       // 不是心跳才回执
-      if (receiveMsg.msgType !== MSG_TYPE.HEARTBEAT_CHECK) {
+      if (receiveMsg?.msgType !== MSG_TYPE.HEARTBEAT_CHECK) {
         this.emit('message', receiveMsg)
 
         // 发送回执报文
@@ -231,7 +233,5 @@ class MessageChannel extends Events {
     this.timer && clearTimeout(this.timer)
   }
 }
-
-MessageChannel.instanceMap = {}
 
 export default MessageChannel
