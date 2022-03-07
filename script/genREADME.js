@@ -7,7 +7,7 @@ const { getParameters } = require('codesandbox/lib/api/define')
 const { parseCode } = require('./utils')
 
 glob('src/**/*.{js,mjs,css}', (err, files) => {
-  const reg = /^src\/(.+)\/(.+)\.(mjs|js)$/
+  const reg = /^src\/(.+)\/(.+)\.(mjs|js|ts)$/
   const html = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf8')
 
   const filesData = files.map(file => {
