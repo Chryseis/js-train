@@ -42,6 +42,8 @@
 
 - [Regex](#Regex)
 
+- [Request4Node](#Request4Node)
+
 - [Sort](#Sort)
 
   - [bubbleSort](#bubbleSort)
@@ -908,6 +910,65 @@ store.dispatch('change', 2)
 ```
 
 [![Edit Regex demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggA0IEcAQmgIYBOAnkmO1DgwAvozSZcACwoBbKElBlK1CrQA8AQgAiAeQDCAFQCaABQCiAAmlyAfAB1Ua61AtR2qAOYBeAOTUf9o6SMOzogRYWajIwFOwWxJJcQhS-AKoGAGIAtAAcAQ4RahQQFLA2BiWwagD0xaUwgTXBoY0ARqTo3I3oEABuNoDKRoAA-kpwpLCA0raAq9GAx3KAgB41Pf0OanDEnBAADhQWcJzEvjjV4tj4cAE1axvbjdXtnbfOgQxMrBw8fAJCwj9AA&fontsize=14px&hidenavigation=1&theme=dark)
+
+## Request4Node
+
+```javascript
+const https = require('https')
+
+const hostname = ''
+
+const request = (options, postData, headers = {}) =>
+  new Promise(resolve => {
+    if (options.method === 'get') {
+      options.path = options.path + '?' + new URLSearchParams(postData).toString()
+      postData = null
+    } else {
+      postData = JSON.stringify(postData)
+      headers['Content-Type'] = 'application/json'
+      headers['Content-Length'] = Buffer.byteLength(postData)
+    }
+
+    const req = https.request(
+      {
+        hostname,
+        port: 443,
+        ...options,
+        headers: {
+          ...headers
+        }
+      },
+      res => {
+        let result = ''
+
+        res.setEncoding('utf8')
+
+        res.on('data', chunk => {
+          result += chunk
+        })
+
+        res.on('error', error => {
+          console.error('res=', error)
+        })
+
+        res.on('end', () => {
+          resolve(result)
+        })
+      }
+    )
+
+    req.on('error', error => {
+      console.error('req=', error)
+    })
+
+    postData && req.write(postData)
+    req.end()
+  })
+
+request({ method: 'get', path: '' }).then(data => {})
+```
+
+[![Edit Request4Node demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEAFhRQA5yMC8jATjACOAVwgCAFAHJWHOJICUAbgA6qVWVQMWpBqgCGAWxg9GkySrWoNWgSPhNe40uwoR6AGkbsdFACJ6KPU9mGD1MPi5eYABfeR4APkZUGAB3RgAFPlIDCDgYcQE4UigAN2NuROBVRkYIMEYnFzdNHCMKZlJ0Hm5eSQBzGAoFRirUGprnV3ocdgDmE0nmuBm5xgBqUwB-SXWk1MYAVQAlABkAZVC-YmZ0vT5DOHFvBn9A-RwKUjOKPjQ-8SU1XGzz8AT0JlQwigUAsNWijBgUDyIyBNRBr3BvAAUmcAPIAORwDF-qD6dQAnk8fBjAWNxiEwjAIgBtSQAYXIVEoAFoACrk9gwSQAXRMkj07HYUAgxACzQA9ARyOZUSxQuE4KyOZRqBRuSdqH12iKTAAhYRgMBMnAAI3JVANpPaVJeYNpcNUQOsTFsJhknBwtmE9nEo3G2l0hhg7lV3j4FEQjAALEmAMwxuk1HDZxYeVUMjWJ4CMbM4AtMuCq6JA6KeQoJFGZxiwH3wKEOUwqpuFImDACiVk6fykwgoYAAHApYeMe-QpOgwZJPNdhKgANYNsPh_htqBMNa8Ffr6dw90z-A4OeSJlZPhLhF8W-b1U1azFGA4G-kPhSQrce9fnwZ6nieO7LFe1DoPeALPk2NSFMUZQFLuFDAYwsTThhQK2JeqBSIBAGPt-sHhm-sCfkRP6SLY_6eIBZ5YXS6JgowABkrE7oIOApL8VAuqCbzTjhkEAhYjGqEGIZbm0HToIm_SDEuQKzO08mSKosQfCEeELoEm4YSA7ggLkppoHc5JIGAehIjAtbGRg2BlhQBhQEgoAaFyFC0AAPAAhL4uJsryACa6R9iwzlQPEqjeawLnNnopL_tQkjRagsXqmlNTeW04LXHceQUP-By8gAYtyk5ZYw3muBQsDxLyEB1TA3nyrV9UxfKBZpd5NqdOSPXoBAJTxIAykaAAD6ZEwIA0raAKvRgDHcoAgB6tUNI0xXAxC_C4jBwFc_44PKaCYLgBCpa1G1bRQPXyn16ADZ1cVRaohnGXApn6HwFmIFZNnRH9QA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Sort
 
