@@ -1,22 +1,28 @@
-const debounce = (fn, delay) => {
-  let timer
-  let result
-  let first = true
+const debounce = (fn, delay, maxTime) => {
+  let timer = null
+  let lastTime = 0
+  maxTime = maxTime ?? delay
 
   return function () {
     const context = this
-    const args = arguments
-    if (first) {
-      first = false
-      result = fn.apply(context, args)
-    } else {
-      clearTimeout(timer)
-      timer = setTimeout(function () {
-        result = fn.apply(context, args)
-      }, delay)
-    }
 
-    return result
+    if (lastTime) {
+      const currentTime = +new Date()
+      if (currentTime - lastTime > maxTime) {
+        lastTime = +new Date()
+        fn.apply(context, arguments)
+      } else {
+        clearTimeout(timer)
+        timer = setTimeout(function () {
+          lastTime = +new Date()
+          fn.apply(context, arguments)
+        }, delay)
+      }
+    } else {
+      fn.apply(context, arguments)
+      timer = true
+      lastTime = +new Date()
+    }
   }
 }
 
