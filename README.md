@@ -69,25 +69,31 @@
 ## Debounce
 
 ```javascript
-const debounce = (fn, delay) => {
-  let timer
-  let result
-  let first = true
+const debounce = (fn, delay, maxTime) => {
+  let timer = null
+  let lastTime = 0
+  maxTime = maxTime ?? delay
 
   return function () {
     const context = this
-    const args = arguments
-    if (first) {
-      first = false
-      result = fn.apply(context, args)
-    } else {
-      clearTimeout(timer)
-      timer = setTimeout(function () {
-        result = fn.apply(context, args)
-      }, delay)
-    }
 
-    return result
+    if (lastTime) {
+      const currentTime = +new Date()
+      if (currentTime - lastTime > maxTime) {
+        lastTime = +new Date()
+        fn.apply(context, arguments)
+      } else {
+        clearTimeout(timer)
+        timer = setTimeout(function () {
+          lastTime = +new Date()
+          fn.apply(context, arguments)
+        }, delay)
+      }
+    } else {
+      fn.apply(context, arguments)
+      timer = true
+      lastTime = +new Date()
+    }
   }
 }
 
@@ -98,7 +104,7 @@ const fn = debounce(() => {
 setInterval(fn, 100)
 ```
 
-[![Edit Debounce demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEmARqQK6rEyMC8jACjCoANMxhQAhgE8AlHwB8jYAB1UjRrCYUIAWxgAnANxqNWxgfjsoFE-s0wmkAwz6MKB9jDsbLFdgbqYJzEOuSC8qr2GmSorrFUWEz8FAAWEHA-GoyxrpIGAOZwbvkF7PqUmWqm2RBggs4MkTXZjI3JbZJQcN4t2ZZw1h3COJIADmNQ0gIJ2BRipXCyWRoAvowSPcp9MbD5ACp6MBwUAjr6Bss77kcGbj0Uh_onQiFh6gLN0a0WVjZuI3Gk2msySC0KSxW2VWYkwUjkUNW1W-fgC6gGQyyqzs2ORuSc6n4rA4XBgAk-im29lypFgOCgpAKAgA5OwendiFAIMQANbMq6oGGMACsAAZRQKHgBJSiGABuXSEokYAEZxcsQCIQBkAEJofLSJBgLo9GHajDYHCpCi6KBIUCzGiIEAAHgAhAARADyAGF9gBNAAKAFFGNbbQo1C7w1BNJJUAVeMzqMzI6hozBJOg0xoXfoKJIcql8g8kwBVfYAMQAtAAOVM1F06CiwBSHFswF0AembrajXdSmezUbY6GkaZd6AgcoUgGUjQAA-jTYIBpW0Aq9GAY7lAIAe3anM6jcGIBggYyYcAMxCTOC7aEwuAIqe7B6PJ4nXdH4_7MbTmu1cD1qANI0TRgVZQKAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Debounce demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEmARqQK6rEyMC8jACjCoANMxhQAhgE8xAW0lYAKhDkwAlHwB8jYAB1UjRrCYVVMAE59GqdlCgBuA0ZPHJDFWusAGJ4cYKyubWgZ48APzh4lLSfkYWMBTsFoZgnMRm5IKa-v5GZKgMjAVUWEz8FAAWEHB-zkaMEGCCUh7mOfUNxfRMxMkJlGHWANSoMADujAAiklQC6nV5DU2CfRYDFEMAtG5tXjqh7bqdXbubwfyjE9OzMPNxp0bCOJIADq9Q0gIl2BRikhYAObsNSUOALE5GAC-jAkcB4uUe-VgALCHAoAjMagsEKWXSxlms8POanRQnSmUM82OeNOrRJPEuY0mMzmuKRDWebw-Xx-ZX-QJB1Ao4IejyhYkwMXZpyhJxhcIRkMYXPen2-5FKf0YAOBoJFMvx5isFQs7BgYoa9KGTOurLuhsYcv8UL8roMBgKRWE1lYHC4d2pvB0iO6hVIsBwUFIgIEAHJ2PCrMQoBBiABrOO4iWMACs3m8uOJAElKJYAG6SKBCUSMACMBYWIBEIBqACE0ADpEgwFX4RLWxhsDhKhQ5FAkKAfjRECAADwAQimAHkAMJKACaAAUAKKMUfjrQGOcHqBuVCA3hx6hxo-oE8wSToO9GOdqCiSYqVAHEq8AVSUAAxLYAA5b3qOczAoWAtBUaCYDnAB6KCYOPRDKkfZ9jzYdBpDvOd0AgcstEAZSNAAB9L0IxgQBpW0AVejAGO5QBADyQwjiOPOBiAsCBXiYOALGIK8cEQtBMFwAhbyQjiuJ4_DEJwvC0NPO9m1bOAO1QLsez7GAoV0oA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## DeepClone
 
@@ -1097,23 +1103,20 @@ console.log(stack.toString())
 
 ```javascript
 const throttle = (fn, delay) => {
-  let startTime = +new Date()
-  let first = true
-  let result
-
+  let startTime = 0
   return function () {
-    if (first) {
+    const context = this
+
+    const currentTime = +new Date()
+    if (startTime === 0) {
       startTime = +new Date()
-      first = false
-      result = fn.apply(this, arguments)
+      fn.apply(context, arguments)
     } else {
-      if (+new Date() - startTime > delay) {
+      if (currentTime - startTime > delay) {
         startTime = +new Date()
-        result = fn.apply(this, arguments)
+        fn.apply(context, arguments)
       }
     }
-
-    return result
   }
 }
 
@@ -1128,7 +1131,7 @@ setInterval(() => {
 }, 100)
 ```
 
-[![Edit Throttle demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEFAFgE6kUWyMC8jACjCoANI0xQAhgE8AlHwB8jYAB1UjRrCYNJbCgBUIAWxh9GAalQwA7owAikqgNkBuNRq2NIbBmYpsAVxg3dU0YJjZ4AKgKEI1IigC2dTAA1GIKCHJBeVVQjQgwQW8GXPcNCp09QxMzSxt7RxhnOIqNEqZ-MEkoOGDytsi4aM6vVBxJAAdJqGkBVgg4MV0AcwCTSjhXAcYAX0YYXtM8toKigXrbByd5AFpGKoNjUyUJGTL808ea035LxpurVOjCGIzMwgm01m8xYi2WbDWGwoWyBFV2O3RqB2CSS6lBMVauxCRLUajIqF8wj87E43GazkUynK5LgpFgOCgpBWAgA5HAWKRrDyxP9rs07g8KLoniZtqEcclGABGYliJUABk1cs832edSsVyaLTUfQoAElKDA2AA3HoCBm8JQnRgstkwDlcoSoZxy3ZqrUuEAiECLABCaF00iQ3SOfpDGGwOBYFCMUCQoHJVBoiBAAB4AIR2ADyAGF9ABNAAKAFFGMnUwo1Ln61BNJJUCteDzqDzG6hmzBJOg-xpcyYpS6WLpTV2AKr6ABitwAHL3yrnMnSFIY6bmAPSb2B9_csQfDpsAI1I6Gkx_QEGtCkAykaAAH1XbBANK2gFXowDHcoBAD33e9HybOBiDYCBJm0NhiC7HA9zQTBcAIXt91A8DIOPPcrxvTCWz7IMQzgcNUEjaMej6XZKKAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Throttle demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEFAFgE6kUWyMC8jACjCoANI0xQAhgE8AlHwB8jYAB1UjRrCYNJbCgBUIAWxh9GABgDcajWxgUArm3VgHqYhQjlB81eo2MZKgMgeRUWEz8rBBw1v4aQSHETnaUhiZmANSoMADujAAiklQCsnE2ARBggjp66aa8jRa-FQGMtQbGDYzZeYXFMKVxbRrCOJIADhNQ0gJB4RRiugDmDiaUcGWtjAC-jDBQcKZ-I4xVgslsqZ0ZALTtFLo3pkoSMi3xIx31WTn5RSUtp82mNJtNZvNsItGCs1tQKJthiMdtsUf4dnEMWo1IkmMIzKwOFxYAJSoplBVEqRYDgoKRlgIAORwFikXKMsS9f4DMn3b5dIG2exOdQARkxYlF5mlQK0DyeP34XP6gLiRwoAElKDA2AA3SRQUnyXhKE6hYLUmC0-lCVClIE7SUyywgEQgGIAITQumkSDABqOjvdGGwOBYFCMUCQoEhNEQIAAPABCAoAeQAwvoAJoABQAooxw5GFGoE0WoJpJKhlrxGdRGSXUGWYJJ0I2NAmTI9AixdOrawBVfQAMVuAA4GxUE55uDAFIZZwmAPQz2CN5csFtt0sAI1I6Gk6_QEF1CkAykaAAH0qbBANK2gFXowDHcoBAD2Xx9PpbgxDYEAm2jYxFrHAlzQTBcAIBtl0_b9f3XJc9wPWDy0bV13TgL1UB9P0AxgHZcKAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Tree
 
