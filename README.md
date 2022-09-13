@@ -24,6 +24,8 @@
 
 - [New](#New)
 
+- [Num2ChineseNum](#Num2ChineseNum)
+
 - [Promise](#Promise)
 
   - [promise](#promise)
@@ -576,6 +578,42 @@ compose(middleware)(next)(ctx)
 ```
 
 [![Edit New demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggA0IEcAQmgIYBOAnkmO1DgwAvozSZcACwoBbKElBlK1CrQA8AQgAiAeQDCAFQCaABQCiAAmlyAfAB1Ua61AtR2qAOYBeAOTUf9o6SMOzogRYWajIwFOwWxJJcQhS-AKoGAGIAtAAcAQ4RahQQFLA2BiWwagD0xaUwgTXBoY0ARqTo3I3oEABuNoDKRoAA-kpwpLCA0raAq9GAx3KAgB41Pf0OanDEnBAADhQWcJzEvjjV4tj4cAE1axvbjdXtnbfOgQxMrBw8fAJCwj9AA&fontsize=14px&hidenavigation=1&theme=dark)
+
+## Num2ChineseNum
+
+```javascript
+function num2ChineseNum(num) {
+  const strNum = num.toString()
+
+  const length = strNum.length
+
+  const chineseNum = { 0: '零', 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七', 8: '八', 9: '九' }
+
+  const chineseUnit = { 0: '', 1: '十', 2: '百', 3: '千', 4: '万', 5: '十万', 6: '百万', 7: '千万', 8: '亿' }
+
+  let retNum = ''
+
+  for (let i = 1; i <= length; i++) {
+    const divisor = Math.pow(10, length - i)
+
+    const result = Math.floor(num / divisor)
+
+    if (result !== 0) {
+      retNum = retNum + chineseNum[Math.floor(num / divisor)] + chineseUnit[length - i]
+    }
+
+    num = num % divisor
+  }
+
+  return retNum
+}
+
+console.log(num2ChineseNum(2102))
+console.log(num2ChineseNum(12102))
+console.log(num2ChineseNum(512102))
+```
+
+[![Edit Num2ChineseNum demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABKnQLYBMAwgBZp4MAHJcAFB04BKVsAA6qVqzKo4FVuoBOYzqwC87LjgqkAyhS1oA5uOkBuRctXrWsVNYr8Dmy7pzunvyOSirkrsSCqMK6PgqhygAMiKwA5IBvaakANE7KrACMKamAAHLZucrcRYAxcmUJrADMRYCQcrV5rAAsRYDbaq15AKxFgClyvcoAbEWAtoojrADsRYDActMAHEWA1orTAJxFgLpyqbkAviHO4RqRQnAwAKqoEBqG8W3JadOFaYCCytOVaYB-btONaYBhZWmnTSgHA5aYDd7gnJ1cY_aHlWZFAEIuorNKAfrk9qFDrlYBotDAKLFDKlUiFcmBSFpWOJ8awID58vYGawADyGQJeFkQADUvNkDzyLg06AgADcIHBqT4ALIAQy8OAADqQAO7ifKJLJuahBVgAWgZDkRItYhLgdCgd1YCqVYCgpGpki4rAA9KwxZLpVoTahERAwLSLVaNABCfSGRKCxHKQnE12GeOxXkqKIxLgAbTt_BwDqdWhdeg9Xql1OkAF1WKmztELtdbpmud4jRAK0c8vtFIipD5ewBST0SstaDtd_2heN0LRKZNcELjxQuUiwAKkWxSPjpi66cTcLXcaR-5erx0brhb86iCT5feJQ_H8IrmBr888ARX3d9W8Ho_2EBZCAUoAEJoPKWgAJ5IGA8pQBc-yAWgmC4PwFCcFASCgKoVA0IgIBsmGAAiADyvAACoAJoAAoAKKsKh6EAHyKGyDFQG48oePoqTUKkzGoKxMDyug_HKGynBEvKabgRcFDcZcZEAGIGksfG5GyzAULAjFkbcsBsm6mnaSxbr8EJIksQARqQ6AQfxbJeoxgDKRoAAPonjAgDStoAq9GAMdygCAHgZjksXAxBWMqGhwFoxDcTgbpIdg-BwHxBkhWFFD2W61m2RlbH8QBQFwKBqDgVBiAwXBMD7FVQA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Promise
 
