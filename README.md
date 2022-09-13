@@ -598,11 +598,31 @@ function num2ChineseNum(num) {
 
     const result = Math.floor(num / divisor)
 
-    if (result !== 0) {
-      retNum = retNum + chineseNum[Math.floor(num / divisor)] + chineseUnit[length - i]
+    const remainder = num % divisor
+
+    if (length - i > 4) {
+      if (result === 0) {
+        if (!retNum.endsWith('零')) {
+          retNum = retNum + chineseNum[result]
+        }
+      } else {
+        if (remainder / Math.pow(10, 4) > 0) {
+          retNum = retNum + chineseNum[result] + chineseUnit[length - i].replace('万', '')
+        } else {
+          retNum = retNum + chineseNum[result] + chineseUnit[length - i]
+        }
+      }
+    } else {
+      if (result !== 0) {
+        retNum = retNum + chineseNum[result] + chineseUnit[length - i]
+      } else {
+        if (!retNum.endsWith('零')) {
+          retNum = retNum + chineseNum[result]
+        }
+      }
     }
 
-    num = num % divisor
+    num = remainder
   }
 
   return retNum
@@ -613,7 +633,7 @@ console.log(num2ChineseNum(12102))
 console.log(num2ChineseNum(512102))
 ```
 
-[![Edit Num2ChineseNum demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABKnQLYBMAwgBZp4MAHJcAFB04BKVsAA6qVqzKo4FVuoBOYzqwC87LjgqkAyhS1oA5uOkBuRctXrWsVNYr8Dmy7pzunvyOSirkrsSCqMK6PgqhygAMiKwA5IBvaakANE7KrACMKamAAHLZucrcRYAxcmUJrADMRYCQcrV5rAAsRYDbaq15AKxFgClyvcoAbEWAtoojrADsRYDActMAHEWA1orTAJxFgLpyqbkAviHO4RqRQnAwAKqoEBqG8W3JadOFaYCCytOVaYB-btONaYBhZWmnTSgHA5aYDd7gnJ1cY_aHlWZFAEIuorNKAfrk9qFDrlYBotDAKLFDKlUiFcmBSFpWOJ8awID58vYGawADyGQJeFkQADUvNkDzyLg06AgADcIHBqT4ALIAQy8OAADqQAO7ifKJLJuahBVgAWgZDkRItYhLgdCgd1YCqVYCgpGpki4rAA9KwxZLpVoTahERAwLSLVaNABCfSGRKCxHKQnE12GeOxXkqKIxLgAbTt_BwDqdWhdeg9Xql1OkAF1WKmztELtdbpmud4jRAK0c8vtFIipD5ewBST0SstaDtd_2heN0LRKZNcELjxQuUiwAKkWxSPjpi66cTcLXcaR-5erx0brhb86iCT5feJQ_H8IrmBr888ARX3d9W8Ho_2EBZCAUoAEJoPKWgAJ5IGA8pQBc-yAWgmC4PwFCcFASCgKoVA0IgIBsmGAAiADyvAACoAJoAAoAKKsKh6EAHyKGyDFQG48oePoqTUKkzGoKxMDyug_HKGynBEvKabgRcFDcZcZEAGIGksfG5GyzAULAjFkbcsBsm6mnaSxbr8EJIksQARqQ6AQfxbJeoxgDKRoAAPonjAgDStoAq9GAMdygCAHgZjksXAxBWMqGhwFoxDcTgbpIdg-BwHxBkhWFFD2W61m2RlbH8QBQFwKBqDgVBiAwXBMD7FVQA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Num2ChineseNum demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABKnQLYBMAwgBZp4MAHJcAFB04BKVsAA6qVqzKo4FVuoBOYzqwC87LjgqkAyhS1oA5uOkBuRctXrWsVNYr8Dmy7pzunvyOSirkrsSCqMK6PgqhygAMiKwA5IBvaakANE7KrACMKamAAHLZucrcRYAxcmUJrADMRYCQcrV5rAAsRYDbaq15AKxFgClyvcoAbEWAtoojrADsRYDActMAHEWA1orTAJxFgLpyqbkAviHO4RqRQnAwAKqoEBqG8W3JadOFaYCCytOVaYB-btONaYBhZWmnTSgHA5aYDd7gnJ1cY_aHlWZFAEIuorNKAfrk9qFDrlYBotDAKLFDKlUiFcmBSFpWOJ8awID58vYGawADyGQJeFkQADUvNkDzyLg06AgADcIHBqT4ALIAQy8OAADqQAO7ifKJLJuahBVgAWgZDkRItYhLgdCgd1YCqVYCgpGpki4rAA9KwxZLpVoTXUzYTOPK0JgaYYpKwAKSeiVS6kUuoQMC0rneI2MgB8HUFiOUSdpFqtd30hkSObqbXz4gAhITicZqOg4AB1W78cQZVLScttXvmokk_v1vS8lRRGJcADahetAF0jn3WPtc0vWDAoBc5Cu88nxIHgxgYDSPXb-Cr1ZrtdnWFmy1uK7264On67R2dohddNP4EXZ6w3-OFzXLck6poaDKzjghLKlA8rEDAHbQs8fqLqu66bkKqEvnohjYf-Y7nKIU4zhQf4AYRwEUKBepeOBEDztuS4rsudT7GuG4wPefZViRrDViWrB3phj4Dq6uGiSOBEfkRnDfpac74e-wiUdRHi0emDEPmx6GccJla7rWEk4I2LZth2mTdlxqFDs-EmKYBMlyb-C59ixrmIixiIRuJQYhkeC6eaEdZ0FoSjYSEgUuKQsABKQthSHwDm6OI3Batw3YhFFMWOvFXCJYRyX5KliTpX6WUwLFuU8AIBUSH0RVpRlIBZCAUoAEJoPKWgAJ5IGA8ocfsLV-bg_AUJwUBIKAqhUDQiAgGy1YACIAPK8AAKgAmgACgAoqwY0TRmihsodUBuPKHj6Kk1CpMdqCnTA8roPdyhspwRLymOXUXBQ12XOtABiBpLHduRsswFCwBm623LAbJupD0MnW6_BPS9J0AEakOg3X3WyXoZoAykaAAD65WANK2gCr0YAx3KAIAeCOEydcDEFYyoaHAWjENdOBuiN-BwHdCPM6zFD4262O42LZ33c1rVwB1qBdb1iD9YN-z7EAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Promise
 
