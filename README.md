@@ -615,25 +615,15 @@ function num2ChineseNum(num) {
 
     const remainder = num % divisor
 
-    if (length - i > 4) {
-      if (result === 0) {
-        if (!retNum.endsWith('零')) {
-          retNum = retNum + chineseNum[result]
-        }
-      } else {
-        if (remainder > Math.pow(10, 8)) {
-          retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/亿/, '')
-        } else if (remainder > Math.pow(10, 4)) {
-          retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/万/, '')
-        } else {
-          retNum = retNum + chineseNum[result] + chineseUnit[exponent]
-        }
+    if (result === 0) {
+      if (!retNum.endsWith('零')) {
+        retNum = retNum + chineseNum[result]
       }
     } else {
-      if (result === 0) {
-        if (!retNum.endsWith('零')) {
-          retNum = retNum + chineseNum[result]
-        }
+      if (remainder > Math.pow(10, 8)) {
+        retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/亿/, '')
+      } else if (remainder > Math.pow(10, 4)) {
+        retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/万/, '')
       } else {
         retNum = retNum + chineseNum[result] + chineseUnit[exponent]
       }
@@ -648,9 +638,12 @@ function num2ChineseNum(num) {
 console.log(num2ChineseNum(2102))
 console.log(num2ChineseNum(12102))
 console.log(num2ChineseNum(512102))
+console.log(num2ChineseNum(3512102))
+console.log(num2ChineseNum(63512102))
+console.log(num2ChineseNum(163512102))
 ```
 
-[![Edit Num2ChineseNum demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABKnQLYBMAwgBZp4MAHJcAFB04BKVsAA6qVqzKo4FVuoBOYzqwC87LjgqkAyhS1oA5uOkBuRctXrWsVNYr8Dmy7pzunvyOSirkrsSCqMK6PgqhygAMiKwA5IBvaakANE7KrACMKamAAHLZucrcRYAxcmUJrADMRYCQcrV5rAAsRYDbaq15AKxFgClyvcoAbEWAtoojrADsRYDActMAHEWA1orTAJxFgLpyqbkAviHO4RqRQnAwAKqoEBqG8W3JadOFaYCCytOVaYB-btONaYBhZWmnTSgHA5aYDd7gnJ1cY_aHlWZFAEIuorNKAfrlNkU3liYW18k9Ut88Yj8q9UhisQcjm4YBotPTYoZUqkQrkwKQtKxxLANBAfPl7KwBQAeQyBLzCiAAahlsgeeT5rGwAAdyNQ7nSPF5WABaEW045qDToCAANwgcC5PgAsgBDLw4dUAd3EhKyKqw6uilAciJcDPgdCgWodTrAUFIXMkXFYAHpWGbLdatP66oHWIzOPa0JhuYYpKwAKRJi1WrnsuoQMA8yXeA0CgB8HQViOUNZ5jLgIbu-kMiTbdTanfEAEJGRR_NR0HAAOq3fjiDKpaRDtobrNMuOGSexGUqKIxLgAbW7vYAukaN_t26x9iqoBc5HeO7XxNncxgYNyW-H-M6pBuh6rBLGuL7Dhue47luU5xgeZzRBcuhnsGoYXqwCFHhc1y3CeaoapQF44IyqpQPaxAwOI8YYvGnqsumm7KA-MBPjAIrvp-eY_qwf6OgBrruoknrtOBipMbBzKSfBh7nKIp7nuhmGyUhVw3BQ-HeoRFDEaR5GUdRoJ0c8jFMSxbEQRJyjQXou7bnoWFyShik6cpiHCLhGkEb6OnXm0t6QQF_mPs-4l5KOLkGP2rCDpZTGjhO9k4DO86LsumRia-eQ2T4OWOapzlob5WVBTeIXsWFbQ5XZcEOSpx6cKhPZKflHnqZpPqaled6lcxiiIkWdk5txWi0gFuSTnQWhKDZITjYw4SkLAASkLYUh8Nh8mcOI3CEtwa4hC4S0wCta1cBtTkSPku2JPt6ZHctUZnTwAiXdtfTXXtB0gFkIBWgAQmg9paAAnkgYD2mx-y_dxuD8BQnBQEgoCqFQNCICAopjgAIgA8rwAAqACaAAKACirDw4jTaKKKVNQG49oePoqTUKkNOoHTMD2ugHPKKKnD0vah7AxcFAs5cBMAGJ6ks7O5KKzAULATYE7csCivGSsq7T8b8NzvO0wARqQ6AgxzorJk2gDKRoAAPoPTAgDStoAq9GAMdygCAHprVu03AxBWKqGhwFoxAszg8aw_gcDs5rvv-xQFvxibZsJ_THM_X9cCA6gwNg4gENQ_s-xAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Num2ChineseNum demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABKnQLYBMAwgBZp4MAHJcAFB04BKVsAA6qVqzKo4FVuoBOYzqwC87LjgqkAyhS1oA5uOkBuRctXrWsVNYr8Dmy7pzunvyOSirkrsSCqMK6PgqhygAMiKwA5IBvaakANE7KrACMKamAAHLZucrcRYAxcmUJrADMRYCQcrV5rAAsRYDbaq15AKxFgClyvcoAbEWAtoojrADsRYDActMAHEWA1orTAJxFgLpyqbkAviHO4RqRQnAwAKqoEBqG8W3JadOFaYCCytOVaYB-btONaYBhZWmnTSgHA5aYDd7gnJ1cY_aHlWZFAEIuorNKAfrlNkU3liYW18k9Ut88Yj8q9UhisQcjm4YBotPTYoZUqkQrkwKQtKxxLANBAfPl7KwBQAeQyBLzCiAAahlsgeeT5rGwAAdyNQ7nSPF5WABaEW045qDToCAANwgcC5PgAsgBDLw4dUAd3EhKyKqw6uilAciJcDPgdCgWodTrAUFIXMkXFYAHpWGbLdatP66oHWIzOPa0JhuYYpKwAKRJi1WrnsuoQMA8xlwEN3fSGRIKxHKGs8gCEjIo_mo6DgAHVbvxxBlUtI23U2r3mVmmXGZSoojEuABteuNgC6Rry-0R-xVUAucnbItr4mzuYwMG5AD5WOH-M7SG6PawllOzzO8nO44Y_56MuZzRBcuibsGobbqwIGrhc1y3OuaoapQ244IyqpQPaxAwOI8YYvGnqsumbTKEeMAnjAF51jAOZ5nerCPs-r7voknrtN-ipkQufYAbxsRwecogblu0GwSuwmIRQyHeqhFDoZh2G4fhoJEc8pFkRRVE_jxyhAT4BlCWBImcJBDbicZwjSbJPqaru54HnUTmIkWgF0Te-a0i5oS9nQWhKEBIQ-S4pCwAEpC2FIfDwaZ4jcIS3BTiEoXhVGUVcDFwm6O6CWJEl6apTAEUZTwAjZRIfT5HlBUpeEYXFelsZlbFOX1FVNXJYoRUlc1WUmTloztdViVdYw9VpZFfXlQNEj5ENHWjQ4IBZCAVoAEJoPaWgAJ5IGA9pUfsq0Mbg_AUJwUBIKAqhUDQiAgKKXYACIAPK8AAKgAmgACgAoqw52XfeiiikDUBuPaHj6Kk1CpCDqBgzA9roAjyiipw9L2iu20XBQMOXB9ABiepLPDuSiswFCwPeH23LAorxlTNOg_G_DI6joMAEakOgO0I6Kyb3oAykaAAD6RWANK2gCr0YAx3KAIAejNC6DcDEFYqoaHAWjEDDODxqd-BwPDjMq2rFAC_GPN8-b4MIyta1wJtqDbXtiAHUd-z7EAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Promise
 
