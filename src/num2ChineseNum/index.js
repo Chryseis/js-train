@@ -31,25 +31,15 @@ function num2ChineseNum(num) {
 
     const remainder = num % divisor
 
-    if (length - i > 4) {
-      if (result === 0) {
-        if (!retNum.endsWith('零')) {
-          retNum = retNum + chineseNum[result]
-        }
-      } else {
-        if (remainder > Math.pow(10, 8)) {
-          retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/亿/, '')
-        } else if (remainder > Math.pow(10, 4)) {
-          retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/万/, '')
-        } else {
-          retNum = retNum + chineseNum[result] + chineseUnit[exponent]
-        }
+    if (result === 0) {
+      if (!retNum.endsWith('零')) {
+        retNum = retNum + chineseNum[result]
       }
     } else {
-      if (result === 0) {
-        if (!retNum.endsWith('零')) {
-          retNum = retNum + chineseNum[result]
-        }
+      if (remainder > Math.pow(10, 8)) {
+        retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/亿/, '')
+      } else if (remainder > Math.pow(10, 4)) {
+        retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/万/, '')
       } else {
         retNum = retNum + chineseNum[result] + chineseUnit[exponent]
       }
@@ -64,3 +54,6 @@ function num2ChineseNum(num) {
 console.log(num2ChineseNum(2102))
 console.log(num2ChineseNum(12102))
 console.log(num2ChineseNum(512102))
+console.log(num2ChineseNum(3512102))
+console.log(num2ChineseNum(63512102))
+console.log(num2ChineseNum(163512102))
