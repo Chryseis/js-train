@@ -14,11 +14,31 @@ function num2ChineseNum(num) {
 
     const result = Math.floor(num / divisor)
 
-    if (result !== 0) {
-      retNum = retNum + chineseNum[Math.floor(num / divisor)] + chineseUnit[length - i]
+    const remainder = num % divisor
+
+    if (length - i > 4) {
+      if (result === 0) {
+        if (!retNum.endsWith('零')) {
+          retNum = retNum + chineseNum[result]
+        }
+      } else {
+        if (remainder / Math.pow(10, 4) > 0) {
+          retNum = retNum + chineseNum[result] + chineseUnit[length - i].replace('万', '')
+        } else {
+          retNum = retNum + chineseNum[result] + chineseUnit[length - i]
+        }
+      }
+    } else {
+      if (result !== 0) {
+        retNum = retNum + chineseNum[result] + chineseUnit[length - i]
+      } else {
+        if (!retNum.endsWith('零')) {
+          retNum = retNum + chineseNum[result]
+        }
+      }
     }
 
-    num = num % divisor
+    num = remainder
   }
 
   return retNum
