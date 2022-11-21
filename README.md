@@ -2,6 +2,8 @@
 
 ## 目录
 
+- [Color](#Color)
+
 - [Debounce](#Debounce)
 
 - [DeepClone](#DeepClone)
@@ -67,6 +69,78 @@
   - [transform](#transform)
 
 - [Websocket](#Websocket)
+
+## Color
+
+```javascript
+// #ffffff
+function hex2Rgb(hex) {
+  hex = hex.replace('#', '')
+
+  return `rgb(${hex
+    .split('')
+    .reduce((result, item, i) => {
+      if (i % 2 === 1) {
+        result[result.length - 1] = result[result.length - 1] + item
+        return result
+      } else {
+        return result.concat(item)
+      }
+    }, [])
+    .map(o => parseInt(o, 16))
+    .join()})`
+}
+
+// rgb(255,255,255)
+function rgb2Hex(rgb) {
+  const rgbArr = rgb.match(/\d+/g)
+  return (
+    '#' +
+    rgbArr
+      .map(color => {
+        return Number(color).toString(16).padStart(2, '0')
+      })
+      .join('')
+  )
+}
+
+// #ffffff or rgb(255,255,255)
+function isHex(color) {
+  return color.startsWith('#')
+}
+
+// rgb(255,255,255)
+function getRgbArr(color) {
+  return color.match(/\d+/g).map(o => Number(o))
+}
+
+function calcColor(start, end, ratios) {
+  return Math.floor(start + (end - start) * ratios)
+}
+
+// Gradient = Start+ (End-Start) / Step * N
+function gradientColor(sColor, eColor, min, max, value) {
+  const formatStartColor = isHex(sColor) ? hex2Rgb(sColor) : sColor
+  const formatEndColor = isHex(eColor) ? hex2Rgb(eColor) : eColor
+
+  const [sR, sG, sB] = getRgbArr(formatStartColor)
+  const [eR, eG, eB] = getRgbArr(formatEndColor)
+
+  let ratios = value / (max - min)
+
+  ratios = Math.min(ratios, 1)
+
+  ratios = Math.max(ratios, 0)
+
+  const result = [calcColor(sR, eR, ratios), calcColor(sG, eG, ratios), calcColor(sB, eB, ratios)]
+
+  return rgb2Hex(`rgb(${result.join()})`)
+}
+
+console.log(gradientColor('#021137', '#315FAE', 1, 10, 2))
+```
+
+[![Edit Color demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABAMRhvsA6qYArqsRQjlGAC2wAmAEoBzAEYAKMVgCUjYF0ajsjALxbcAJxgAHKAENiMeQHJm1gDSNr15QG4NjIxR4HUjAAYGcvIAJMBKOHCmEBQ2LjhG6DyW8vJGcDxQFI4xMAC2Oao6AHxqHpoQYIzyEIwApIziujp6AIyq6n6a3emZFADavVk4sKjSFCKMALSMrQC6up7wfYPLw6PjkzPzjADUjLl57l3dS96-SxlZx6cAvowwUHAwZSc9MOd-QxQ4ZPxmsUObnKjFuHlujn6c2UODyZmM8lIulKxjMBmeAElKIjHK0AGzKGF4UhoeTKW7KfzHe4MTzBcQAVgZ9kZzNZyi4nO4fAEQi-cnEAAlsGk5B0PH84BQ6bIAIIGAyLIKyWEA4gieR0DgcdC7OjSYFdLw-Py2ax7GXygyqhFkKCkRUlV6nY0XAByPDyshgBnkdodMIopAAyhQDGhpPJ8TDUehQ2jYuJHNYAAwuG6gokk1BxQ00pisdhsRgOmXyVkspmVhkc1Bc3j8QTCCBwYVYP2ke0GcVGj4mxj-61ShNwADqMQ1ZrzjFpyvLVYr7K5XAbvOE0g-MjlCo7XZ7mldfkHqoo6s12t1-phcIRSKdHq9PsRhOp9Z5TaPZigxAAwp2HfIw4GNkDwYI4BgAkIcD7mc_YALIAiIOBgPaAFAdK-zyNQ6DTIw6GqAAVJ4kGkNB1IzkwADiEHoBA1DSno8bAZhACiGBTExFCqEwoYmIwRFusu3KNnyjDSDRdGUH-XaAdJDqODAckGI4eRoCpZhYI4ABuX48DAMGStKYAOnCFCcUpiwtm2sn_t2jAAPz6FIwRwEpqiIHhSkZoZjDGQYplsegFl6FZIqKbZqiOUozkKOFe6MB5cUOt55BSow_RwJIjhwJR2UAEILHoG4UFuVryH5pnmRFKWoGl_QwFlDy5Q8BWLMVpU7hVAKBW5GawNKEFNnAiw6VAekztUcJYLhqmoIaB4kcNegIRMsKkoNUG4vNxFDYsK1IVNaSLY4KbbT53yLP0xBfr-tmAY1DXgYtyiONd35KYBzUwM1G2kS9A43R9cB5QpIM7VByhzBmh4ykKIqBMEYTfPg2ZkhS_h5lykqdjAIykJG4lmLR9EfbYKbiK0rQAMwAOwOE4zBU60DIAGKyix9OtLiKaOOIL4gPYIAtnlaBogAnkgYBfs8EJCxg2A4CIFB5FASCgH8VA0IgIAADwAIQACIAPI_gAKgAmgACixojK1AxRcDrSsq4w5hjDo1jUNYDuoE7MBEz7mg63kHxmAOIhos8FAewAqqbLNTAAHN7Hg64IFCwMUpsxLAOt0OnmeO3QYgB47sikOgYs-zrtFacUgDKRoAAPrY7AgDStoAq9GAMdygCAHnntfV3AxDhsY0pwAYxAezgdBoJguAEN7eeD8PFDV3Q5eV6vzv21wAtC8DosGBLiBS08MC3OfQA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Debounce
 
