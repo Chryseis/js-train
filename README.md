@@ -661,24 +661,29 @@ function num2ChineseNum(num) {
 
   const length = strNum.length
 
-  const chineseNum = { 0: '零', 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七', 8: '八', 9: '九' }
+  const chineseNum = { 0: '零', 1: '壹', 2: '贰', 3: '叁', 4: '肆', 5: '伍', 6: '陆', 7: '柒', 8: '捌', 9: '玖' }
 
   const chineseUnit = {
     0: '',
-    1: '十',
-    2: '百',
-    3: '千',
+    1: '拾',
+    2: '佰',
+    3: '仟',
     4: '万',
     5: '十万',
-    6: '百万',
-    7: '千万',
+    6: '佰万',
+    7: '仟万',
     8: '亿',
-    9: '十亿',
-    10: '百亿',
-    11: '亿亿'
+    9: '拾亿',
+    10: '佰亿',
+    11: '仟亿',
+    12: '兆',
+    13: '拾兆',
+    14: '佰兆',
+    15: '仟兆',
+    16: '京'
   }
 
-  let retNum = ''
+  let returnValue = ''
 
   for (let i = 1; i <= length; i++) {
     let exponent = length - i
@@ -690,34 +695,36 @@ function num2ChineseNum(num) {
     const remainder = num % divisor
 
     if (result === 0) {
-      if (!retNum.endsWith('零')) {
-        retNum = retNum + chineseNum[result]
+      if (!returnValue.endsWith('零')) {
+        returnValue = returnValue + chineseNum[result]
       }
     } else {
-      if (remainder > Math.pow(10, 8)) {
-        retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/亿/, '')
+      if (remainder > Math.pow(10, 12)) {
+        returnValue = returnValue + chineseNum[result] + chineseUnit[exponent].replace(/兆/, '')
+      } else if (remainder > Math.pow(10, 8)) {
+        returnValue = returnValue + chineseNum[result] + chineseUnit[exponent].replace(/亿/, '')
       } else if (remainder > Math.pow(10, 4)) {
-        retNum = retNum + chineseNum[result] + chineseUnit[exponent].replace(/万/, '')
+        returnValue = returnValue + chineseNum[result] + chineseUnit[exponent].replace(/万/, '')
       } else {
-        retNum = retNum + chineseNum[result] + chineseUnit[exponent]
+        returnValue = returnValue + chineseNum[result] + chineseUnit[exponent]
       }
     }
 
     num = remainder
   }
 
-  return retNum
+  return returnValue
 }
 
-console.log(num2ChineseNum(2102))
+console.log(num2ChineseNum(5))
 console.log(num2ChineseNum(12102))
 console.log(num2ChineseNum(512102))
 console.log(num2ChineseNum(3512102))
 console.log(num2ChineseNum(63512102))
-console.log(num2ChineseNum(163512102))
+console.log(num2ChineseNum(21987963512102))
 ```
 
-[![Edit Num2ChineseNum demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABKnQLYBMAwgBZp4MAHJcAFB04BKVsAA6qVqzKo4FVuoBOYzqwC87LjgqkAyhS1oA5uOkBuRctXrWsVNYr8Dmy7pzunvyOSirkrsSCqMK6PgqhygAMiKwA5IBvaakANE7KrACMKamAAHLZucrcRYAxcmUJrADMRYCQcrV5rAAsRYDbaq15AKxFgClyvcoAbEWAtoojrADsRYDActMAHEWA1orTAJxFgLpyqbkAviHO4RqRQnAwAKqoEBqG8W3JadOFaYCCytOVaYB-btONaYBhZWmnTSgHA5aYDd7gnJ1cY_aHlWZFAEIuorNKAfrlNkU3liYW18k9Ut88Yj8q9UhisQcjm4YBotPTYoZUqkQrkwKQtKxxLANBAfPl7KwBQAeQyBLzCiAAahlsgeeT5rGwAAdyNQ7nSPF5WABaEW045qDToCAANwgcC5PgAsgBDLw4dUAd3EhKyKqw6uilAciJcDPgdCgWodTrAUFIXMkXFYAHpWGbLdatP66oHWIzOPa0JhuYYpKwAKRJi1WrnsuoQMA8xlwEN3fSGRIKxHKGs8gCEjIo_mo6DgAHVbvxxBlUtI23U2r3mVmmXGZSoojEuABteuNgC6Rry-0R-xVUAucnbItr4mzuYwMG5AD5WOH-M7SG6PawllOzzO8nO44Y_56MuZzRBcuibsGobbqwIGrhc1y3OuaoapQ244IyqpQPaxAwOI8YYvGnqsumbTKEeMAnjAF51jAOZ5nerCPs-r7voknrtN-ipkQufYAbxsRwecogblu0GwSuwmIRQyHeqhFDoZh2G4fhoJEc8pFkRRVE_jxyhAT4BlCWBImcJBDbicZwjSbJPqaru54HnUTmIkWgF0Te-a0i5oS9nQWhKEBIQ-S4pCwAEpC2FIfDwaZ4jcIS3BTiEoXhVGUVcDFwm6O6CWJEl6apTAEUZTwAjZRIfT5HlBUpeEYXFelsZlbFOX1FVNXJYoRUlc1WUmTloztdViVdYw9VpZFfXlQNEj5ENHWjQ4IBZCAVoAEJoPaWgAJ5IGA9pUfsq0Mbg_AUJwUBIKAqhUDQiAgKKXYACIAPK8AAKgAmgACgAoqw52XfeiiikDUBuPaHj6Kk1CpCDqBgzA9roAjyiipw9L2iu20XBQMOXB9ABiepLPDuSiswFCwPeH23LAorxlTNOg_G_DI6joMAEakOgO0I6Kyb3oAykaAAD6RWANK2gCr0YAx3KAIAejNC6DcDEFYqoaHAWjEDDODxqd-BwPDjMq2rFAC_GPN8-b4MIyta1wJtqDbXtiAHUd-z7EAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Num2ChineseNum demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABKnQLYBMAwgBZp4MAHJcAFB04BKVsAA6qVqzKo4FVuoBOYzqwC87LjgqkAyhS1oA5uOkBuRctXrWsVNYr8Dmy7pzunvyOSirkrsSCqMK6PgqhygAMiKwA5IBvaakANE7KrACMKamAnxrZucrcRYAMsWUJrADMRYCDyrV5rAAsRYBhAa15AKxFgLDyvcoAbEWAYmkjrADsRYBL5tMAHEWAMsbTAJxFgGnOqbkAviHO4RqRQnAwAKqoEBqG8W3JadOFaYB_RtOVaYAO8tONaYB9uWmnTSgHA5aYDNKAQWVwTk6uMfrDyrMigCkXUVmlAP1ymyKbxxcLa-SeqW-BOR-VeqQB5Lq-S-qUAYoovf6pN7Mwl5fIg0kcimQ6l8ukI1KAGrk9qFDrlYBotDAKHQtKgAGoAQygdBgPlSqRCuTApC0rHEMtYEB8-XsZtYAB5DIEvFaIABqZ2yB55U3YAAO5Godzc1CCrAAtGajnkXBp0BAAG4QOCGnwAWVVXhwvoA7uJiVlWD6_ZQHMio6w5XA6FAA6n02AoKRDZIuKwAPSsGPxxNaYt1UtyziqtCYI2GKSsACk7bjCcNerqEDAxvLlbu-kMiXdyOUC-NAEI5QqlWqNTAcNR0HAAOq3fjiDKpaSbuptA-KlXqzU-V9Hj9a50qKIYi4ABtZcqwAXQjNp9mRfZ8ygC45C3M1F3EftBwwGAjQAPlYGt-AzUhs1zApuEfJDnzyb93xPL95TfY9P3_M5oguXRQPgFdwNYZjAIua5bmAgtokocCcDlb0oFVYgYHEFtGRbPMdR7NplDgmAEK1Hc0JgAchyw1hcPwwjiMSPMlnIj1VLLeif1owxqMYv8APOUQQLAihuN41yBIoISsF9ETPPEmBJOk2SWyxRTnhU1T1M0lCl10jDh0MvC0wIrMczMjpLOQ5RHN_OjDxopiXNYtzOA4isIJ48rhF8_zAv9MSJKkmS5NBaLlKgvJ4sQqzVMK-ybJKpy6pYoCqo8rz6v4m4_OElrerU2DFGRMcHOS_StAjGDUFyajRoY38Qn2xQXFIWAAlIWwpD4PjKvEPpHxCS7rvrO6uAe1zdBzbhiTInt3tPT6mx4ARfokPp6UB16LvCK7Qdu8Gfoqv76hhgHEiBt7EY-lH7sh9GJFGTHYZx-HGHx5Gvohx6_oBjYlhmDYyaxuGHBALIQATAAhNBVS0ABPJAwHVC59h5_TcH4ChOCgJBQFUKgaEQEAbV3AARAB5XgABUAE0AAUAFFWDlhXsMUG1LagNxVQ8fRUmoVJrdQW2YFVdB3eUG1OHlVUAKFi4KGdy59YAMRDJY3dyG1mAoWBsP125YBtFtE-Tm2W34L2fZtgAjUh0GF92bQ7bDAGUjQAAfRBwBpW0AVejAGO5QBADwzyubbgYgrG9DQ4C0YhnZwFsZfwOA3Yz7ve4ocuW2L0u57t93ud5uABdQIXRcQcXNP2fegA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Promise
 
