@@ -656,34 +656,93 @@ compose(middleware)(next)(ctx)
 ## Num2ChineseNum
 
 ```javascript
-function num2ChineseNum(num) {
+function num2ChineseNum(num, isAmount = false) {
   const strNum = num.toString()
 
-  const length = strNum.length
+  let integerPart
+  let decimalPart
 
-  const chineseNum = { 0: '零', 1: '壹', 2: '贰', 3: '叁', 4: '肆', 5: '伍', 6: '陆', 7: '柒', 8: '捌', 9: '玖' }
+  let hasDecimal = strNum.indexOf('.') > -1
 
-  const chineseUnit = {
-    0: '',
-    1: '拾',
-    2: '佰',
-    3: '仟',
-    4: '万',
-    5: '十万',
-    6: '佰万',
-    7: '仟万',
-    8: '亿',
-    9: '拾亿',
-    10: '佰亿',
-    11: '仟亿',
-    12: '兆',
-    13: '拾兆',
-    14: '佰兆',
-    15: '仟兆',
-    16: '京'
+  if (hasDecimal) {
+    integerPart = strNum.split('.')[0]
+    decimalPart = strNum.split('.')[1]
+  } else {
+    integerPart = strNum
   }
 
+  const length = integerPart.length
+
+  const chineseNum = isAmount
+    ? {
+        0: '零',
+        1: '壹',
+        2: '贰',
+        3: '叁',
+        4: '肆',
+        5: '伍',
+        6: '陆',
+        7: '柒',
+        8: '捌',
+        9: '玖'
+      }
+    : {
+        0: '零',
+        1: '一',
+        2: '二',
+        3: '三',
+        4: '四',
+        5: '五',
+        6: '六',
+        7: '七',
+        8: '八',
+        9: '九'
+      }
+
+  const chineseUnit = isAmount
+    ? {
+        0: isAmount ? '元' : '',
+        1: '拾',
+        2: '佰',
+        3: '仟',
+        4: '万',
+        5: '十万',
+        6: '佰万',
+        7: '仟万',
+        8: '亿',
+        9: '拾亿',
+        10: '佰亿',
+        11: '仟亿',
+        12: '兆',
+        13: '拾兆',
+        14: '佰兆',
+        15: '仟兆',
+        16: '京'
+      }
+    : {
+        0: isAmount ? '元' : '',
+        1: '拾',
+        2: '佰',
+        3: '仟',
+        4: '万',
+        5: '十万',
+        6: '佰万',
+        7: '仟万',
+        8: '亿',
+        9: '拾亿',
+        10: '佰亿',
+        11: '仟亿',
+        12: '兆',
+        13: '拾兆',
+        14: '佰兆',
+        15: '仟兆',
+        16: '京'
+      }
+
+  const decimalChineseUnit = { 0: '角', 1: '分' }
+
   let returnValue = ''
+  let decimalReturnValue = ''
 
   for (let i = 1; i <= length; i++) {
     let exponent = length - i
@@ -713,10 +772,34 @@ function num2ChineseNum(num) {
     num = remainder
   }
 
-  return returnValue
+  if (hasDecimal) {
+    for (let i = 0; i < decimalPart.length; i++) {
+      decimalReturnValue += chineseNum[decimalPart[i]] + decimalChineseUnit[i]
+    }
+  }
+
+  returnValue = returnValue.replace(/零$/, '元')
+
+  if (isAmount) {
+    if (hasDecimal) {
+      return returnValue + decimalReturnValue
+    } else {
+      return returnValue + '整'
+    }
+  } else {
+    if (hasDecimal) {
+      return returnValue + '点' + decimalReturnValue
+    } else {
+      return returnValue + '整'
+    }
+  }
 }
 
 console.log(num2ChineseNum(5))
+console.log(num2ChineseNum(5000))
+console.log(num2ChineseNum(5001))
+console.log(num2ChineseNum(5010))
+console.log(num2ChineseNum(5100))
 console.log(num2ChineseNum(12102))
 console.log(num2ChineseNum(512102))
 console.log(num2ChineseNum(3512102))
@@ -724,7 +807,7 @@ console.log(num2ChineseNum(63512102))
 console.log(num2ChineseNum(21987963512102))
 ```
 
-[![Edit Num2ChineseNum demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABKnQLYBMAwgBZp4MAHJcAFB04BKVsAA6qVqzKo4FVuoBOYzqwC87LjgqkAyhS1oA5uOkBuRctXrWsVNYr8Dmy7pzunvyOSirkrsSCqMK6PgqhygAMiKwA5IBvaakANE7KrACMKamAnxrZucrcRYAMsWUJrADMRYCDyrV5rAAsRYBhAa15AKxFgLDyvcoAbEWAYmkjrADsRYBL5tMAHEWAMsbTAJxFgGnOqbkAviHO4RqRQnAwAKqoEBqG8W3JadOFaYB_RtOVaYAO8tONaYB9uWmnTSgHA5aYDNKAQWVwTk6uMfrDyrMigCkXUVmlAP1ymyKbxxcLa-SeqW-BOR-VeqQB5Lq-S-qUAYoovf6pN7Mwl5fIg0kcimQ6l8ukI1KAGrk9qFDrlYBotDAKHQtKgAGoAQygdBgPlSqRCuTApC0rHEMtYEB8-XsZtYAB5DIEvFaIABqZ2yB55U3YAAO5Godzc1CCrAAtGajnkXBp0BAAG4QOCGnwAWVVXhwvoA7uJiVlWD6_ZQHMio6w5XA6FAA6n02AoKRDZIuKwAPSsGPxxNaYt1UtyziqtCYI2GKSsACk7bjCcNerqEDAxvLlbu-kMiXdyOUC-NAEI5QqlWqNTAcNR0HAAOq3fjiDKpaSbuptA-KlXqzU-V9Hj9a50qKIYi4ABtZcqwAXQjNp9mRfZ8ygC45C3M1F3EftBwwGAjQAPlYGt-AzUhs1zApuEfJDnzyb93xPL95TfY9P3_M5oguXRQPgFdwNYZjAIua5bmAgtokocCcDlb0oFVYgYHEFtGRbPMdR7NplDgmAEK1Hc0JgAchyw1hcPwwjiMSPMlnIj1VLLeif1owxqMYv8APOUQQLAihuN41yBIoISsF9ETPPEmBJOk2SWyxRTnhU1T1M0lCl10jDh0MvC0wIrMczMjpLOQ5RHN_OjDxopiXNYtzOA4isIJ48rhF8_zAv9MSJKkmS5NBaLlKgvJ4sQqzVMK-ybJKpy6pYoCqo8rz6v4m4_OElrerU2DFGRMcHOS_StAjGDUFyajRoY38Qn2xQXFIWAAlIWwpD4PjKvEPpHxCS7rvrO6uAe1zdBzbhiTInt3tPT6mx4ARfokPp6UB16LvCK7Qdu8Gfoqv76hhgHEiBt7EY-lH7sh9GJFGTHYZx-HGHx5Gvohx6_oBjYlhmDYyaxuGHBALIQATAAhNBVS0ABPJAwHVC59h5_TcH4ChOCgJBQFUKgaEQEAbV3AARAB5XgABUAE0AAUAFFWDlhXsMUG1LagNxVQ8fRUmoVJrdQW2YFVdB3eUG1OHlVUAKFi4KGdy59YAMRDJY3dyG1mAoWBsP125YBtFtE-Tm2W34L2fZtgAjUh0GF92bQ7bDAGUjQAAfRBwBpW0AVejAGO5QBADwzyubbgYgrG9DQ4C0YhnZwFsZfwOA3Yz7ve4ocuW2L0u57t93ud5uABdQIXRcQcXNP2fegA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit Num2ChineseNum demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABKnQLYBMAwgBZp4MAHJcAFB04AaVhDgBBTqQYVWAXlZgAhlDgwAlK2AAdVK1ZlUcNTYBOYzhvZccFUgGUKdtAHNxBgDcZhawamhUvjB2AAradhTB5qxhrJjEEJy6cQlJoTBq_NpwACIwGVlQzvaOOGiYWADyYOIA5DitRgB8rAC0AIxJIXJgrOJFpeWZukamyRYRMFGx8WqaNa5wAA5QEBRtHQYA2gAMALp5FmlTlTlrrBucONu7--2dR_0XwwC-rDB6GDGYYLShLaJ3areRyXH5mYZWGwpai-Cj8ZyLZZ3HCwVCo_iXRFqYiCVDCRwYxTKVSsAD8wPmrBOiFYrUAb2mtaQg1j9FmtQCfGpzudw-YAGWKFjIAzHzAIPKEqurAALHzAGEB8quAFY-YBYeXVFgAbHzAGJpetYAHY-YAl81NAA4-YAZY1NAE4-YA051av1YLLmCuZrI5XMZvNZgAA5U0i1mAGLlTdLWYBIOVNytZgG21U1a1mAFLlTYbWYBbRVNFtZgGA5W18wDWis6-YBdOQ9yR-hPISJJQn0AFVUHtKUoVJQ6QzfSz5N2afTWoBhRVaXtZpuDrUAf0bhvmAB3kY3zAPtyib5gHA5NN8wCCyjvAwqc60l4fuYXWmvz4y7azAP1yldZc8fR6u_T9p9f3P6s7X36DCNWkAMUUZ1jedQLfCx-iTU9IJ_dMr3goMT0AGrlawsP5vW5P0h2pXtRwnKdWhnPkFyg1ggJXCjwI3CjYJvBVEIPbNl0Yq5L2vUsHyfecAIVD9l3498_2E6CgOQgTwLnST31gpdZOgxC10Unk0Iw1h6wRRs1HSaYoAEFsYHbTtNB9K5P0AJcjSNZQAwJQ0rTklSOwCjoOxUAANV0OggU0EjLlSPTKgAJVc9yvKgHznH8-FkjAUg7DGVIIGcQY5FYAAeTRcXxQI5AAany2ZuVSbAtnIah7hytE-jkS4LCJNIIAAN3kBLnAAWW0NEcHKgB3cQP1kMqKsoIJuUaly4DoKB7i6nqwCgUgEskLhWAAeia1q4AS8bGUmmAsnqaJnCkVgAFItrauwhkZCBRnEKaZrWdRNBOYrGQWB6AEIXIoNzPO8mAcGodA4AAdT2fg2g5AwPoVBU_oBiKos0JHwqB1h8ssUlyS4I4ntm75Ps07k_gBfR-wR-6xhco6MBOnp5v4XrSAGoaeW4OGqYR1h0cByLfL5sKBai7HmzJfRHAJ-BnrOLGcaMkyKCOEayUoM4cBcnZtGIGBxHW4D1tkEi9t58nARGWnDu0Y7EqZ7qWf6waTlkG1ufM3n-ZRoXvcx8Xcal_HCYoeWA6VjsVbVyrNe1qBdf19b72N6czYRi3KZpx6bbt1gHZ652OcVD3uURkWfecP3BYViW8c4GXpqJmvA-MyPVawcr1dDrWYB1vWDa3FPTfqq4M6BT2Ear1Hhf-jHq_DyXRGD2Wm4X4RlfbzuY5HzCydihUzrRnOGZu3596t8ZijKCoZh5rR2vEZLnBOPKUoy64b6gbFqoJAqirviwQVdChVnqLIE-VNC1yDvXIBX9VhHAgGcMOH99KGUXhvRBI84R1nPlPX25cgY9z7onNkAASIeE49rDCznhHsFB4ZXCzhMa--kGFl1ATPZG_sUEhQIYLLB_xLYTwsPzThc8xaskAC6mrQsGegpuPbkTCr43FvsIsR5g8EK1aIATodJzY1gSArh_CyaCMpmo0RmjsatGkbInBqBsFmERKQWAOJSD-CkHwFujhxAajhkkJxLilruK4J4oy3iNQnEiX4xxjZnHAyCatHgaC64-Mif0aJjBYmBLcYk0Ji9wknA_BkgJ8SckeOSdAnxH53p7RKa44JSSvESH6NwD8XNalZNKQ0vJKSNQtLacUzp9TckVKXpwcQko-mtJOO0_xQyEnlKaeM_Ukz-kzMGdYOJwzFlhIkK0p0NozROhWVMgZQQQDSBAPIAAQmgeIABPJAOhAQ_EucdXA_AKCcCgEgUAVgqA0EQCADK30SiNF4AAFQAJoxAAKKsE-d8roZgMqIqqPHPE6hWjUFaMi1AqKYDaHQHiiwGVOAFG0DjeI-gKBYtbBCgAYr0G0uLhgZWYBQWAXQIV7FgBldaHKuUovWvwQlxKUUACNSDoHuXijK6AWpdEAMpGgAAfRKYAaVtACr0YAY7lACAHvyhVzU5VwGID4LYtg7DECxTgda7z8BwFxfyk1ZqKByvWlKmVbq0V4ouVcuAtzUAPKebofQPww1AA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Promise
 
