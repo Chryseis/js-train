@@ -6,6 +6,7 @@ class MyPromise {
     let callbacks = []
     const resolve = resolveVal => {
       try {
+        if (this.status !== 'pending') return
         this.status = 'fulfilled'
         this.result = resolveVal
         if (callbacks.length > 0) {
@@ -13,9 +14,10 @@ class MyPromise {
             const { resolveFn } = callbacks.splice(0, 1)[0]
             this.status = 'pending'
             resolveVal = resolveFn(resolveVal)
+            this.status = 'fulfilled'
+            this.result = resolveVal
             queueMicrotask(() => {
-              this.status = 'fulfilled'
-              this.result = resolveVal
+              this.status = 'pending'
               if (resolveVal instanceof MyPromise) {
                 if (resolveVal.status === 'fulfilled') {
                   resolveVal.then(function (data) {
@@ -41,6 +43,7 @@ class MyPromise {
     }
 
     const reject = rejectVal => {
+      if (this.status !== 'pending') return
       this.status = 'rejected'
       this.result = rejectVal
       if (callbacks.length > 0) {
@@ -48,9 +51,10 @@ class MyPromise {
           const { rejectFn } = callbacks.splice(0, 1)[0]
           this.status = 'pending'
           rejectVal = rejectFn(rejectVal)
+          this.status = 'rejected'
+          this.result = rejectVal
           queueMicrotask(() => {
-            this.status = 'rejected'
-            this.result = rejectVal
+            this.status = 'pending'
             if (rejectVal instanceof MyPromise) {
               if (rejectVal.status === 'rejected') {
                 rejectVal.then(
@@ -87,8 +91,10 @@ class MyPromise {
       if (this.status !== 'pending') {
         queueMicrotask(() => {
           if (this.status === 'fulfilled') {
+            this.status = 'pending'
             resolve(this.result)
           } else {
+            this.status = 'pending'
             reject(this.result)
           }
         })
@@ -120,6 +126,7 @@ MyPromise.reject = function (val) {
 new MyPromise((resolve, reject) => {
   setTimeout(() => {
     resolve(1)
+    reject(2)
   }, 500)
 })
   .then(
