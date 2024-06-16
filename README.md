@@ -822,6 +822,7 @@ class MyPromise {
     let callbacks = []
     const resolve = resolveVal => {
       try {
+        if (this.status !== 'pending') return
         this.status = 'fulfilled'
         this.result = resolveVal
         if (callbacks.length > 0) {
@@ -829,9 +830,10 @@ class MyPromise {
             const { resolveFn } = callbacks.splice(0, 1)[0]
             this.status = 'pending'
             resolveVal = resolveFn(resolveVal)
+            this.status = 'fulfilled'
+            this.result = resolveVal
             queueMicrotask(() => {
-              this.status = 'fulfilled'
-              this.result = resolveVal
+              this.status = 'pending'
               if (resolveVal instanceof MyPromise) {
                 if (resolveVal.status === 'fulfilled') {
                   resolveVal.then(function (data) {
@@ -857,6 +859,7 @@ class MyPromise {
     }
 
     const reject = rejectVal => {
+      if (this.status !== 'pending') return
       this.status = 'rejected'
       this.result = rejectVal
       if (callbacks.length > 0) {
@@ -864,9 +867,10 @@ class MyPromise {
           const { rejectFn } = callbacks.splice(0, 1)[0]
           this.status = 'pending'
           rejectVal = rejectFn(rejectVal)
+          this.status = 'rejected'
+          this.result = rejectVal
           queueMicrotask(() => {
-            this.status = 'rejected'
-            this.result = rejectVal
+            this.status = 'pending'
             if (rejectVal instanceof MyPromise) {
               if (rejectVal.status === 'rejected') {
                 rejectVal.then(
@@ -903,8 +907,10 @@ class MyPromise {
       if (this.status !== 'pending') {
         queueMicrotask(() => {
           if (this.status === 'fulfilled') {
+            this.status = 'pending'
             resolve(this.result)
           } else {
+            this.status = 'pending'
             reject(this.result)
           }
         })
@@ -936,6 +942,7 @@ MyPromise.reject = function (val) {
 new MyPromise((resolve, reject) => {
   setTimeout(() => {
     resolve(1)
+    reject(2)
   }, 500)
 })
   .then(
@@ -966,7 +973,7 @@ new MyPromise((resolve, reject) => {
   })
 ```
 
-[![Edit promise demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIlQCGccABALICeACgE6kC2EODGbAAOqmbM4FehQCuLALzMA5AAdq6NAHMVAbnGTu8OVArNlcjDEioY6A6kPMyqadznEKpbgAowqACUIs6SsObE9FBQAEb0xADWSswA2gC6jqEu5NLMxnCkUABuwsr5hSUAalEWAHwhEpJNFNzsDU0dzBQAFoI40rIKFqpgppDR9vpZHT19-abmZfAVMNVQmY2dzBBgzL6R0XGJcDiwqNo9zPUADMFim1vbu76zJwPyLACEisrqmjoqO7TR6uXL3R6PcrFGAAMScDwhAF9hgdYvEkv01FAIMQYL5rgAaZgARkCKWuGWBW1e_RkH2GfwwAMcEI6UKqNSWBWhcN87NWUUCLNZkgAjnIYBLWDjeDI4AlfL5gop6uCRc1em86UNfqMoONYOgpgjWTT5mZhvy1ht1U0dnsrTU0ANULjSLsODx-IIYECTSL7XzltC1rTBkofiMxtBDYD2rbOo6oDgetR_FYvBByHt0LJ6H6E5DgyVfLmZEKqerERX_azkTAoEJ44WjMWBcnU6hS3m6iJEUSYNxuL21S2msY8DAvL5B9wa2PJNXhYXEZWtvXG8JRwn-UHuRyoPOE6vax0l2vmCekcDkZEKMRuntZwWi5Pp8_l00r1-bU1QeYJynRY8hgN8KDWEdgRpd4dVUQCvEmT9JDNEwLSWMDrXEYFA1RI4MTOC5HxuF8tkDaDtS-SNGS0c4423LZ_2bVl4IoOEL2RZRcPRN4sRxPFCRJMkKSQzpyPDBkNCZWiRLZUCgIg9CgN5Fi1iPCFxUlGBpWIWVGAVJVINPDU-hg5IVBYxCL2QzUcHNYCVKiX8A2eByoG2NwZFdGB3TYLheAEIQSPVQNXLDekfl-CyjSC21Qs7bsZBHftmFnQyFxAsCZyHNTjxykUNybej1Ti7o0zLeg0oXXdyryqsByHJLauvIzFxSzcmJFFigwwwUZM6b8kSay8byyREnK6VoOuYAI9xWIkWJy29ZAfJ9sqmrqP1GrCHhpTthlmnlUHmuSvDhZVVWBLjjhwNQFG6XwitbfdYSOysWLYk1z3hUjnjE-lvl-SSaN0GKmg0qUZVIOV9POqaOjImzTIsKi9QNSZQa2XcULgBYhtahtCqsjKgJeGy7Lx4bay-9dtsxmB5G4CRXk_MbaeMk47xW5RZzhXtdtKrsrEwWx7Hq7gzvGmlbCiKA2mUaXonYXmVSm_m0wV2W4SJDWlaCFnhRPcRDdQT1_J9Wy22GUZXQoLMJF8IpBXjYwGYkOwAHdfK9AK8X5SqnpWB3eucL7WfhU3vSEC2wKtjNbezIPD2d-m5EZ5gPa9s2hEVfljrA2Hty6x3DwNmsw_EDOI59nO2zzoCC-cIQKAAFQgPhvLkChFQbh5d1JA2iQAVmuW5HGrFMBYSiqVbVUFChgU5SG0KeiXMttAWFF3U7dmBParn0a-euuvB72TMoAJiPUOxcqufYEX5fZ1XliN-cLe04AZjHwIJ7KnsZ-cHfBeUAl4rzguvMuN8AGNCAQ_LK3Bn4nQoK_VA49Ob3QMtAyQsCQHLxULOFB48dbd1vjkeecCVA60IUKEABIQCCAAEJoHoK0JAYAohCH7PQ6wuBugUD4FAJAoBXBUBoIgEAAAeT4AARAA8gAYWbgATU4AAUWYHwgRtRxASM0W5Bg5xFD4NQCobRqBdEwHoOgMxkgJHt0Sg-FhTcjEAFVm4wgALQAA5THOAkbbCgsBait0CTACRAB6AJQSdHhNKlYsxEiYikHQOwBJWgii1EAMpGgAAfSAYAaVtACr0YAY7lACAHhE9JCS4A6QgGocwcBuDECMTgcJaBMC4AIKYiJVTuA1IoAk8JSSUn9L0WY2h9C4BMNQCw9gbCOEwERAsoAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit promise demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIlQCGccABALICeACgE6kC2EODGbAAOqmbM4FehQCuLALzMA5AAdq6NAHMVAbnGTu8OVArNlcjDEioY6A6kPMyqadznEKpbgAowqACUIs6SsObE9FBQAEb0xADWSswA2gC6jqEu5NLMxnCkUABuwsr5hSUAalEWAHwhEpJNFNzsDU0dzBBgzL4UABaCONKyCswAhIrK6po6KsHG8tyojp3Ng3DDMvLJKmCmkNH2-lkdA0P5puZl8BUw1VCZjWvdvZHRcYmbsKjaA8z1AAMwTEzzWXR6fQ2W1GLEm0w0GDmINO4NcuVB4PB5WKMAAYk4wViAL4WFxRWLxJLDNRQCDEGC-QEAGmYAEZAilARlUWtzpsRjsyTMkb8TkTsbdcQ8yTiSgTfHL7lFAqsseshoKxtN9lBDrB0OL1RrNpczLKpVUomrjQBHOQwB2sem8GRwBK-XzBRT1THGk0woUI2Zip7-pqvRWW5VQLpuGSoBmkHocHj8QQwFES42RpUPQPaqaqXX645Z8NrPNRHADaj-KxeCDkXroWT0csVyvR3ytmSq3n-4n97Pq0kwKBCdqdppVqA1_p13v0OoiYmsmDcbgrv3TmcwPAwLy-DfcYe7yRDm0V4kDtZjifCHcVpVRgrSlVX403kcdS-35jfiSqKkpEFDEP0vQnh2XYHkeUGfgBWTEmGTTouYxiwdceT7oeFAyj6U4dJG_IFnCRYiloYoLDASwrKiJFarsGG4ccCEkWaWHMV4DwoURkLvJSXw4D8fwQUC0GdMR0KMRM5GIpRugSWsaGEeqXEUAS_6ksoAmfNScC0vSjIsuynLcghZzSds2qqPJcwWXumH4dhmEKupDxnuqDHWUxOFeKx_7sSY5o3E51r_vajowM6xCuowHpetu_6SN5sLCnZobiMlEK9O5NRoCMiYwMmbBcLwAhCEp6q5n5eHVjJUzTOpZaqeGeVzrWqA9m225rswJ5JT-am1cem6eZ2f5Db-_UPq1_rtfOi49QRT6di-S7jde66br1m1ftl96Tqtw2YVGYVQHt4KAaOl0XsBSG8cwLRtMdASvncrLqZtIGyOBkFjXN6mjaeV7flkJGdWS724gSn21QS3q-qiulUpsagKP0vjHUY0awwO6maRKk2olJmo-bJwaiopc2SJFTouqQboJYjNMRpCqVBuRJbQAa8ys5ZZNpZTClGvN3ZBXAVy3U0h2PtlHM2RR9nZUDEtSw5d0jpNd5ZRKixyMsT0bKDj0kaBf3KCeBIrhDC5dVYmC2PY23cAjpvQrYFJtMonvROw1srfR0Kdf4aBe7DzC-1A_tBCbzhg6gCepuVGY4EqZL7ImFBNhIvhFCqU764bdgAO6lWmFWMungdgi--cXWqk3IbryfpkIae1RnDbZ82ecF36RcSKX5cp0InpKnDmEs0-QP155TdPMPreV-P0aT7h0_OEIFAACoQHwxVyBQnqb7X3YcleQMAEzz6yACsgLAo4Q6LV1S6DZI6KFDAwmkNo3UyFZCoJU8w1SD2YEvMqbdGTQxKOvLwp8OjX3nsOPqA0a6fxyN_X-_8TxAPUqA5w4CADMz9AivwAcuDB2Q3DYKgH_Sh-DoyEMTi7D-NC3w_3obgzcTDMIsJfubTGiVqFf1gDg3wKgTwCPIVHdgJ92FiK4QwvYYc_YyL0CAZkIBBAACEw6tCQGAKIQg1w6OsLgfoFA-BQCQKAVwVAaCIBAAAHnGAAEQAPIAGEd4AE1OAAFFmBWJsbUcQLjQmxgYL8RQUjUAqHCagSJMB6DoCSZIFxB8ZAuH6PQbg284kAFUd54gALQAA5EnOBcdnCgsBah73qTAFxAB6OpDSImtIXGkpJLiYikHQOwPpWgii1EAMpGgAAfSUYAaVtACr0YAY7lACAHm00ZfS4CxQgGocwcBuDEDiTgVpaBMC4AIIktpGzuBbIoH01pAyhm3KiUkrROi4D6NQPk9gRiTEwGJH8oAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ### promiseAll
 
