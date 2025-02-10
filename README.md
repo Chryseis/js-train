@@ -648,10 +648,22 @@ compose(middleware)(next)(ctx)
 ## New
 
 ```javascript
+function myNew(func, ...args) {
+  let obj = Object.create(func.prototype)
+  func.call(obj, ...args)
+  return obj
+}
 
+const A = function (name) {
+  this.name = name
+}
+
+new A('allen')
+
+myNew(A, 'allen')
 ```
 
-[![Edit New demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIggA0IEcAQmgIYBOAnkmO1DgwAvozSZcACwoBbKElBlK1CrQA8AQgAiAeQDCAFQCaABQCiAAmlyAfAB1Ua61AtR2qAOYBeAOTUf9o6SMOzogRYWajIwFOwWxJJcQhS-AKoGAGIAtAAcAQ4RahQQFLA2BiWwagD0xaUwgTXBoY0ARqTo3I3oEABuNoDKRoAA-kpwpLCA0raAq9GAx3KAgB41Pf0OanDEnBAADhQWcJzEvjjV4tj4cAE1axvbjdXtnbfOgQxMrBw8fAJCwj9AA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit New demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVLgCuqxFE5ABALYCeAcjAO4AKMA2IAaVjkkBDAE4BzOAEpWwADqpWrWBVakARnlYBeVgHkDMJjmIyYUqkJE4ADjNIV3nZzEUBudZrCjNZSUFAC-njikjiyCn4BrLYUdDIakf6oAL7q6mSocDoAgsasQUwsGgKoUuw-KokUABYQcDg1daUdMJlZmeqo_KxFAgDkobCoowmoXLyCReLjYdTTviCiIK0AQmiynEhgoXAwWZtomLhNFOxQSKD5VDSIIAA8AIQAIqYAwgAqAE0AAoAUVY11uAD51K8IVAtFJUHIjKNVtDULC7Oh0ZpXnUKFJWMQmrIThQUQBVP4AMQAtAAOUY41ivZgUWCQv4QdkwV4AejZHJhfKaWPRrz0pHQnHF6AgADdIYBlI0AAPr5OCkWCAaVtAKvRgGO5QCAHvy5YqYXAbBBnDo4DJiCicHyLth8HAmfzzTJLRRxXzJdKfXD0RstnBdjUZAdEEcoCcsnGgA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Num2ChineseNum
 
