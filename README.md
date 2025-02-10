@@ -48,6 +48,8 @@
 
 - [Request4Node](#Request4Node)
 
+- [RequestQueue](#RequestQueue)
+
 - [Sort](#Sort)
 
   - [bubbleSort](#bubbleSort)
@@ -1226,6 +1228,56 @@ request({ method: 'get', path: '' }).then(data => {})
 ```
 
 [![Edit Request4Node demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEAFhRQA5yMC8jATjACOAVwgCAFAHJWHOJICUAbgA6qVWVQMWpBqgCGAWxg9GkySrWoNWgSPhNe40uwoR6AGkbsdFACJ6KPU9mGD1MPi5eYABfeR4APkZUGAB3RgAFPlIDCDgYcQE4UigAN2NuROBVRkYIMEYnFzdNHCMKZlJ0Hm5eSQBzGAoFRirUGprnV3ocdgDmE0nmuBm5xgBqUwB-SXWk1MYAVQAlABkAZVC-YmZ0vT5DOHFvBn9A-RwKUjOKPjQ-8SU1XGzz8AT0JlQwigUAsNWijBgUDyIyBNRBr3BvAAUmcAPIAORwDF-qD6dQAnk8fBjAWNxiEwjAIgBtSQAYXIVEoAFoACrk9gwSQAXRMkj07HYUAgxACzQA9ARyOZUSxQuE4KyOZRqBRuSdqH12iKTAAhYRgMBMnAAI3JVANpPaVJeYNpcNUQOsTFsJhknBwtmE9nEo3G2l0hhg7lV3j4FEQjAALEmAMwxuk1HDZxYeVUMjWJ4CMbM4AtMuCq6JA6KeQoJFGZxiwH3wKEOUwqpuFImDACiVk6fykwgoYAAHApYeMe-QpOgwZJPNdhKgANYNsPh_htqBMNa8Ffr6dw90z-A4OeSJlZPhLhF8W-b1U1azFGA4G-kPhSQrce9fnwZ6nieO7LFe1DoPeALPk2NSFMUZQFLuFDAYwsTThhQK2JeqBSIBAGPt-sHhm-sCfkRP6SLY_6eIBZ5YXS6JgowABkrE7oIOApL8VAuqCbzTjhkEAhYjGqEGIZbm0HToIm_SDEuQKzO08mSKosQfCEeELoEm4YSA7ggLkppoHc5JIGAehIjAtbGRg2BlhQBhQEgoAaFyFC0AAPAAhL4uJsryACa6R9iwzlQPEqjeawLnNnopL_tQkjRagsXqmlNTeW04LXHceQUP-By8gAYtyk5ZYw3muBQsDxLyEB1TA3nyrV9UxfKBZpd5NqdOSPXoBAJTxIAykaAAD6ZEwIA0raAKvRgDHcoAgB6tUNI0xXAxC_C4jBwFc_44PKaCYLgBCpa1G1bRQPXyn16ADZ1cVRaohnGXApn6HwFmIFZNnRH9QA&fontsize=14px&hidenavigation=1&theme=dark)
+
+## RequestQueue
+
+```javascript
+// requestUserProfile 是个通用查询用户接口
+// 传入uid 拿用户昵称 10个并发请求会阻塞接口，10个依次请求耗时久显示昵称太慢
+// 需求优化请求 在并发和耗时之间掌握一个平衡
+const requestProfile = uid => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve({ uid, nick: `nick-${uid}`, age: '18' })
+    }, 1000)
+  })
+}
+
+let requestQueue = []
+
+const requestUserProfile = (uid, max) => {
+  return new Promise(resolve => {
+    if (requestQueue.length <= max) {
+      requestQueue.push(uid)
+      requestProfile(uid)
+        .then(res => {
+          return res
+        })
+        .then(res => {
+          requestQueue = requestQueue.filter(item => item !== uid)
+          resolve(res)
+        })
+    } else {
+      setTimeout(() => resolve(requestUserProfile(uid, max)))
+    }
+  })
+}
+
+;(async function () {
+  try {
+    const result = await Promise.all([
+      requestUserProfile(1, 2),
+      requestUserProfile(2, 2),
+      requestUserProfile(3, 2),
+      requestUserProfile(4, 2),
+      requestUserProfile(5, 2)
+    ])
+    console.log(result)
+  } catch (err) {}
+})()
+```
+
+[![Edit RequestQueue demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABAE4wCOArvBQKpwzMACs1KRYjQPRmgKjlAWAmAKV0Cn5oCPouYHYjQKXGgY-UAOqgaNABPKBTRQ4R0jQP9GawKxmgB89GARgAMUwG56gReVA79GAhG0BY8oG40wD0NLUAYf-cpQFz5QEJrH0B0AMA300BROUA-M0AuTztAKk1AI0NdfUAAdO9ADHlANGUfRkAKdQ9AGJUEwGk5QBfUwBjjQEPjQAA5KUBnPUBDCN0yVDgKFnYuAeFRaBhGAF5GU3MpgD5GYF1GIYoOZlRGVBgAd0YxgFsIfgAKVjhSKAA3ScXl1bXGfgoAFQgjmFIOCjOzgCU0yWK22zzWl2udzOoPB4LmABonnCdhBiABrRCMAAGqDR6IAtAASYBzAC-2KRYJRAEMAOYwLEAcgcAA4mcjnmSAQBuTlkhGOJzC3lPbl81BkiW6WCDVicbgARS4XGmjAA2gBdaWoPoDIYKgZ8ARjMT3RhnRGMI40rBAh6w9abba7A7HU4wC7wKH3EGciBgC3ykYUZUwLg4WCoOkUAAWjAAPDMbXbHtTnsGlSqYDgAA4cOCxy1mUXpiHDbimibF9AAnBx6heuDAtMo8sbLZDOASlHc-uxxuXFuOlGZgZh1UzMeh7M4MRUZhnCBUI4t5cwVcAQimMzmpbbXZ9Tf3cPF_MYMCg_FbcNeHy-Pz-gJbkNununxqEIjNNcFKYBAE9lyYqllKui6GcNJwAAnrqjBgBwuoUBA5AWkCjoUMw0E3msepyvAHBQIMMw0nsNLLocIgnPwOA0lAUBnOqH78F-4ywGcDiCgATACgrMSa37Vlx3G8QaIaflW7EAMwiXxFZGixkmegALLJYncBJgnsQArCJmonrh5BXLAkakHSTaERQJ5kowxA0hQxDxmcAjMOhZK6NygI8iACIgKcABCaA0lhSBgHR_ACn5GDYDgsYUEcUBIKAfRUDQiAgAmm4ACIAPIAMJvAAmoIACijBxQlCy6AmFVQIwUA0tGUxMtQTJVagNUwDS6DtWsCZfBQNK2bGwWvM1PBvAAYgS7K9YmyEULACwfItMAJnQC1LdVdADt17UJgARqQ6DQft6AQDcCyAMpGgAA-nq1wwIA0raAKvRgDHcoAgB7redl3VXAxDMBAuaDHAzDEM1OB0GgmC4AQbXrX9ANA_tdBHSdyO1e1Pl-XAgWoMF0GheFMBkiTQA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Sort
 
