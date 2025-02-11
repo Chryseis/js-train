@@ -13,10 +13,13 @@ let requestQueue = []
 
 const requestUserProfile = (uid, max) => {
   return new Promise((resolve, reject) => {
-    if (requestQueue.length <= max) {
+    if (requestQueue.length < max) {
       requestQueue.push(uid)
+      console.log(performance.now(), uid)
+      console.time(`${uid} is running`)
       requestProfile(uid)
         .then(res => {
+          console.timeEnd(`${uid} is running`)
           return res
         })
         .then(res => {
@@ -35,7 +38,7 @@ const requestUserProfile = (uid, max) => {
 
 ;(async function () {
   try {
-    console.time('start')
+    console.time('request')
     const result = await Promise.all([
       requestUserProfile(1, 2),
       requestUserProfile(2, 2),
@@ -48,5 +51,6 @@ const requestUserProfile = (uid, max) => {
   } catch (err) {
     console.log(err)
   }
-  console.timeEnd('start')
+
+  console.timeEnd('request')
 })()
