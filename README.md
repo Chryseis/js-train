@@ -1246,7 +1246,7 @@ const requestProfile = uid => {
 let requestQueue = []
 
 const requestUserProfile = (uid, max) => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     if (requestQueue.length <= max) {
       requestQueue.push(uid)
       requestProfile(uid)
@@ -1257,6 +1257,10 @@ const requestUserProfile = (uid, max) => {
           requestQueue = requestQueue.filter(item => item !== uid)
           resolve(res)
         })
+        .catch(err => {
+          requestQueue = requestQueue.filter(item => item !== uid)
+          reject(err)
+        })
     } else {
       setTimeout(() => resolve(requestUserProfile(uid, max)))
     }
@@ -1265,19 +1269,24 @@ const requestUserProfile = (uid, max) => {
 
 ;(async function () {
   try {
+    console.time('start')
     const result = await Promise.all([
       requestUserProfile(1, 2),
       requestUserProfile(2, 2),
       requestUserProfile(3, 2),
       requestUserProfile(4, 2),
-      requestUserProfile(5, 2)
+      requestUserProfile(5, 2),
+      requestUserProfile(6, 2)
     ])
     console.log(result)
-  } catch (err) {}
+  } catch (err) {
+    console.log(err)
+  }
+  console.timeEnd('start')
 })()
 ```
 
-[![Edit RequestQueue demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABAE4wCOArvBQKpwzMACs1KRYjQPRmgKjlAWAmAKV0Cn5oCPouYHYjQKXGgY-UAOqgaNABPKBTRQ4R0jQP9GawKxmgB89GARgAMUwG56gReVA79GAhG0BY8oG40wD0NLUAYf-cpQFz5QEJrH0B0AMA300BROUA-M0AuTztAKk1AI0NdfUAAdO9ADHlANGUfRkAKdQ9AGJUEwGk5QBfUwBjjQEPjQAA5KUBnPUBDCN0yVDgKFnYuAeFRaBhGAF5GU3MpgD5GYF1GIYoOZlRGVBgAd0YxgFsIfgAKVjhSKAA3ScXl1bXGfgoAFQgjmFIOCjOzgCU0yWK22zzWl2udzOoPB4LmABonnCdhBiABrRCMAAGqDR6IAtAASYBzAC-2KRYJRAEMAOYwLEAcgcAA4mcjnmSAQBuTlkhGOJzC3lPbl81BkiW6WCDVicbgARS4XGmjAA2gBdaWoPoDIYKgZ8ARjMT3RhnRGMI40rBAh6w9abba7A7HU4wC7wKH3EGciBgC3ykYUZUwLg4WCoOkUAAWjAAPDMbXbHtTnsGlSqYDgAA4cOCxy1mUXpiHDbimibF9AAnBx6heuDAtMo8sbLZDOASlHc-uxxuXFuOlGZgZh1UzMeh7M4MRUZhnCBUI4t5cwVcAQimMzmpbbXZ9Tf3cPF_MYMCg_FbcNeHy-Pz-gJbkNununxqEIjNNcFKYBAE9lyYqllKui6GcNJwAAnrqjBgBwuoUBA5AWkCjoUMw0E3msepyvAHBQIMMw0nsNLLocIgnPwOA0lAUBnOqH78F-4ywGcDiCgATACgrMSa37Vlx3G8QaIaflW7EAMwiXxFZGixkmegALLJYncBJgnsQArCJmonrh5BXLAkakHSTaERQJ5kowxA0hQxDxmcAjMOhZK6NygI8iACIgKcABCaA0lhSBgHR_ACn5GDYDgsYUEcUBIKAfRUDQiAgAmm4ACIAPIAMJvAAmoIACijBxQlCy6AmFVQIwUA0tGUxMtQTJVagNUwDS6DtWsCZfBQNK2bGwWvM1PBvAAYgS7K9YmyEULACwfItMAJnQC1LdVdADt17UJgARqQ6DQft6AQDcCyAMpGgAA-nq1wwIA0raAKvRgDHcoAgB7redl3VXAxDMBAuaDHAzDEM1OB0GgmC4AQbXrX9ANA_tdBHSdyO1e1Pl-XAgWoMF0GheFMBkiTQA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit RequestQueue demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABAE4wCOArvBQKpwzMACs1KRYjQPRmgKjlAWAmAKV0Cn5oCPouYHYjQKXGgY-UAOqgaNABPKBTRQ4R0jQP9GawKxmgB89GARgAMUwG56gReVA79GAhG0BY8oG40wD0NLUAYf-cpQFz5QEJrH0B0AMA300BROUA-M0AuTztAKk1AI0NdfUAAdO9ADHlANGUfRkAKdQ9AGJUEwGk5QBfUwBjjQEPjQAA5KUBnPUBDCN0yVDgKFnYuAeFRaBhGAF5GU3MpgD5GYF1GIYoOZlRGVBgAd0YxgFsIfgAKVjhSKAA3ScXl1bXGfgoAFQgjmFIOCjOzgCU0yWK22zzWl2udzOoPB4LmABonnCdhBiABrRCMAAGqDR6IAtAASYBzAC-2KRYJRAEMAOYwLEAcgcAA4mcjnmSAQBuTlkhGOJzC3lPbl81BkiW6WCDVicbgARS4XGmjAA2gBdaWoPoDIYKgZ8ARjMT3RhnRGMI40rBAh6w9abba7A7HU4wf6Q24wQWsPAwYgUe0gzkQMAW-UjCjKmBcHCwVB0igAC0YAB4Zja7Y9qc8o0qVTAcAAHDhwFOWsyivMQ4bcU0TKvoAE4VPUC7wYG5lF1jZbIZwCUo7ltlMdy7dx0ogsDWOqmazmNFnBiKjMM4QKhHbtbmA7gCEUxmcxrvcHUM9lzPcNHxBpFGIlYEzCnnPBS_n5s_K7XAk3267oBR4ntWw69v6gZ_C-N7guK_KMDAUD8D2cKvB8Xw_H8gLdt60JLsaQgiGazaCtmAIUeBaxkmKNZSrouhnDScAAJ66owYAcLqFAQOQFpAo6FDMCxqFrHq1zFjxXxnEyAw0swFBMrBjB6nK8AcFAgwzDSew0luhwiCc_A4DSUBQGc6oEfwRHjLAZwOIKABMAJ-vWRrWY2dmOU5LkGtGhGeZ6ADMPmuYavAecRTYACyhX53ABVFdkAKxxVZJpJZ6ABsPmasp4mwAmpB0p2cAacG4FkipD5PhaMGiSp5BXIVUDFWcMGVQxYIFZJnwwAAohgMlyQpSkStygI8iACIgKcABCaDySxSBgKZ_ACrNGDYDgKYUEcUBIKAfRUDQiAgOmB4ACIAPIAMJvAAmoI_WMLt-0LLo6ZvVAjBQDSSZTEy1BMh9qBfTANLoKDazpl8FA0ipKbya8gM8G8ABiBLstDGY8RQsALB8-MwOmdB4wTn10OOkOg-mABGpDoCxtPoBANwLIAykaAAD6PWANK2gCr0YAx3KAIAepOs-zn1wMQzAQCWgxwMwxCAzgdBoJguAECDpNSzLcu03QDNM_r32g9Ns1wAtqBLSta0wGS9tAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Sort
 
