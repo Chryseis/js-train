@@ -12,7 +12,7 @@ const requestProfile = uid => {
 let requestQueue = []
 
 const requestUserProfile = (uid, max) => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     if (requestQueue.length <= max) {
       requestQueue.push(uid)
       requestProfile(uid)
@@ -23,6 +23,10 @@ const requestUserProfile = (uid, max) => {
           requestQueue = requestQueue.filter(item => item !== uid)
           resolve(res)
         })
+        .catch(err => {
+          requestQueue = requestQueue.filter(item => item !== uid)
+          reject(err)
+        })
     } else {
       setTimeout(() => resolve(requestUserProfile(uid, max)))
     }
@@ -31,13 +35,18 @@ const requestUserProfile = (uid, max) => {
 
 ;(async function () {
   try {
+    console.time('start')
     const result = await Promise.all([
       requestUserProfile(1, 2),
       requestUserProfile(2, 2),
       requestUserProfile(3, 2),
       requestUserProfile(4, 2),
-      requestUserProfile(5, 2)
+      requestUserProfile(5, 2),
+      requestUserProfile(6, 2)
     ])
     console.log(result)
-  } catch (err) {}
+  } catch (err) {
+    console.log(err)
+  }
+  console.timeEnd('start')
 })()
