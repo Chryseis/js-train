@@ -1247,10 +1247,13 @@ let requestQueue = []
 
 const requestUserProfile = (uid, max) => {
   return new Promise((resolve, reject) => {
-    if (requestQueue.length <= max) {
+    if (requestQueue.length < max) {
       requestQueue.push(uid)
+      console.log(performance.now(), uid)
+      console.time(`${uid} is running`)
       requestProfile(uid)
         .then(res => {
+          console.timeEnd(`${uid} is running`)
           return res
         })
         .then(res => {
@@ -1269,7 +1272,7 @@ const requestUserProfile = (uid, max) => {
 
 ;(async function () {
   try {
-    console.time('start')
+    console.time('request')
     const result = await Promise.all([
       requestUserProfile(1, 2),
       requestUserProfile(2, 2),
@@ -1282,11 +1285,12 @@ const requestUserProfile = (uid, max) => {
   } catch (err) {
     console.log(err)
   }
-  console.timeEnd('start')
+
+  console.timeEnd('request')
 })()
 ```
 
-[![Edit RequestQueue demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABAE4wCOArvBQKpwzMACs1KRYjQPRmgKjlAWAmAKV0Cn5oCPouYHYjQKXGgY-UAOqgaNABPKBTRQ4R0jQP9GawKxmgB89GARgAMUwG56gReVA79GAhG0BY8oG40wD0NLUAYf-cpQFz5QEJrH0B0AMA300BROUA-M0AuTztAKk1AI0NdfUAAdO9ADHlANGUfRkAKdQ9AGJUEwGk5QBfUwBjjQEPjQAA5KUBnPUBDCN0yVDgKFnYuAeFRaBhGAF5GU3MpgD5GYF1GIYoOZlRGVBgAd0YxgFsIfgAKVjhSKAA3ScXl1bXGfgoAFQgjmFIOCjOzgCU0yWK22zzWl2udzOoPB4LmABonnCdhBiABrRCMAAGqDR6IAtAASYBzAC-2KRYJRAEMAOYwLEAcgcAA4mcjnmSAQBuTlkhGOJzC3lPbl81BkiW6WCDVicbgARS4XGmjAA2gBdaWoPoDIYKgZ8ARjMT3RhnRGMI40rBAh6w9abba7A7HU4wf6Q24wQWsPAwYgUe0gzkQMAW-UjCjKmBcHCwVB0igAC0YAB4Zja7Y9qc8o0qVTAcAAHDhwFOWsyivMQ4bcU0TKvoAE4VPUC7wYG5lF1jZbIZwCUo7ltlMdy7dx0ogsDWOqmazmNFnBiKjMM4QKhHbtbmA7gCEUxmcxrvcHUM9lzPcNHxBpFGIlYEzCnnPBS_n5s_K7XAk3267oBR4ntWw69v6gZ_C-N7guK_KMDAUD8D2cKvB8Xw_H8gLdt60JLsaQgiGazaCtmAIUeBaxkmKNZSrouhnDScAAJ66owYAcLqFAQOQFpAo6FDMCxqFrHq1zFjxXxnEyAw0swFBMrBjB6nK8AcFAgwzDSew0luhwiCc_A4DSUBQGc6oEfwRHjLAZwOIKABMAJ-vWRrWY2dmOU5LkGtGhGeZ6ADMPmuYavAecRTYACyhX53ABVFdkAKxxVZJpJZ6ABsPmasp4mwAmpB0p2cAacG4FkipD5PhaMGiSp5BXIVUDFWcMGVQxYIFZJnwwAAohgMlyQpSkStygI8iACIgKcABCaDySxSBgKZ_ACrNGDYDgKYUEcUBIKAfRUDQiAgOmB4ACIAPIAMJvAAmoI_WMLt-0LLo6ZvVAjBQDSSZTEy1BMh9qBfTANLoKDazpl8FA0ipKbya8gM8G8ABiBLstDGY8RQsALB8-MwOmdB4wTn10OOkOg-mABGpDoCxtPoBANwLIAykaAAD6PWANK2gCr0YAx3KAIAepOs-zn1wMQzAQCWgxwMwxCAzgdBoJguAECDpNSzLcu03QDNM_r32g9Ns1wAtqBLSta0wGS9tAA&fontsize=14px&hidenavigation=1&theme=dark)
+[![Edit RequestQueue demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABAE4wCOArvBQKpwzMACs1KRYjQPRmgKjlAWAmAKV0Cn5oCPouYHYjQKXGgY-UAOqgaNABPKBTRQ4R0jQP9GawKxmgB89GARgAMUwG56gReVA79GAhG0BY8oG40wD0NLUAYf-cpQFz5QEJrH0B0AMA300BROUA-M0AuTztAKk1AI0NdfUAAdO9ADHlANGUfRkAKdQ9AGJUEwGk5QBfUwBjjQEPjQAA5KUBnPUBDCN0yVDgKFnYuAeFRaBhGAF5GU3MpgD5GYF1GIYoOZlRGVBgAd0YxgFsIfgAKVjhSKAA3ScXl1bXGfgoAFQgjmFIOCjOzgCU0yWK22zzWl2udzOoPB4LmABonnCdhBiABrRCMAAGqDR6IAtAASYBzAC-2KRYJRAEMAOYwLEAcgcAA4mcjnmSAQBuTlkhGOJzC3lPbl81BkiW6WCDVicbgARS4XGmjAA2gBdaWoPoDIYKgZ8ARjMT3RhnRGMI40rBAh6w9abba7A7HU4wf6Q24wQWsPAwYgUe0gzkQMAW-UjCjKmBcHCwVB0igAC0YAB5rbagY7wVGlSqYDgAA4cOApy1mUXU55665FqCkOlnYsCMCkZg23VF1CkPaAwVzasouuwHAUT6e7Ek8mMU4sDioPFJ7HDuH50YiM2V9AA8cp6gXeDAx418GjosTr4AUQwZ2npLMZLncAXS7QdNXEpREJgGy2QxwN-cLcvuh6XCeubrsMBZxuaG4xoWOBiFQzBnBAVBHCeGEwFhACEUwzEOwEot60KXGu4KgcQNIUMQFYCMwkGcnmMEDLGqozAhHFFihAjoZh2GCQRRFViR0EBkGZyMZRXKyc-MBQPwp4oq8HxfD8fyAieZGeghxpCFuEw7oKNp2gC8litWUq6LoZw0nAACeuqMGAi5BhA5AWjmTwUMwjkqbW5BXGOV6ekyCFMrJepyvAHBQIMMw0nsNIYYcIgnPwOA0lAUBnOq-n8IZ4ywGcDiCgATACfpsbwRWmsZFWVdVBrRgZDWlQAzM1NWGnVJpGaVAAsPWtdw7WDZ6ACso2FQNJWegAbM1mrRcF9YJk2R5wPFwbAc-NF0Wm0nMMwPk1hem3NjJ-22WCl1hbe6BnBFtVRRK3KAjyIAIiApwAEJoDS_lIGAOX8AKf0YNgOAphQRxQEgoB9FQNCICA6Z4QAIgA8gAwm8ACagjXowcMIwsujpuTUCMFANJJlMTLUEylOoNTMA0ugbNrOmXwUDSjD0cDrxMzwbwAGIEuyPMZhOFCwAsHwKzA6Z0PLitU3QB5c2z6YAEakOgjl6-gEA3AsgDKRoAAPoXoA0raAKvRgDHcoAgB5q2bFtU3AxDMBAxaDHAzDEEzOB0GgmC4AQrNq97vv-3rdCG8bCc02zP1_XAgOoMDjmg-DMBkoXQA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Sort
 
