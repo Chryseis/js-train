@@ -62,6 +62,10 @@
 
 - [Tree](#Tree)
 
+  - [bfs](#bfs)
+
+  - [dfs](#dfs)
+
   - [expandTree](#expandTree)
 
   - [findPath](#findPath)
@@ -1450,6 +1454,113 @@ setInterval(() => {
 [![Edit Throttle demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVInlwUAEFAFgE6kUWyMC8jACjCoANI0xQAhgE8AlHwB8jYAB1UjRrCYNJbCgBUIAWxh9GABgDcajWxgUArm3VgHqYhQjlB81eo2MZKgMgeRUWEz8rBBw1v4aQSHETnaUhiZmANSoMADujAAiklQCsnE2ARBggjp66aa8jRa-FQGMtQbGDYzZeYXFMKVxbRrCOJIADhNQ0gJB4RRiugDmDiaUcGWtjAC-jDBQcKZ-I4xVgslsqZ0ZALTtFLo3pkoSMi3xIx31WTn5RSUtp82mNJtNZvNsItGCs1tQKJthiMdtsUf4dnEMWo1IkmMIzKwOFxYAJSoplBVEqRYDgoKRlgIAORwFikXKMsS9f4DMn3b5dIG2exOdQARkxYlF5mlQK0DyeP34XP6gLiRwoAElKDA2AA3SRQUnyXhKE6hYLUmC0-lCVClIE7SUyywgEQgGIAITQumkSDABqOjvdGGwOBYFCMUCQoEhNEQIAAPABCAoAeQAwvoAJoABQAooxw5GFGoE0WoJpJKhlrxGdRGSXUGWYJJ0I2NAmTI9AixdOrawBVfQAMVuAA4GxUE55uDAFIZZwmAPQz2CN5csFtt0sAI1I6Gk6_QEF1CkAykaAAH0qbBANK2gFXowDHcoBAD2Xx9PpbgxDYEAm2jYxFrHAlzQTBcAIBtl0_b9f3XJc9wPWDy0bV13TgL1UB9P0AxgHZcKAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ## Tree
+
+### bfs
+
+```javascript
+// 定义树节点类
+class TreeNode {
+  constructor(value) {
+    this.value = value
+    this.children = [] // 孩子节点数组
+  }
+
+  addChild(node) {
+    this.children.push(node)
+  }
+}
+
+// 创建树结构
+const root = new TreeNode(1)
+const node2 = new TreeNode(2)
+const node3 = new TreeNode(3)
+const node4 = new TreeNode(4)
+const node5 = new TreeNode(5)
+
+root.addChild(node2)
+root.addChild(node3)
+node2.addChild(node4)
+node2.addChild(node5)
+
+// BFS 实现
+function bfsTree(root, targetValue) {
+  const queue = [root] // 初始化队列，从根节点开始
+
+  while (queue.length > 0) {
+    const node = queue.shift() // 出队一个节点
+
+    if (node.value === targetValue) {
+      return node // 找到目标节点，返回
+    }
+
+    // 将当前节点的子节点加入队列
+    for (const child of node.children) {
+      queue.push(child)
+    }
+  }
+
+  return null // 如果没有找到目标节点
+}
+
+// 示例：搜索值为 4 的节点
+const result = bfsTree(root, 4)
+if (result) {
+  console.log(`节点值: ${result.value} 找到了!`)
+} else {
+  console.log('没有找到目标节点!')
+}
+```
+
+[![Edit bfs demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFnagknKCIFoEFBgnQ6DePgDqpiUAIZw4jACoAnGDABypTI2CDGjMqjgVpAV2IVS0gBQA3EVF0wAlCrXrGFABYQ4Oc5ZiMAvIw9WAbnt1Z1ccYhcodFlUH0YAbQBdAMYGRkBLbUAFbR5AB1NAEb97AF9BexF0dABhSPRjVCUbO1iHULcI6GjqHAAHXTgnWvrrIKbi1EFC1KZAbCVAL712QGW_QBDzErGhcm1GaVJSCjjUGAB3KVkFeuMARiHBTQ26zAAmPcPjuUVMY3urta1du5gAZieRxkrzO_y-N1-9QALECXqd3tCIesoZgAKxwkEImDGNFfLY7HBlSrVAYPfHbChE8pVdpkgFfP73akkul_JHDJks2lRel4lJpABCADEAMqMQB52oAG5xWYF0QgoEHIjAARmA4FjjASKAAaRwiaQAcxgFAAahYrLZVE1IYwAI5WKxxeLa5KTRiAXCVANOagDRlQD4aYB0JUAMP-AOblAJwWPEAAPpelbqA6RLzGB0wKw4WCoQ3ORgAPkYAAYrcENCjGH84snU30IGAKMYhu7AF-KfsAAHKAKjkeLGHNXGPT3BavN5B_qjSbzZ5C00HJsTbppLE_gKmIA_I0ADEqAO7dAOAWPCDgBX4wB7akWJmlAGA6gGV9QCySjxACFu2W4gAKlQCmioGVkWwEYe7a2lFGKQwKX6uE1QxBOU7qBWMDdL0_RfugXxTqM6ijPYsgULO866FAUCLowgBBmoAOeaAIU2gCQ5qum4dqgR5MIAXJ6ANHygBY_4AOCaAES-gA8CoAXHKMLCV7kSstqyHAGG7L4aoaicWqUnqHIrN2WrwIJIHFlopCwGmpCGsYAAGPAsYgjAACTAPxgl9p4EyroAYXIAIQaV8EwwFAcBeNa6g3MpEFQGpxgAOTEaRW7cJZXm2SAOogK4gpoAaACeSBgBYjmFKFaCYLgTgUAAtlASCgJoVA0IgIAADyWQAIgA8hUkgAJoAAoAKKMGlmXZoIhVNVAjCiBm3hedQXktagbUwGUA3qIV6UmiIGhOAajkUD1ACqkjCgAtAAHP19iFYqFCwNmkgQLtMCFXQO17a1dBOMN6ADYVKpKFFt3oBApjZoAykaRq5sCANK2gCr0YAx3KAIAeJ3Pa9rVwMQ0gQF0uxwNIxA9TgdDJdg-BwP1J0Q1DMO3XQ93oI9F3tQNIVhXAEWoNFsXxTAhR00AA&fontsize=14px&hidenavigation=1&theme=dark)
+
+### dfs
+
+```javascript
+// 定义树节点类
+class TreeNode {
+  constructor(value) {
+    this.value = value
+    this.children = [] // 孩子节点数组
+  }
+
+  addChild(node) {
+    this.children.push(node)
+  }
+}
+
+// 迭代实现 DFS
+function dfsIterative(root, targetValue) {
+  if (!root) return null
+
+  const stack = [root] // 使用栈存储节点
+  while (stack.length > 0) {
+    const node = stack.pop() // 弹出栈顶节点
+
+    console.log(node.value) // 访问当前节点
+
+    if (node.value === targetValue) {
+      return node // 找到目标节点，返回
+    }
+
+    // 将子节点倒序压入栈中，以保证按从左到右的顺序遍历
+    for (let i = node.children.length - 1; i >= 0; i--) {
+      stack.push(node.children[i])
+    }
+  }
+
+  return null // 如果没有找到目标节点
+}
+
+// 示例：搜索值为 4 的节点
+const resultIterative = dfsIterative(root, 4)
+if (resultIterative) {
+  console.log(`节点值: ${resultIterative.value} 找到了!`)
+} else {
+  console.log('没有找到目标节点!')
+}
+```
+
+[![Edit dfs demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgFYLIgDGA9qgC4yVIgD0dABIFnagknKCIFoEFBgnQ6DePgDqpiUAIZw4jACoAnGDABypTI2CDGjMqjgVpAV2IVS0gBQA3EVF0wAlCrXrGFABYQ4Oc5ZiMAvIw9WAbnt1Z1ccYhcodFlUH0YAbQBdAMYGRkBLbUAFbR5AB1NAEb97AF9BexF0dABhSPRjVCUbO1iHULcI6GjqHAAHXTgnWvrrIKbi1EFC1KZAW_jAY7lAPO1ABudGABEAMQBlErHUMF0hCghyRnQwOABJKmkRA9MYY2lSUgoAGkcRaQBzGAoANQsrWyqJoQMCMYwAQgeT1ssgoumksVQuigUGG6k02kY2hExAA1nF4lCKMlJoxAP7ygApXQAQFoANbUAFQo8LbqADukS8xmxeJwsFQH2cjAAfIwAAyA4IaciYurKXyc3HdUhdYxDUmATn1AF-KVMAbhmM7YOCVaUiwbmkD4DTDuf42FJpQD90YA71MAyvqAWSVdeKQWDpTBLZ4fN5fBR3l9flaxU19bD4Yj6jamIA_I0ADEqAO7dAOAWPEAMP-AFfjAHtq4omaUAYDrZbiAJAVAPF6gGjlQCmilTALRy6cAp3KAXflAIPRgEhjQBzcoAz3QTgGflQAhboAvDLLgFkEwBhyltxWAjGDYBRGBA4l7wtUYtzqHynIwALSMACMKUXAt8wsP2-3Yf16jl3V6_WXbSiMXiEESQzzRSZjEjCMYSJRsaMIAQZqADnmgCFNoAkOaJqmur5kwgBcnoA0fKAFj_gA4JoARL6ADwKgBccowAAsjD9m62wYvOshwMiFAXDAVw3F4vgnOclzXBAtz3I8Lz4e-2wevc8CUdRtGsQ0QLopKRrelAprGAABjwmGIIwAAkwDkQJzF0T6VgTImgBhcuCMncRMMBQHAXiiQacASSaZoAOSQdBabcOCtlGSAzwgK4ABCaDvAAnkgYAWGZhQeWgmC4E4FAALZQEgoCaFQNCICAAA84LLAA8hUkgAJoAAoAKKMFFsUCoIqWlVAjCiLy3i2dQtnlaglUwGUzXqKl0XfCIGhOO8ZkUPVACqkirNuAAcTX2KlBwULAAqSBA80wKldBzQtFV0E4bXoM1qUAEZKH5-3oKxAqAMpGgAA-hiEmANK2gCr0TMgCAHmtZ2mPtcDENIEBdPOcDSMQ9U4HQ4XYPgcBNWtX0_X9-10Ed6AnVtVXNe5nlwD5qD-YFwUwIUBNAA&fontsize=14px&hidenavigation=1&theme=dark)
 
 ### expandTree
 
